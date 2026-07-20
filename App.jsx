@@ -6,7 +6,7 @@ export default function App() {
     {
       id: 1,
       title: 'Multiplication Fluency Booklets (Times Tables 2-20 Combo)',
-      ageGroup: '7-9 years',
+      subjectCategory: 'Math',
       category: 'Printed Worksheets',
       price: 699,
       originalPrice: 998,
@@ -19,7 +19,7 @@ export default function App() {
     {
       id: 2,
       title: 'The Advance Phonics Pack (Full Set with Audio Guides)',
-      ageGroup: '4-6 years',
+      subjectCategory: 'Reading',
       category: 'Printed Worksheets',
       price: 749,
       originalPrice: 999,
@@ -32,7 +32,7 @@ export default function App() {
     {
       id: 3,
       title: 'Brain Games & Logical Reasoning Puzzles',
-      ageGroup: '7-9 years',
+      subjectCategory: 'Logic & Puzzles',
       category: 'Digital E-Copies',
       price: 299,
       originalPrice: 499,
@@ -52,7 +52,7 @@ export default function App() {
   const [viewMode, setViewMode] = useState('buyer'); // 'buyer' or 'admin'
   
   // --- BUYER STATE ---
-  const [selectedAge, setSelectedAge] = useState('All');
+  const [selectedSubject, setSelectedSubject] = useState('All');
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [cart, setCart] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -63,11 +63,21 @@ export default function App() {
   const [trackedOrder, setTrackedOrder] = useState(null);
 
   // --- ADMIN STATE ---
-  const [newProduct, setNewProduct] = useState({ title: '', ageGroup: '4-6 years', category: 'Printed Worksheets', price: '', originalPrice: '', badge: '', img: '' });
+  const [newProduct, setNewProduct] = useState({ title: '', subjectCategory: 'Alphabet & Phonics', category: 'Printed Worksheets', price: '', originalPrice: '', badge: '', img: '' });
+
+  // --- SUBJECT CATEGORIES WITH ICONS ---
+  const subjectList = [
+    { name: 'All', icon: '✨', label: 'All Subjects' },
+    { name: 'Alphabet & Phonics', icon: '🔤', label: 'Alphabet & Phonics' },
+    { name: 'Reading', icon: '📖', label: 'Reading' },
+    { name: 'Writing', icon: '✏️', label: 'Writing' },
+    { name: 'Math', icon: '🧮', label: 'Math' },
+    { name: 'Logic & Puzzles', icon: '🧩', label: 'Logic & Puzzles' }
+  ];
 
   // --- BUYER LOGIC ---
   const filteredProducts = products.filter(p => {
-    return (selectedAge === 'All' || p.ageGroup === selectedAge) && (selectedCategory === 'All' || p.category === selectedCategory);
+    return (selectedSubject === 'All' || p.subjectCategory === selectedSubject) && (selectedCategory === 'All' || p.category === selectedCategory);
   });
 
   const addToCart = (product) => {
@@ -116,7 +126,7 @@ export default function App() {
   const addProduct = (e) => {
     e.preventDefault();
     setProducts([...products, { ...newProduct, id: Date.now(), price: Number(newProduct.price), originalPrice: Number(newProduct.originalPrice || newProduct.price), rating: 5.0, reviewsCount: 1, features: ['New Learning Pack'] }]);
-    setNewProduct({ title: '', ageGroup: '4-6 years', category: 'Printed Worksheets', price: '', originalPrice: '', badge: '', img: '' });
+    setNewProduct({ title: '', subjectCategory: 'Alphabet & Phonics', category: 'Printed Worksheets', price: '', originalPrice: '', badge: '', img: '' });
   };
 
   const deleteProduct = (id) => {
@@ -189,7 +199,7 @@ export default function App() {
                       <span className="text-[#FF8BA7]">With Thoughtful Resources</span>
                     </h2>
                     <p className="text-xs text-slate-600 max-w-lg leading-relaxed">
-                      Discover beautifully crafted printed workbooks and instant digital packs designed to make reading, math, and logic fun for young learners.
+                      Discover beautifully crafted printed workbooks and instant digital packs designed to make reading, writing, math, and logic fun for young learners.
                     </p>
                   </div>
                   <div className="flex gap-3 text-center">
@@ -223,16 +233,25 @@ export default function App() {
 
               {/* Main Catalog */}
               <main className="max-w-7xl mx-auto px-4 py-8 flex flex-col md:flex-row gap-6">
-                <aside className="w-full md:w-56 bg-white p-5 rounded-3xl border border-pink-100 shrink-0 h-fit space-y-6 shadow-xs">
+                {/* ICON-BASED SUBJECT CATEGORY SIDEBAR */}
+                <aside className="w-full md:w-64 bg-white p-5 rounded-3xl border border-pink-100 shrink-0 h-fit space-y-6 shadow-xs">
                   <div>
-                    <h4 className="text-[11px] font-black text-pink-400 uppercase tracking-wider mb-3">Age Group</h4>
+                    <h4 className="text-[11px] font-black text-pink-400 uppercase tracking-wider mb-3">Browse Categories</h4>
                     <div className="flex flex-col space-y-1.5">
-                      {['All', '4-6 years', '7-9 years'].map(age => (
-                        <button key={age} onClick={() => setSelectedAge(age)} className={`text-left px-3.5 py-2 rounded-2xl text-xs font-bold transition ${selectedAge === age ? 'bg-[#FF8BA7] text-white shadow-xs' : 'hover:bg-pink-50 text-slate-600'}`}>{age === 'All' ? '🎒 All Ages' : age}</button>
+                      {subjectList.map(sub => (
+                        <button 
+                          key={sub.name} 
+                          onClick={() => setSelectedSubject(sub.name)} 
+                          className={`flex items-center space-x-3 text-left px-3.5 py-2.5 rounded-2xl text-xs font-bold transition ${selectedSubject === sub.name ? 'bg-[#FF8BA7] text-white shadow-xs' : 'hover:bg-pink-50 text-slate-600'}`}
+                        >
+                          <span className="text-base">{sub.icon}</span>
+                          <span>{sub.label}</span>
+                        </button>
                       ))}
                     </div>
                   </div>
-                  <div>
+
+                  <div className="pt-4 border-t border-pink-50">
                     <h4 className="text-[11px] font-black text-pink-400 uppercase tracking-wider mb-3">Format Type</h4>
                     <div className="flex flex-col space-y-1.5">
                       {['All', 'Printed Worksheets', 'Digital E-Copies'].map(cat => (
@@ -249,7 +268,7 @@ export default function App() {
                         <div className="relative h-48 overflow-hidden bg-slate-50">
                           <img src={p.img} alt={p.title} className="w-full h-full object-cover"/>
                           {p.badge && <span className="absolute top-3 left-3 text-[9px] font-black uppercase bg-[#FF8BA7] text-white px-2.5 py-1 rounded-full shadow-md">{p.badge}</span>}
-                          <span className="absolute bottom-3 right-3 text-[10px] font-bold bg-white/90 backdrop-blur-xs text-slate-700 px-2.5 py-1 rounded-full shadow-xs border border-pink-100">{p.ageGroup}</span>
+                          <span className="absolute bottom-3 right-3 text-[10px] font-bold bg-white/90 backdrop-blur-xs text-slate-700 px-2.5 py-1 rounded-full shadow-xs border border-pink-100">{p.subjectCategory || 'General'}</span>
                         </div>
 
                         <div className="p-5 flex-1 flex flex-col justify-between space-y-3">
@@ -285,7 +304,7 @@ export default function App() {
                 </section>
               </main>
 
-              {/* FOOTER */}
+              {/* FOOTER WITH CONTACT INFORMATION */}
               <footer className="bg-[#3D5233] text-slate-200 py-12 px-6 mt-16 text-xs">
                 <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
                   <div className="space-y-2">
@@ -301,8 +320,32 @@ export default function App() {
                     </ul>
                   </div>
                   <div>
-                    <h4 className="text-white font-bold mb-3 text-sm">Support & Inquiries</h4>
-                    <p className="text-slate-300 leading-relaxed">Have questions about age appropriateness or physical orders? Reach out anytime through our store help desk.</p>
+                    <h4 className="text-white font-bold mb-3 text-sm">Get in Touch</h4>
+                    <div className="space-y-2.5 text-slate-300">
+                      {/* WhatsApp Button */}
+                      <a 
+                        href="https://wa.me/919999999999" 
+                        target="_blank" 
+                        rel="noreferrer" 
+                        className="flex items-center gap-2 text-green-300 hover:text-green-200 font-bold transition"
+                      >
+                        💬 Chat on WhatsApp (+91 99999-99999)
+                      </a>
+
+                      {/* Email */}
+                      <p className="flex items-center gap-2">
+                        ✉️ <a href="mailto:support@edusproutworld.com" className="hover:underline">support@edusproutworld.com</a>
+                      </p>
+
+                      {/* Instagram */}
+                      <p className="flex items-center gap-2">
+                        📸 <a href="https://instagram.com/edusproutworld" target="_blank" rel="noreferrer" className="hover:underline">@edusproutworld</a>
+                      </p>
+
+                      <p className="text-[10px] text-slate-400 pt-1">
+                        ⏰ Support Hours: Mon–Sat (9 AM – 6 PM)
+                      </p>
+                    </div>
                   </div>
                 </div>
               </footer>
@@ -378,10 +421,22 @@ export default function App() {
               <form onSubmit={addProduct} className="space-y-2.5">
                 <input type="text" required value={newProduct.title} onChange={e => setNewProduct({...newProduct, title: e.target.value})} className="w-full border border-pink-100 p-2.5 rounded-2xl text-xs outline-none focus:border-[#FF8BA7]" placeholder="Title..."/>
                 <input type="text" value={newProduct.img} onChange={e => setNewProduct({...newProduct, img: e.target.value})} className="w-full border border-pink-100 p-2.5 rounded-2xl text-xs outline-none focus:border-[#FF8BA7]" placeholder="Image URL..."/>
+                
                 <div className="grid grid-cols-2 gap-2">
-                  <select value={newProduct.ageGroup} onChange={e => setNewProduct({...newProduct, ageGroup: e.target.value})} className="w-full border border-pink-100 p-2 rounded-2xl bg-white text-xs"><option value="4-6 years">4-6 years</option><option value="7-9 years">7-9 years</option></select>
-                  <select value={newProduct.category} onChange={e => setNewProduct({...newProduct, category: e.target.value})} className="w-full border border-pink-100 p-2 rounded-2xl bg-white text-xs"><option value="Printed Worksheets">Printed Worksheets</option><option value="Digital E-Copies">Digital E-Copies</option></select>
+                  <select value={newProduct.subjectCategory} onChange={e => setNewProduct({...newProduct, subjectCategory: e.target.value})} className="w-full border border-pink-100 p-2 rounded-2xl bg-white text-xs">
+                    <option value="Alphabet & Phonics">Alphabet & Phonics</option>
+                    <option value="Reading">Reading</option>
+                    <option value="Writing">Writing</option>
+                    <option value="Math">Math</option>
+                    <option value="Logic & Puzzles">Logic & Puzzles</option>
+                  </select>
+
+                  <select value={newProduct.category} onChange={e => setNewProduct({...newProduct, category: e.target.value})} className="w-full border border-pink-100 p-2 rounded-2xl bg-white text-xs">
+                    <option value="Printed Worksheets">Printed Worksheets</option>
+                    <option value="Digital E-Copies">Digital E-Copies</option>
+                  </select>
                 </div>
+
                 <div className="grid grid-cols-2 gap-2">
                   <input type="number" required value={newProduct.price} onChange={e => setNewProduct({...newProduct, price: e.target.value})} className="w-full border border-pink-100 p-2 rounded-2xl text-xs" placeholder="Sale Price (Rs.)"/>
                   <input type="number" value={newProduct.originalPrice} onChange={e => setNewProduct({...newProduct, originalPrice: e.target.value})} className="w-full border border-pink-100 p-2 rounded-2xl text-xs" placeholder="Original Price"/>
@@ -402,7 +457,7 @@ export default function App() {
                         <img src={p.img} alt={p.title} className="w-10 h-10 object-cover rounded-xl"/>
                         <div>
                           <h5 className="font-bold text-slate-800 line-clamp-1">{p.title}</h5>
-                          <p className="text-[10px] text-slate-400">{p.ageGroup} • Rs. {p.price}.00</p>
+                          <p className="text-[10px] text-slate-400">{p.subjectCategory || 'General'} • Rs. {p.price}.00</p>
                         </div>
                       </div>
                       <button onClick={() => deleteProduct(p.id)} className="bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 text-[10px] font-bold px-3 py-1.5 rounded-xl transition">
