@@ -1,55 +1,11 @@
-import React, { useState, useEffect } from 'react';
-
-// Custom SVG Logo Component based on your image (Open Book + Globe + Leaves + Pink Frame)
-const EduSproutLogo = () => (
-  <svg className="w-16 h-16 drop-shadow-md hover:scale-105 transition-transform" viewBox="0 0 200 180" fill="none" xmlns="http://www.w3.org/2000/svg">
-    {/* Soft Pink Background Blob */}
-    <path d="M25,80 C10,40 50,10 90,20 C130,5 175,25 185,60 C195,100 180,140 150,165 C120,185 70,175 40,160 C15,140 10,100 25,80 Z" fill="#FFAEC0" />
-    <path d="M25,80 C10,40 50,10 90,20 C130,5 175,25 185,60 C195,100 180,140 150,165 C120,185 70,175 40,160 C15,140 10,100 25,80 Z" stroke="#FFFFFF" strokeWidth="6" />
-
-    {/* Yellow Stars */}
-    <path d="M75,28 L77,34 L83,36 L77,38 L75,44 L73,38 L67,36 L73,34 Z" fill="#F4C430" />
-    <path d="M162,35 L164,41 L170,43 L164,45 L162,51 L160,45 L154,43 L160,41 Z" fill="#F4C430" />
-    <path d="M28,122 L30,128 L36,130 L30,132 L28,138 L26,132 L20,130 L26,128 Z" fill="#F4C430" />
-    <path d="M165,125 L167,131 L173,133 L167,135 L165,141 L163,135 L157,133 L163,131 Z" fill="#F4C430" />
-
-    {/* Globe */}
-    <circle cx="100" cy="82" r="38" fill="#71B299" stroke="#2D4030" strokeWidth="2.5" />
-    <path d="M72,82 C72,65 100,50 115,62 C130,75 110,95 102,100 C80,105 70,90 72,82 Z" fill="#528E77" />
-    <path d="M112,50 C125,52 135,68 128,82 C120,72 110,60 112,50 Z" fill="#528E77" />
-
-    {/* Green Botanical Leaves (Right & Left) */}
-    <path d="M135,70 C150,60 165,65 170,80 C155,85 140,78 135,70 Z" fill="#508058" stroke="#2D4030" strokeWidth="2" />
-    <path d="M140,88 C160,82 172,95 168,110 C150,110 142,98 140,88 Z" fill="#508058" stroke="#2D4030" strokeWidth="2" />
-    <path d="M65,70 C50,60 35,65 30,80 C45,85 60,78 65,70 Z" fill="#508058" stroke="#2D4030" strokeWidth="2" />
-    <path d="M60,88 C40,82 28,95 32,110 C50,110 58,98 60,88 Z" fill="#508058" stroke="#2D4030" strokeWidth="2" />
-
-    {/* Open Book Base */}
-    <path d="M100,148 L170,122 C170,122 155,108 100,125 L100,148 Z" fill="#C87038" stroke="#2D4030" strokeWidth="2.5" />
-    <path d="M100,148 L30,122 C30,122 45,108 100,125 L100,148 Z" fill="#D9824B" stroke="#2D4030" strokeWidth="2.5" />
-
-    {/* Open Book Pages */}
-    <path d="M100,140 C125,120 155,115 168,118 C165,105 130,100 100,122 Z" fill="#FFFDF2" stroke="#2D4030" strokeWidth="2" />
-    <path d="M100,140 C75,120 45,115 32,118 C35,105 70,100 100,122 Z" fill="#FFFDF2" stroke="#2D4030" strokeWidth="2" />
-    <path d="M100,135 C120,116 148,110 162,113 C159,102 126,96 100,118 Z" fill="#FFFFFA" stroke="#2D4030" strokeWidth="1.5" />
-    <path d="M100,135 C80,116 52,110 38,113 C41,102 74,96 100,118 Z" fill="#FFFFFA" stroke="#2D4030" strokeWidth="1.5" />
-  </svg>
-);
+import React, { useState } from 'react';
 
 export default function App() {
-  // --- LOAD GOOGLE FONT: SNIGLET ---
-  useEffect(() => {
-    const link = document.createElement('link');
-    link.href = 'https://fonts.googleapis.com/css2?family=Sniglet:wght@400;800&display=swap';
-    link.rel = 'stylesheet';
-    document.head.appendChild(link);
-  }, []);
-
   // --- ANNOUNCEMENT BANNER STATE ---
   const [bannerConfig, setBannerConfig] = useState({
     enabled: true,
     text: '🎉 SPECIAL SALE: Get 20% off all Printable Packs this week! Use code: SPROUT20 🎉',
-    bgColor: '#FF8BA7',
+    bgColor: '#FF8BA7', // Blush Pink background
     textColor: '#FFFFFF'
   });
 
@@ -123,7 +79,7 @@ export default function App() {
   ]);
 
   // --- VIEW MODE TOGGLE ---
-  const [viewMode, setViewMode] = useState('buyer');
+  const [viewMode, setViewMode] = useState('buyer'); // 'buyer' or 'admin'
   
   // --- BUYER STATE ---
   const [selectedSubject, setSelectedSubject] = useState('All');
@@ -210,12 +166,12 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#E2EFE0] text-slate-700" style={{ fontFamily: "'Sniglet', cursive, sans-serif" }}>
+    <div className="min-h-screen bg-[#FFFDF9] font-sans text-slate-700">
       
-      {/* 📣 RUNNING ANNOUNCEMENT BANNER */}
+      {/* 📣 RUNNING ANNOUNCEMENT BANNER FOR SALES & UPDATES */}
       {bannerConfig.enabled && (
         <div 
-          className="overflow-hidden whitespace-nowrap py-2 text-sm font-bold border-b border-pink-200/50"
+          className="overflow-hidden whitespace-nowrap py-2 text-xs font-bold border-b border-pink-200/50"
           style={{ backgroundColor: bannerConfig.bgColor, color: bannerConfig.textColor }}
         >
           <div className="inline-block animate-marquee pl-full">
@@ -231,7 +187,7 @@ export default function App() {
         <span>✨ Growing Curiosity, One Page at a Time ✨</span>
         <button 
           onClick={() => setViewMode(viewMode === 'buyer' ? 'admin' : 'buyer')}
-          className="bg-[#FF8BA7] hover:bg-[#ff7295] text-white px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-wider transition shadow-sm"
+          className="bg-[#FF8BA7] hover:bg-[#ff7295] text-white px-3.5 py-1 rounded-full text-[11px] font-black uppercase tracking-wider transition shadow-sm"
         >
           {viewMode === 'buyer' ? '🔒 Open Admin Panel' : '👋 Return to Storefront'}
         </button>
@@ -240,22 +196,23 @@ export default function App() {
       {/* BUYER MODE */}
       {viewMode === 'buyer' && (
         <>
-          {/* HEADER WITH BROADER & LARGER LOGO AREA */}
-          <header className="bg-white sticky top-0 z-40 border-b border-green-100 shadow-xs py-2">
-            <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
-              <div onClick={() => setCheckoutStep('browse')} className="cursor-pointer flex items-center space-x-4 py-1">
-                <EduSproutLogo />
+          <header className="bg-white sticky top-0 z-40 border-b border-pink-100/80 shadow-xs">
+            <div className="max-w-7xl mx-auto px-6 py-3.5 flex justify-between items-center">
+              <div onClick={() => setCheckoutStep('browse')} className="cursor-pointer flex items-center space-x-3">
+                <div className="w-11 h-11 bg-pink-100 rounded-2xl flex items-center justify-center text-2xl shadow-inner border border-pink-200">
+                  🌱
+                </div>
                 <div>
-                  <h1 className="text-2xl md:text-3xl font-extrabold text-[#3d592b] tracking-tight flex items-center gap-2">
-                    Edu Sprout <span className="text-[#FF8BA7]">World</span>
+                  <h1 className="text-xl font-black text-[#436132] tracking-tight flex items-center gap-1.5">
+                    Edu Sprout <span className="text-[#FF8BA7] font-serif italic text-lg">World</span>
                   </h1>
-                  <p className="text-xs uppercase font-extrabold text-pink-400 tracking-widest mt-0.5">Little Sprouts, Big Minds</p>
+                  <p className="text-[10px] uppercase font-black text-pink-400 tracking-widest">Little Sprouts, Big Minds</p>
                 </div>
               </div>
               
-              <button onClick={() => setIsCartOpen(true)} className="bg-[#5B7B4B] hover:bg-[#4d6a3f] text-white font-bold px-5 py-2.5 rounded-2xl text-sm flex items-center space-x-2 transition shadow-sm">
+              <button onClick={() => setIsCartOpen(true)} className="bg-[#5B7B4B] hover:bg-[#4d6a3f] text-white font-bold px-4 py-2 rounded-2xl text-xs flex items-center space-x-2 transition shadow-sm">
                 <span>🛒 Shopping Basket</span>
-                <span className="bg-[#FF8BA7] text-white rounded-full px-2.5 py-0.5 text-xs font-black">{cart.reduce((s, i) => s + i.quantity, 0)}</span>
+                <span className="bg-[#FF8BA7] text-white rounded-full px-2 py-0.5 text-[11px] font-black">{cart.reduce((s, i) => s + i.quantity, 0)}</span>
               </button>
             </div>
           </header>
@@ -263,59 +220,59 @@ export default function App() {
           {checkoutStep === 'confirmation' && (
             <div className="max-w-md mx-auto my-16 bg-white p-8 rounded-3xl shadow-sm text-center border border-pink-100">
               <span className="text-5xl block mb-2">🎉</span>
-              <h2 className="text-2xl font-black text-slate-800 mb-1">Order Placed Successfully!</h2>
+              <h2 className="text-xl font-black text-slate-800 mb-1">Order Placed Successfully!</h2>
               <p className="text-xs text-slate-500 mb-6">Your materials are getting routed. Confirmation sent.</p>
               <div className="bg-pink-50/50 p-4 rounded-2xl mb-6 text-left text-xs border border-pink-100">
                 <p className="font-bold text-slate-400">YOUR ORDER ID</p>
-                <p className="text-lg font-black text-[#5B7B4B] mb-1">{lastPlacedOrder?.id}</p>
+                <p className="text-base font-black text-[#5B7B4B] mb-1">{lastPlacedOrder?.id}</p>
                 <p><strong>Total Paid:</strong> Rs. {lastPlacedOrder?.total}.00</p>
               </div>
-              <button onClick={() => setCheckoutStep('browse')} className="bg-[#5B7B4B] text-white text-sm font-bold px-4 py-3 rounded-2xl w-full hover:bg-[#4d6a3f] transition">Continue Browsing</button>
+              <button onClick={() => setCheckoutStep('browse')} className="bg-[#5B7B4B] text-white text-xs font-bold px-4 py-3 rounded-2xl w-full hover:bg-[#4d6a3f] transition">Continue Browsing</button>
             </div>
           )}
 
           {checkoutStep === 'browse' && (
             <>
               {/* HERO SECTION */}
-              <div className="bg-gradient-to-r from-[#FFC6D9]/50 via-[#FFB3C6]/40 to-[#D0E5CD] py-14 px-6 border-b border-green-100">
+              <div className="bg-gradient-to-r from-[#FFC6D9]/40 via-[#FFB3C6]/30 to-[#EAF2E8] py-12 px-6 border-b border-pink-100">
                 <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
                   <div className="space-y-3 text-center md:text-left">
-                    <span className="bg-white text-[#FF8BA7] text-xs font-black uppercase px-3.5 py-1 rounded-full shadow-xs border border-pink-100">
+                    <span className="bg-white text-[#FF8BA7] text-[10px] font-black uppercase px-3 py-1 rounded-full shadow-xs border border-pink-100">
                       🌸 Loved by 10,000+ Parents
                     </span>
-                    <h2 className="text-3xl md:text-5xl font-black text-[#3a522e] leading-tight">
+                    <h2 className="text-3xl md:text-4xl font-black text-[#3a522e] leading-tight">
                       Nurture Young Minds <br />
                       <span className="text-[#FF8BA7]">With Thoughtful Resources</span>
                     </h2>
-                    <p className="text-sm text-slate-600 max-w-lg leading-relaxed">
+                    <p className="text-xs text-slate-600 max-w-lg leading-relaxed">
                       Discover beautifully crafted printed workbooks and instant digital packs designed to make reading, writing, math, and logic fun for young learners.
                     </p>
                   </div>
                   <div className="flex gap-3 text-center">
-                    <div className="bg-white/80 backdrop-blur-xs p-5 rounded-3xl border border-pink-100 shadow-xs">
-                      <p className="text-2xl font-black text-[#5B7B4B]">100%</p>
-                      <p className="text-xs font-bold text-slate-500">Kid-Approved</p>
+                    <div className="bg-white/80 backdrop-blur-xs p-4 rounded-2xl border border-pink-100 shadow-xs">
+                      <p className="text-xl font-black text-[#5B7B4B]">100%</p>
+                      <p className="text-[10px] font-bold text-slate-500">Kid-Approved</p>
                     </div>
-                    <div className="bg-white/80 backdrop-blur-xs p-5 rounded-3xl border border-pink-100 shadow-xs">
-                      <p className="text-2xl font-black text-[#FF8BA7]">4.9 ★</p>
-                      <p className="text-xs font-bold text-slate-500">Parent Rating</p>
+                    <div className="bg-white/80 backdrop-blur-xs p-4 rounded-2xl border border-pink-100 shadow-xs">
+                      <p className="text-xl font-black text-[#FF8BA7]">4.9 ★</p>
+                      <p className="text-[10px] font-bold text-slate-500">Parent Rating</p>
                     </div>
                   </div>
                 </div>
               </div>
 
               {/* Order Tracker */}
-              <div className="bg-[#D8E8D5] border-b border-green-200/60 py-3.5 px-6">
+              <div className="bg-[#F4F9F2] border-b border-green-100 py-3 px-6">
                 <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 text-xs">
-                  <span className="font-bold text-sm text-[#436132]">📦 Track Your Shipment:</span>
-                  <div className="flex border border-green-300 rounded-2xl overflow-hidden bg-white shadow-xs">
+                  <span className="font-bold text-[#436132]">📦 Track Your Shipment:</span>
+                  <div className="flex border border-green-200 rounded-2xl overflow-hidden bg-white shadow-xs">
                     <input type="text" placeholder="Enter Order ID (e.g. ORD-9832)" value={searchOrderId} onChange={e => setSearchOrderId(e.target.value)} className="px-3 py-1.5 outline-none text-xs w-48"/>
                     <button onClick={trackOrder} className="bg-[#FF8BA7] hover:bg-[#ff7295] text-white font-bold px-4 py-1.5 transition">Track</button>
                   </div>
                 </div>
                 {trackedOrder && (
                   <div className="max-w-7xl mx-auto mt-2 p-2.5 bg-white rounded-2xl border text-xs shadow-xs">
-                    {trackedOrder === 'not_found' ? <p className="text-red-500 font-bold">⚠️ Order ID not found. Please recheck your receipt.</p> : <p>Order Identifier <strong>{trackedOrder.id}</strong> status: <span className="bg-green-100 text-[#436132] px-2.5 py-0.5 rounded-full font-bold">{trackedOrder.status}</span></p>}
+                    {trackedOrder === 'not_found' ? <p className="text-red-500 font-bold">⚠️ Order ID not found. Please recheck your receipt.</p> : <p>Order Identifier <strong>{trackedOrder.id}</strong> status: <span className="bg-green-100 text-[#436132] px-2 py-0.5 rounded-full font-bold">{trackedOrder.status}</span></p>}
                   </div>
                 )}
               </div>
@@ -325,7 +282,7 @@ export default function App() {
                 {/* ICON-BASED SUBJECT CATEGORY SIDEBAR */}
                 <aside className="w-full md:w-64 bg-white p-5 rounded-3xl border border-pink-100 shrink-0 h-fit space-y-6 shadow-xs">
                   <div>
-                    <h4 className="text-xs font-black text-pink-400 uppercase tracking-wider mb-3">Browse Categories</h4>
+                    <h4 className="text-[11px] font-black text-pink-400 uppercase tracking-wider mb-3">Browse Categories</h4>
                     <div className="flex flex-col space-y-1.5">
                       {subjectList.map(sub => (
                         <button 
@@ -341,7 +298,7 @@ export default function App() {
                   </div>
 
                   <div className="pt-4 border-t border-pink-50">
-                    <h4 className="text-xs font-black text-pink-400 uppercase tracking-wider mb-3">Format Type</h4>
+                    <h4 className="text-[11px] font-black text-pink-400 uppercase tracking-wider mb-3">Format Type</h4>
                     <div className="flex flex-col space-y-1.5">
                       {['All', 'Printed Worksheets', 'Digital E-Copies'].map(cat => (
                         <button key={cat} onClick={() => setSelectedCategory(cat)} className={`text-left px-3.5 py-2 rounded-2xl text-xs font-bold transition ${selectedCategory === cat ? 'bg-[#5B7B4B] text-white shadow-xs' : 'hover:bg-pink-50 text-slate-600'}`}>{cat === 'All' ? '📚 All Formats' : cat}</button>
@@ -356,18 +313,18 @@ export default function App() {
                       <div key={p.id} className="bg-white rounded-3xl border border-pink-100 overflow-hidden flex flex-col justify-between hover:shadow-lg transition duration-200">
                         <div className="relative h-48 overflow-hidden bg-slate-50">
                           <img src={p.img} alt={p.title} className="w-full h-full object-cover"/>
-                          {p.badge && <span className="absolute top-3 left-3 text-[10px] font-black uppercase bg-[#FF8BA7] text-white px-2.5 py-1 rounded-full shadow-md">{p.badge}</span>}
-                          <span className="absolute bottom-3 right-3 text-xs font-bold bg-white/90 backdrop-blur-xs text-slate-700 px-2.5 py-1 rounded-full shadow-xs border border-pink-100">{p.subjectCategory || 'General'}</span>
+                          {p.badge && <span className="absolute top-3 left-3 text-[9px] font-black uppercase bg-[#FF8BA7] text-white px-2.5 py-1 rounded-full shadow-md">{p.badge}</span>}
+                          <span className="absolute bottom-3 right-3 text-[10px] font-bold bg-white/90 backdrop-blur-xs text-slate-700 px-2.5 py-1 rounded-full shadow-xs border border-pink-100">{p.subjectCategory || 'General'}</span>
                         </div>
 
                         <div className="p-5 flex-1 flex flex-col justify-between space-y-3">
                           <div>
-                            <span className="text-xs font-extrabold text-[#436132] bg-[#EAF2E8] px-2.5 py-1 rounded-full">{p.category}</span>
-                            <h4 className="font-bold text-base text-slate-800 mt-2 line-clamp-2 leading-snug">{p.title}</h4>
-                            <div className="text-amber-400 text-xs mt-1">⭐⭐⭐⭐⭐ <span className="text-slate-400 font-bold">({p.reviewsCount})</span></div>
+                            <span className="text-[10px] font-extrabold text-[#436132] bg-[#EAF2E8] px-2.5 py-1 rounded-full">{p.category}</span>
+                            <h4 className="font-bold text-sm text-slate-800 mt-2 line-clamp-2 leading-snug">{p.title}</h4>
+                            <div className="text-amber-400 text-[11px] mt-1">⭐⭐⭐⭐⭐ <span className="text-slate-400 font-bold">({p.reviewsCount})</span></div>
                             
                             {p.features && (
-                              <ul className="mt-3 space-y-1 text-xs text-slate-500 border-t border-pink-50 pt-2">
+                              <ul className="mt-3 space-y-1 text-[11px] text-slate-500 border-t border-pink-50 pt-2">
                                 {p.features.map((feat, idx) => (
                                   <li key={idx} className="flex items-center gap-1.5">
                                     <span className="text-[#FF8BA7] font-bold">🌱</span> {feat}
@@ -379,7 +336,7 @@ export default function App() {
 
                           <div className="flex justify-between items-center pt-3 border-t border-pink-50">
                             <div>
-                              <span className="text-lg font-black text-slate-800">Rs. {p.price}.00</span>
+                              <span className="text-base font-black text-slate-800">Rs. {p.price}.00</span>
                               {p.originalPrice > p.price && (
                                 <span className="text-xs text-slate-400 line-through ml-2">Rs. {p.originalPrice}.00</span>
                               )}
@@ -397,7 +354,7 @@ export default function App() {
               <footer className="bg-[#3D5233] text-slate-200 py-12 px-6 mt-16 text-xs">
                 <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
                   <div className="space-y-2">
-                    <h3 className="text-white font-bold text-lg flex items-center gap-2">🌱 Edu Sprout World</h3>
+                    <h3 className="text-white font-bold text-base flex items-center gap-1.5">🌱 Edu Sprout World</h3>
                     <p className="text-slate-300 leading-relaxed">Providing high-quality physical and digital learning materials to build strong academic foundations with love and care.</p>
                   </div>
                   <div>
@@ -440,7 +397,7 @@ export default function App() {
 
           {checkoutStep === 'details' && (
             <div className="max-w-md mx-auto my-12 bg-white p-6 rounded-3xl border border-pink-100 shadow-sm">
-              <h3 className="text-base font-black text-slate-800 mb-4 flex items-center gap-1.5">💳 Shipping & Order Details</h3>
+              <h3 className="text-sm font-black text-slate-800 mb-4 flex items-center gap-1.5">💳 Shipping & Order Details</h3>
               <form onSubmit={handleCheckoutSubmit} className="space-y-3 text-xs">
                 <div>
                   <label className="block text-slate-500 font-bold mb-1">Parent's Full Name</label>
@@ -492,12 +449,12 @@ export default function App() {
       {/* ADMIN MODE */}
       {viewMode === 'admin' && (
         <div className="max-w-7xl mx-auto px-6 py-6 text-xs space-y-6">
-          <div className="flex items-center justify-between pb-4 border-b border-green-200">
+          <div className="flex items-center justify-between pb-4 border-b">
             <div>
               <h2 className="text-lg font-black text-slate-800 flex items-center gap-1.5">⚙️ Store Control Center <span className="text-[10px] font-bold uppercase bg-[#5B7B4B] text-white px-2.5 py-0.5 rounded-full">Admin Panel</span></h2>
-              <p className="text-slate-500">Manage banner sales, products, categories, contact info, and orders.</p>
+              <p className="text-slate-400">Manage banner sales, products, categories, contact info, and orders.</p>
             </div>
-            <button onClick={() => setViewMode('buyer')} className="bg-white hover:bg-slate-50 text-slate-700 px-3.5 py-2 rounded-2xl font-bold transition shadow-xs border border-green-100">Exit Admin</button>
+            <button onClick={() => setViewMode('buyer')} className="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3.5 py-2 rounded-2xl font-bold transition">Exit Admin</button>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
