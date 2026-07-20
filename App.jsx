@@ -1,6 +1,36 @@
 import React, { useState } from 'react';
 
 export default function App() {
+  // --- ANNOUNCEMENT BANNER STATE ---
+  const [bannerConfig, setBannerConfig] = useState({
+    enabled: true,
+    text: '🎉 SPECIAL SALE: Get 20% off all Printable Packs this week! Use code: SPROUT20 🎉',
+    bgColor: '#FF8BA7', // Blush Pink background
+    textColor: '#FFFFFF'
+  });
+
+  // --- CONTACT INFO STATE ---
+  const [contactInfo, setContactInfo] = useState({
+    whatsapp: '+91 99999-99999',
+    whatsappRaw: '919999999999',
+    email: 'support@edusproutworld.com',
+    instagram: '@edusproutworld',
+    instagramLink: 'https://instagram.com/edusproutworld',
+    supportHours: 'Mon–Sat (9 AM – 6 PM)'
+  });
+
+  // --- SUBJECT CATEGORIES STATE ---
+  const [subjectList, setSubjectList] = useState([
+    { name: 'All', icon: '✨', label: 'All Subjects' },
+    { name: 'Alphabet & Phonics', icon: '🔤', label: 'Alphabet & Phonics' },
+    { name: 'Reading', icon: '📖', label: 'Reading' },
+    { name: 'Writing', icon: '✏️', label: 'Writing' },
+    { name: 'Math', icon: '🧮', label: 'Math' },
+    { name: 'Logic & Puzzles', icon: '🧩', label: 'Logic & Puzzles' }
+  ]);
+
+  const [newSubject, setNewSubject] = useState({ name: '', icon: '📚' });
+
   // --- DATABASE ---
   const [products, setProducts] = useState([
     {
@@ -65,16 +95,6 @@ export default function App() {
   // --- ADMIN STATE ---
   const [newProduct, setNewProduct] = useState({ title: '', subjectCategory: 'Alphabet & Phonics', category: 'Printed Worksheets', price: '', originalPrice: '', badge: '', img: '' });
 
-  // --- SUBJECT CATEGORIES WITH ICONS ---
-  const subjectList = [
-    { name: 'All', icon: '✨', label: 'All Subjects' },
-    { name: 'Alphabet & Phonics', icon: '🔤', label: 'Alphabet & Phonics' },
-    { name: 'Reading', icon: '📖', label: 'Reading' },
-    { name: 'Writing', icon: '✏️', label: 'Writing' },
-    { name: 'Math', icon: '🧮', label: 'Math' },
-    { name: 'Logic & Puzzles', icon: '🧩', label: 'Logic & Puzzles' }
-  ];
-
   // --- BUYER LOGIC ---
   const filteredProducts = products.filter(p => {
     return (selectedSubject === 'All' || p.subjectCategory === selectedSubject) && (selectedCategory === 'All' || p.category === selectedCategory);
@@ -126,16 +146,42 @@ export default function App() {
   const addProduct = (e) => {
     e.preventDefault();
     setProducts([...products, { ...newProduct, id: Date.now(), price: Number(newProduct.price), originalPrice: Number(newProduct.originalPrice || newProduct.price), rating: 5.0, reviewsCount: 1, features: ['New Learning Pack'] }]);
-    setNewProduct({ title: '', subjectCategory: 'Alphabet & Phonics', category: 'Printed Worksheets', price: '', originalPrice: '', badge: '', img: '' });
+    setNewProduct({ title: '', subjectCategory: subjectList[1]?.name || 'Alphabet & Phonics', category: 'Printed Worksheets', price: '', originalPrice: '', badge: '', img: '' });
   };
 
   const deleteProduct = (id) => {
     setProducts(products.filter(p => p.id !== id));
   };
 
+  const addCategory = (e) => {
+    e.preventDefault();
+    if (!newSubject.name.trim()) return;
+    setSubjectList([...subjectList, { name: newSubject.name, icon: newSubject.icon || '📚', label: newSubject.name }]);
+    setNewSubject({ name: '', icon: '📚' });
+  };
+
+  const deleteCategory = (categoryName) => {
+    if (categoryName === 'All') return;
+    setSubjectList(subjectList.filter(s => s.name !== categoryName));
+  };
+
   return (
     <div className="min-h-screen bg-[#FFFDF9] font-sans text-slate-700">
       
+      {/* 📣 RUNNING ANNOUNCEMENT BANNER FOR SALES & UPDATES */}
+      {bannerConfig.enabled && (
+        <div 
+          className="overflow-hidden whitespace-nowrap py-2 text-xs font-bold border-b border-pink-200/50"
+          style={{ backgroundColor: bannerConfig.bgColor, color: bannerConfig.textColor }}
+        >
+          <div className="inline-block animate-marquee pl-full">
+            <span className="mx-8">{bannerConfig.text}</span>
+            <span className="mx-8">{bannerConfig.text}</span>
+            <span className="mx-8">{bannerConfig.text}</span>
+          </div>
+        </div>
+      )}
+
       {/* Top Bar Switcher */}
       <div className="bg-[#5B7B4B] text-white px-6 py-2 text-xs font-bold flex justify-between items-center">
         <span>✨ Growing Curiosity, One Page at a Time ✨</span>
@@ -304,7 +350,7 @@ export default function App() {
                 </section>
               </main>
 
-              {/* FOOTER WITH CONTACT INFORMATION */}
+              {/* FOOTER */}
               <footer className="bg-[#3D5233] text-slate-200 py-12 px-6 mt-16 text-xs">
                 <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
                   <div className="space-y-2">
@@ -322,28 +368,25 @@ export default function App() {
                   <div>
                     <h4 className="text-white font-bold mb-3 text-sm">Get in Touch</h4>
                     <div className="space-y-2.5 text-slate-300">
-                      {/* WhatsApp Button */}
                       <a 
-                        href="https://wa.me/919999999999" 
+                        href={`https://wa.me/${contactInfo.whatsappRaw}`} 
                         target="_blank" 
                         rel="noreferrer" 
                         className="flex items-center gap-2 text-green-300 hover:text-green-200 font-bold transition"
                       >
-                        💬 Chat on WhatsApp (+91 99999-99999)
+                        💬 Chat on WhatsApp ({contactInfo.whatsapp})
                       </a>
 
-                      {/* Email */}
                       <p className="flex items-center gap-2">
-                        ✉️ <a href="mailto:support@edusproutworld.com" className="hover:underline">support@edusproutworld.com</a>
+                        ✉️ <a href={`mailto:${contactInfo.email}`} className="hover:underline">{contactInfo.email}</a>
                       </p>
 
-                      {/* Instagram */}
                       <p className="flex items-center gap-2">
-                        📸 <a href="https://instagram.com/edusproutworld" target="_blank" rel="noreferrer" className="hover:underline">@edusproutworld</a>
+                        📸 <a href={contactInfo.instagramLink} target="_blank" rel="noreferrer" className="hover:underline">{contactInfo.instagram}</a>
                       </p>
 
                       <p className="text-[10px] text-slate-400 pt-1">
-                        ⏰ Support Hours: Mon–Sat (9 AM – 6 PM)
+                        ⏰ {contactInfo.supportHours}
                       </p>
                     </div>
                   </div>
@@ -405,49 +448,126 @@ export default function App() {
 
       {/* ADMIN MODE */}
       {viewMode === 'admin' && (
-        <div className="max-w-7xl mx-auto px-6 py-6 text-xs">
-          <div className="flex items-center justify-between mb-6 pb-4 border-b">
+        <div className="max-w-7xl mx-auto px-6 py-6 text-xs space-y-6">
+          <div className="flex items-center justify-between pb-4 border-b">
             <div>
               <h2 className="text-lg font-black text-slate-800 flex items-center gap-1.5">⚙️ Store Control Center <span className="text-[10px] font-bold uppercase bg-[#5B7B4B] text-white px-2.5 py-0.5 rounded-full">Admin Panel</span></h2>
-              <p className="text-slate-400">Manage products, update prices, and process customer fulfillment pipeline.</p>
+              <p className="text-slate-400">Manage banner sales, products, categories, contact info, and orders.</p>
             </div>
             <button onClick={() => setViewMode('buyer')} className="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3.5 py-2 rounded-2xl font-bold transition">Exit Admin</button>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Add New Product Form */}
-            <div className="bg-white p-5 rounded-3xl border border-pink-100 h-fit space-y-3 shadow-xs">
-              <h3 className="font-bold text-slate-800 uppercase tracking-wider text-[11px]">➕ Add New Resource</h3>
-              <form onSubmit={addProduct} className="space-y-2.5">
-                <input type="text" required value={newProduct.title} onChange={e => setNewProduct({...newProduct, title: e.target.value})} className="w-full border border-pink-100 p-2.5 rounded-2xl text-xs outline-none focus:border-[#FF8BA7]" placeholder="Title..."/>
-                <input type="text" value={newProduct.img} onChange={e => setNewProduct({...newProduct, img: e.target.value})} className="w-full border border-pink-100 p-2.5 rounded-2xl text-xs outline-none focus:border-[#FF8BA7]" placeholder="Image URL..."/>
-                
-                <div className="grid grid-cols-2 gap-2">
-                  <select value={newProduct.subjectCategory} onChange={e => setNewProduct({...newProduct, subjectCategory: e.target.value})} className="w-full border border-pink-100 p-2 rounded-2xl bg-white text-xs">
-                    <option value="Alphabet & Phonics">Alphabet & Phonics</option>
-                    <option value="Reading">Reading</option>
-                    <option value="Writing">Writing</option>
-                    <option value="Math">Math</option>
-                    <option value="Logic & Puzzles">Logic & Puzzles</option>
-                  </select>
-
-                  <select value={newProduct.category} onChange={e => setNewProduct({...newProduct, category: e.target.value})} className="w-full border border-pink-100 p-2 rounded-2xl bg-white text-xs">
-                    <option value="Printed Worksheets">Printed Worksheets</option>
-                    <option value="Digital E-Copies">Digital E-Copies</option>
-                  </select>
+            
+            {/* LEFT COLUMN: BANNER + ADD PRODUCT + CONTACT INFO */}
+            <div className="space-y-6">
+              
+              {/* EDIT ANNOUNCEMENT BANNER */}
+              <div className="bg-white p-5 rounded-3xl border border-pink-100 space-y-3 shadow-xs">
+                <div className="flex justify-between items-center">
+                  <h3 className="font-bold text-slate-800 uppercase tracking-wider text-[11px]">📢 Running Announcement Banner</h3>
+                  <label className="flex items-center cursor-pointer space-x-1 text-[10px] font-bold text-slate-500">
+                    <input 
+                      type="checkbox" 
+                      checked={bannerConfig.enabled} 
+                      onChange={e => setBannerConfig({...bannerConfig, enabled: e.target.checked})}
+                      className="accent-[#FF8BA7]"
+                    />
+                    <span>Show Banner</span>
+                  </label>
                 </div>
-
-                <div className="grid grid-cols-2 gap-2">
-                  <input type="number" required value={newProduct.price} onChange={e => setNewProduct({...newProduct, price: e.target.value})} className="w-full border border-pink-100 p-2 rounded-2xl text-xs" placeholder="Sale Price (Rs.)"/>
-                  <input type="number" value={newProduct.originalPrice} onChange={e => setNewProduct({...newProduct, originalPrice: e.target.value})} className="w-full border border-pink-100 p-2 rounded-2xl text-xs" placeholder="Original Price"/>
+                <div>
+                  <label className="block text-slate-400 font-bold text-[10px] mb-0.5">Banner Announcement Text</label>
+                  <textarea 
+                    rows="2" 
+                    value={bannerConfig.text} 
+                    onChange={e => setBannerConfig({...bannerConfig, text: e.target.value})} 
+                    className="w-full border border-pink-100 p-2 rounded-2xl text-xs outline-none focus:border-[#FF8BA7]" 
+                    placeholder="e.g. 20% OFF SUMMER SALE..."
+                  />
                 </div>
-                <input type="text" value={newProduct.badge} onChange={e => setNewProduct({...newProduct, badge: e.target.value})} className="w-full border border-pink-100 p-2 rounded-2xl text-xs" placeholder="Badge (e.g. Best Seller)"/>
-                <button type="submit" className="w-full bg-[#5B7B4B] hover:bg-[#4d6a3f] text-white font-bold py-2.5 rounded-2xl transition">Publish Resource</button>
-              </form>
+              </div>
+
+              {/* Add New Product Form */}
+              <div className="bg-white p-5 rounded-3xl border border-pink-100 space-y-3 shadow-xs">
+                <h3 className="font-bold text-slate-800 uppercase tracking-wider text-[11px]">➕ Add New Resource</h3>
+                <form onSubmit={addProduct} className="space-y-2.5">
+                  <input type="text" required value={newProduct.title} onChange={e => setNewProduct({...newProduct, title: e.target.value})} className="w-full border border-pink-100 p-2.5 rounded-2xl text-xs outline-none focus:border-[#FF8BA7]" placeholder="Title..."/>
+                  <input type="text" value={newProduct.img} onChange={e => setNewProduct({...newProduct, img: e.target.value})} className="w-full border border-pink-100 p-2.5 rounded-2xl text-xs outline-none focus:border-[#FF8BA7]" placeholder="Image URL..."/>
+                  
+                  <div className="grid grid-cols-2 gap-2">
+                    <select value={newProduct.subjectCategory} onChange={e => setNewProduct({...newProduct, subjectCategory: e.target.value})} className="w-full border border-pink-100 p-2 rounded-2xl bg-white text-xs">
+                      {subjectList.filter(s => s.name !== 'All').map(sub => (
+                        <option key={sub.name} value={sub.name}>{sub.name}</option>
+                      ))}
+                    </select>
+
+                    <select value={newProduct.category} onChange={e => setNewProduct({...newProduct, category: e.target.value})} className="w-full border border-pink-100 p-2 rounded-2xl bg-white text-xs">
+                      <option value="Printed Worksheets">Printed Worksheets</option>
+                      <option value="Digital E-Copies">Digital E-Copies</option>
+                    </select>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-2">
+                    <input type="number" required value={newProduct.price} onChange={e => setNewProduct({...newProduct, price: e.target.value})} className="w-full border border-pink-100 p-2 rounded-2xl text-xs" placeholder="Sale Price (Rs.)"/>
+                    <input type="number" value={newProduct.originalPrice} onChange={e => setNewProduct({...newProduct, originalPrice: e.target.value})} className="w-full border border-pink-100 p-2 rounded-2xl text-xs" placeholder="Original Price"/>
+                  </div>
+                  <input type="text" value={newProduct.badge} onChange={e => setNewProduct({...newProduct, badge: e.target.value})} className="w-full border border-pink-100 p-2 rounded-2xl text-xs" placeholder="Badge (e.g. Best Seller)"/>
+                  <button type="submit" className="w-full bg-[#5B7B4B] hover:bg-[#4d6a3f] text-white font-bold py-2.5 rounded-2xl transition">Publish Resource</button>
+                </form>
+              </div>
+
+              {/* EDIT CONTACT DETAILS */}
+              <div className="bg-white p-5 rounded-3xl border border-pink-100 space-y-3 shadow-xs">
+                <h3 className="font-bold text-slate-800 uppercase tracking-wider text-[11px]">📞 Edit Store Contact Information</h3>
+                <div className="space-y-2">
+                  <div>
+                    <label className="block text-slate-400 font-bold text-[10px] mb-0.5">WhatsApp Number (Display)</label>
+                    <input type="text" value={contactInfo.whatsapp} onChange={e => setContactInfo({...contactInfo, whatsapp: e.target.value})} className="w-full border border-pink-100 p-2 rounded-2xl text-xs"/>
+                  </div>
+                  <div>
+                    <label className="block text-slate-400 font-bold text-[10px] mb-0.5">WhatsApp Digits (for chat link)</label>
+                    <input type="text" value={contactInfo.whatsappRaw} onChange={e => setContactInfo({...contactInfo, whatsappRaw: e.target.value})} className="w-full border border-pink-100 p-2 rounded-2xl text-xs" placeholder="e.g. 919999999999"/>
+                  </div>
+                  <div>
+                    <label className="block text-slate-400 font-bold text-[10px] mb-0.5">Support Email Address</label>
+                    <input type="email" value={contactInfo.email} onChange={e => setContactInfo({...contactInfo, email: e.target.value})} className="w-full border border-pink-100 p-2 rounded-2xl text-xs"/>
+                  </div>
+                  <div>
+                    <label className="block text-slate-400 font-bold text-[10px] mb-0.5">Instagram Handle</label>
+                    <input type="text" value={contactInfo.instagram} onChange={e => setContactInfo({...contactInfo, instagram: e.target.value})} className="w-full border border-pink-100 p-2 rounded-2xl text-xs"/>
+                  </div>
+                </div>
+              </div>
+
             </div>
 
-            {/* Manage Existing Products List */}
+            {/* RIGHT COLUMN: MANAGE CATEGORIES, PRODUCTS & ORDERS */}
             <div className="lg:col-span-2 space-y-6">
+              
+              {/* CATEGORIES MANAGER */}
+              <div className="bg-white p-5 rounded-3xl border border-pink-100 shadow-xs space-y-3">
+                <h3 className="font-bold text-slate-800 uppercase tracking-wider text-[11px]">🏷️ Manage Subject Categories</h3>
+                <form onSubmit={addCategory} className="flex gap-2">
+                  <input type="text" value={newSubject.icon} onChange={e => setNewSubject({...newSubject, icon: e.target.value})} className="w-16 border border-pink-100 p-2 rounded-2xl text-xs text-center" placeholder="Icon"/>
+                  <input type="text" required value={newSubject.name} onChange={e => setNewSubject({...newSubject, name: e.target.value})} className="flex-1 border border-pink-100 p-2 rounded-2xl text-xs" placeholder="New Category Name..."/>
+                  <button type="submit" className="bg-[#FF8BA7] text-white px-4 py-2 rounded-2xl font-bold transition">Add Category</button>
+                </form>
+
+                <div className="flex flex-wrap gap-2 pt-2">
+                  {subjectList.map(sub => (
+                    <div key={sub.name} className="flex items-center space-x-1 bg-pink-50 border border-pink-100 px-3 py-1.5 rounded-xl">
+                      <span>{sub.icon}</span>
+                      <span className="font-bold text-slate-700">{sub.name}</span>
+                      {sub.name !== 'All' && (
+                        <button onClick={() => deleteCategory(sub.name)} className="ml-1 text-red-500 hover:text-red-700 font-bold">✕</button>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Manage Existing Products List */}
               <div className="bg-white p-5 rounded-3xl border border-pink-100 shadow-xs">
                 <h3 className="font-bold text-slate-800 uppercase tracking-wider text-[11px] mb-3">📦 Manage Store Catalog ({products.length} Products)</h3>
                 <div className="space-y-2">
@@ -494,6 +614,7 @@ export default function App() {
                   </tbody>
                 </table>
               </div>
+
             </div>
           </div>
         </div>
