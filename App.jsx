@@ -65,7 +65,7 @@ export default function App() {
   // --- ADMIN STATE ---
   const [newProduct, setNewProduct] = useState({ title: '', ageGroup: '4-6 years', category: 'Printed Worksheets', price: '', originalPrice: '', badge: '', img: '' });
 
-  // --- LOGIC ---
+  // --- BUYER LOGIC ---
   const filteredProducts = products.filter(p => {
     return (selectedAge === 'All' || p.ageGroup === selectedAge) && (selectedCategory === 'All' || p.category === selectedCategory);
   });
@@ -112,10 +112,15 @@ export default function App() {
     setTrackedOrder(found || 'not_found');
   };
 
+  // --- ADMIN LOGIC ---
   const addProduct = (e) => {
     e.preventDefault();
-    setProducts([...products, { ...newProduct, id: Date.now(), price: Number(newProduct.price), originalPrice: Number(newProduct.originalPrice || newProduct.price), rating: 5.0, reviewsCount: 1, features: ['New Learning Kit'] }]);
+    setProducts([...products, { ...newProduct, id: Date.now(), price: Number(newProduct.price), originalPrice: Number(newProduct.originalPrice || newProduct.price), rating: 5.0, reviewsCount: 1, features: ['New Learning Pack'] }]);
     setNewProduct({ title: '', ageGroup: '4-6 years', category: 'Printed Worksheets', price: '', originalPrice: '', badge: '', img: '' });
+  };
+
+  const deleteProduct = (id) => {
+    setProducts(products.filter(p => p.id !== id));
   };
 
   return (
@@ -138,7 +143,6 @@ export default function App() {
           <header className="bg-white sticky top-0 z-40 border-b border-pink-100/80 shadow-xs">
             <div className="max-w-7xl mx-auto px-6 py-3.5 flex justify-between items-center">
               <div onClick={() => setCheckoutStep('browse')} className="cursor-pointer flex items-center space-x-3">
-                {/* Cute Sprout Icon Logo */}
                 <div className="w-11 h-11 bg-pink-100 rounded-2xl flex items-center justify-center text-2xl shadow-inner border border-pink-200">
                   🌱
                 </div>
@@ -201,7 +205,7 @@ export default function App() {
                 </div>
               </div>
 
-              {/* Live Order Tracker Bar */}
+              {/* Order Tracker */}
               <div className="bg-[#F4F9F2] border-b border-green-100 py-3 px-6">
                 <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 text-xs">
                   <span className="font-bold text-[#436132]">📦 Track Your Shipment:</span>
@@ -217,9 +221,8 @@ export default function App() {
                 )}
               </div>
 
-              {/* Main Catalog Section */}
+              {/* Main Catalog */}
               <main className="max-w-7xl mx-auto px-4 py-8 flex flex-col md:flex-row gap-6">
-                {/* Sidebar Filters */}
                 <aside className="w-full md:w-56 bg-white p-5 rounded-3xl border border-pink-100 shrink-0 h-fit space-y-6 shadow-xs">
                   <div>
                     <h4 className="text-[11px] font-black text-pink-400 uppercase tracking-wider mb-3">Age Group</h4>
@@ -239,7 +242,6 @@ export default function App() {
                   </div>
                 </aside>
 
-                {/* Product Grid */}
                 <section className="flex-1">
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     {filteredProducts.map(p => (
@@ -370,6 +372,7 @@ export default function App() {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* Add New Product Form */}
             <div className="bg-white p-5 rounded-3xl border border-pink-100 h-fit space-y-3 shadow-xs">
               <h3 className="font-bold text-slate-800 uppercase tracking-wider text-[11px]">➕ Add New Resource</h3>
               <form onSubmit={addProduct} className="space-y-2.5">
@@ -388,30 +391,54 @@ export default function App() {
               </form>
             </div>
 
-            <div className="lg:col-span-2 bg-white p-5 rounded-3xl border border-pink-100 overflow-x-auto shadow-xs">
-              <h3 className="font-bold text-slate-800 uppercase tracking-wider text-[11px] mb-3">📥 Received Customer Orders</h3>
-              <table className="w-full text-left border-collapse">
-                <thead>
-                  <tr className="bg-pink-50/50 text-slate-400 font-bold uppercase border-b border-pink-100 text-[10px]"><th className="p-2.5">Order ID</th><th className="p-2.5">Customer</th><th className="p-2.5">Products</th><th className="p-2.5">Total</th><th className="p-2.5 text-right">Status</th></tr>
-                </thead>
-                <tbody className="divide-y divide-pink-50 text-slate-700">
-                  {orders.map(o => (
-                    <tr key={o.id} className="text-xs">
-                      <td className="p-2.5 font-bold text-[#5B7B4B]">{o.id}</td>
-                      <td className="p-2.5"><strong>{o.customer}</strong><br/><span className="text-[10px] text-slate-400">{o.date}</span></td>
-                      <td className="p-2.5 max-w-[150px] truncate">{o.items}</td>
-                      <td className="p-2.5 font-black">Rs. {o.total}.00</td>
-                      <td className="p-2.5 text-right">
-                        <select value={o.status} onChange={e => setOrders(orders.map(ord => ord.id === o.id ? {...ord, status: e.target.value} : ord))} className="p-1 border border-pink-100 rounded-xl bg-white text-[10px] font-bold">
-                          <option value="Paid & Processing">Processing</option>
-                          <option value="Dispatched">Dispatched</option>
-                          <option value="Delivered ✓">Delivered ✓</option>
-                        </select>
-                      </td>
-                    </tr>
+            {/* Manage Existing Products List */}
+            <div className="lg:col-span-2 space-y-6">
+              <div className="bg-white p-5 rounded-3xl border border-pink-100 shadow-xs">
+                <h3 className="font-bold text-slate-800 uppercase tracking-wider text-[11px] mb-3">📦 Manage Store Catalog ({products.length} Products)</h3>
+                <div className="space-y-2">
+                  {products.map(p => (
+                    <div key={p.id} className="flex items-center justify-between p-3 bg-pink-50/30 border border-pink-100 rounded-2xl">
+                      <div className="flex items-center space-x-3">
+                        <img src={p.img} alt={p.title} className="w-10 h-10 object-cover rounded-xl"/>
+                        <div>
+                          <h5 className="font-bold text-slate-800 line-clamp-1">{p.title}</h5>
+                          <p className="text-[10px] text-slate-400">{p.ageGroup} • Rs. {p.price}.00</p>
+                        </div>
+                      </div>
+                      <button onClick={() => deleteProduct(p.id)} className="bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 text-[10px] font-bold px-3 py-1.5 rounded-xl transition">
+                        🗑️ Delete Product
+                      </button>
+                    </div>
                   ))}
-                </tbody>
-              </table>
+                </div>
+              </div>
+
+              {/* Order Pipeline Table */}
+              <div className="bg-white p-5 rounded-3xl border border-pink-100 overflow-x-auto shadow-xs">
+                <h3 className="font-bold text-slate-800 uppercase tracking-wider text-[11px] mb-3">📥 Received Customer Orders</h3>
+                <table className="w-full text-left border-collapse">
+                  <thead>
+                    <tr className="bg-pink-50/50 text-slate-400 font-bold uppercase border-b border-pink-100 text-[10px]"><th className="p-2.5">Order ID</th><th className="p-2.5">Customer</th><th className="p-2.5">Products</th><th className="p-2.5">Total</th><th className="p-2.5 text-right">Status</th></tr>
+                  </thead>
+                  <tbody className="divide-y divide-pink-50 text-slate-700">
+                    {orders.map(o => (
+                      <tr key={o.id} className="text-xs">
+                        <td className="p-2.5 font-bold text-[#5B7B4B]">{o.id}</td>
+                        <td className="p-2.5"><strong>{o.customer}</strong><br/><span className="text-[10px] text-slate-400">{o.date}</span></td>
+                        <td className="p-2.5 max-w-[150px] truncate">{o.items}</td>
+                        <td className="p-2.5 font-black">Rs. {o.total}.00</td>
+                        <td className="p-2.5 text-right">
+                          <select value={o.status} onChange={e => setOrders(orders.map(ord => ord.id === o.id ? {...ord, status: e.target.value} : ord))} className="p-1 border border-pink-100 rounded-xl bg-white text-[10px] font-bold">
+                            <option value="Paid & Processing">Processing</option>
+                            <option value="Dispatched">Dispatched</option>
+                            <option value="Delivered ✓">Delivered ✓</option>
+                          </select>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
