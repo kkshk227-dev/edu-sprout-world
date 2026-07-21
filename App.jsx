@@ -61,7 +61,7 @@ export default function App() {
     return () => clearInterval(timer);
   }, [testimonials.length]);
 
-  // --- CONTACT INFO STATE ---
+  // --- CONTACT INFO STATE (EDITABLE IN ADMIN) ---
   const [contactInfo, setContactInfo] = useState({
     whatsapp: '+91 99999-99999',
     whatsappRaw: '919999999999',
@@ -144,8 +144,9 @@ export default function App() {
   const [searchOrderId, setSearchOrderId] = useState('');
   const [trackedOrder, setTrackedOrder] = useState(null);
 
-  // --- ADMIN STATE ---
+  // --- ADMIN EDIT PRODUCT STATE ---
   const [newProduct, setNewProduct] = useState({ title: '', subjectCategory: 'Alphabet & Phonics', category: 'Printed Worksheets', price: '', originalPrice: '', badge: '', img: '' });
+  const [editingProductId, setEditingProductId] = useState(null);
 
   // --- BUYER LOGIC ---
   const filteredProducts = products.filter(p => {
@@ -206,24 +207,56 @@ export default function App() {
     }
   };
 
-  const addProduct = (e) => {
+  const addOrUpdateProduct = (e) => {
     e.preventDefault();
     const defaultImg = 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400&auto=format&fit=crop&q=80';
-    setProducts([...products, { 
-      ...newProduct, 
-      id: Date.now(), 
-      img: newProduct.img || defaultImg,
-      price: Number(newProduct.price), 
-      originalPrice: Number(newProduct.originalPrice || newProduct.price), 
-      rating: 5.0, 
-      reviewsCount: 1, 
-      features: ['New Learning Pack'] 
-    }]);
+    
+    if (editingProductId) {
+      setProducts(products.map(p => p.id === editingProductId ? {
+        ...p,
+        title: newProduct.title,
+        subjectCategory: newProduct.subjectCategory,
+        category: newProduct.category,
+        price: Number(newProduct.price),
+        originalPrice: Number(newProduct.originalPrice || newProduct.price),
+        badge: newProduct.badge,
+        img: newProduct.img || p.img
+      } : p));
+      setEditingProductId(null);
+    } else {
+      setProducts([...products, { 
+        ...newProduct, 
+        id: Date.now(), 
+        img: newProduct.img || defaultImg,
+        price: Number(newProduct.price), 
+        originalPrice: Number(newProduct.originalPrice || newProduct.price), 
+        rating: 5.0, 
+        reviewsCount: 1, 
+        features: ['New Learning Pack'] 
+      }]);
+    }
     setNewProduct({ title: '', subjectCategory: subjectList[1]?.name || 'Alphabet & Phonics', category: 'Printed Worksheets', price: '', originalPrice: '', badge: '', img: '' });
+  };
+
+  const startEditProduct = (p) => {
+    setEditingProductId(p.id);
+    setNewProduct({
+      title: p.title,
+      subjectCategory: p.subjectCategory || 'Alphabet & Phonics',
+      category: p.category || 'Printed Worksheets',
+      price: p.price,
+      originalPrice: p.originalPrice,
+      badge: p.badge || '',
+      img: p.img
+    });
   };
 
   const deleteProduct = (id) => {
     setProducts(products.filter(p => p.id !== id));
+    if (editingProductId === id) {
+      setEditingProductId(null);
+      setNewProduct({ title: '', subjectCategory: 'Alphabet & Phonics', category: 'Printed Worksheets', price: '', originalPrice: '', badge: '', img: '' });
+    }
   };
 
   const addCategory = (e) => {
@@ -296,7 +329,6 @@ export default function App() {
                 </div>
 
                 <div>
-                  {/* EXPANDED BIG STORE NAME */}
                   <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold text-[#3d592b] tracking-tight leading-none" style={{ fontFamily: "'Fredoka', sans-serif" }}>
                     Edu Sprout <span className="text-[#FF8BA7]">World</span>
                   </h1>
@@ -633,7 +665,7 @@ export default function App() {
           <div className="flex items-center justify-between pb-4 border-b border-green-200">
             <div>
               <h2 className="text-lg font-bold text-slate-800 flex items-center gap-1.5" style={{ fontFamily: "'Fredoka', sans-serif" }}>⚙️ Store Control Center <span className="text-[10px] font-bold uppercase bg-[#5B7B4B] text-white px-2.5 py-0.5 rounded-full">Admin Panel</span></h2>
-              <p className="text-slate-500 font-medium">Manage banner sales, product image uploads, expert quotes, reviews, and categories.</p>
+              <p className="text-slate-500 font-medium">Manage banner sales, contact info, product catalog, categories, and customer orders.</p>
             </div>
             <button onClick={() => setViewMode('buyer')} className="bg-white hover:bg-slate-50 text-slate-700 px-4 py-2 rounded-full font-bold transition shadow-xs border border-green-100 min-h-[48px]">Exit Admin</button>
           </div>
@@ -669,17 +701,114 @@ export default function App() {
                 </div>
               </div>
 
-              {/* ADD NEW PRODUCT WITH FILE UPLOAD */}
+              {/* EDIT EXPERT ENDORSEMENT BADGE */}
               <div className="bg-white p-5 rounded-3xl border border-pink-100 space-y-3 shadow-xs">
-                <h3 className="font-bold text-slate-800 uppercase tracking-wider text-[11px]">➕ Add New Resource</h3>
-                <form onSubmit={addProduct} className="space-y-2.5">
+                <h3 className="font-bold text-slate-800 uppercase tracking-wider text-[11px]">🎓 Edit Expert Endorsement Badge</h3>
+                <div className="space-y-2">
+                  <div>
+                    <label className="block text-slate-400 font-bold text-[10px] mb-0.5">Quote Text</label>
+                    <input 
+                      type="text" 
+                      value={expertEndorsement.quote} 
+                      onChange={e => setExpertEndorsement({...expertEndorsement, quote: e.target.value})} 
+                      className="w-full border border-pink-100 p-2.5 rounded-2xl text-xs outline-none focus:border-[#FF8BA7]"
+                      placeholder="e.g. Pedagogically Aligned Materials"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-slate-400 font-bold text-[10px] mb-0.5">Author & Title</label>
+                    <input 
+                      type="text" 
+                      value={expertEndorsement.author} 
+                      onChange={e => setExpertEndorsement({...expertEndorsement, author: e.target.value})} 
+                      className="w-full border border-pink-100 p-2.5 rounded-2xl text-xs outline-none focus:border-[#FF8BA7]"
+                      placeholder="e.g. Dr. Meera K., Child Psychologist"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* MANAGE VERIFIED PARENT REVIEWS */}
+              <div className="bg-white p-5 rounded-3xl border border-pink-100 shadow-xs space-y-4">
+                <h3 className="font-bold text-slate-800 uppercase tracking-wider text-[11px]">💬 Manage Verified Parent Reviews ({testimonials.length})</h3>
+                
+                <form onSubmit={handleAddReview} className="space-y-2.5 p-3 bg-pink-50/40 rounded-2xl border border-pink-100">
+                  <p className="font-bold text-slate-700 text-[11px]">Add New Parent Review</p>
+                  <div className="grid grid-cols-2 gap-2">
+                    <input type="text" required placeholder="Parent Name (e.g. Priya S.)" value={newReview.name} onChange={e => setNewReview({...newReview, name: e.target.value})} className="border border-pink-100 p-2 rounded-xl bg-white text-xs"/>
+                    <input type="text" placeholder="Location (e.g. Bangalore)" value={newReview.location} onChange={e => setNewReview({...newReview, location: e.target.value})} className="border border-pink-100 p-2 rounded-xl bg-white text-xs"/>
+                  </div>
+                  <input type="text" placeholder="Role (e.g. Verified Parent)" value={newReview.role} onChange={e => setNewReview({...newReview, role: e.target.value})} className="w-full border border-pink-100 p-2 rounded-xl bg-white text-xs"/>
+                  <textarea required rows="2" placeholder="Review details..." value={newReview.text} onChange={e => setNewReview({...newReview, text: e.target.value})} className="w-full border border-pink-100 p-2 rounded-xl bg-white text-xs"/>
+                  <button type="submit" className="bg-[#FF8BA7] text-white font-bold px-4 py-2 rounded-full text-xs">Add Review</button>
+                </form>
+
+                <div className="space-y-2">
+                  {testimonials.map(t => (
+                    <div key={t.id} className="flex justify-between items-center p-3 bg-white border border-slate-100 rounded-2xl shadow-2xs">
+                      <div>
+                        <p className="font-bold text-slate-800">"{t.text}"</p>
+                        <p className="text-[10px] text-slate-400 font-medium">— {t.name} ({t.location || 'India'}) • {t.role}</p>
+                      </div>
+                      <button onClick={() => handleDeleteReview(t.id)} className="text-red-500 font-bold hover:text-red-700 p-2 text-xs">✕</button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+            </div>
+
+            {/* RIGHT COLUMN */}
+            <div className="lg:col-span-2 space-y-6">
+              
+              {/* MANAGE SUBJECT CATEGORIES */}
+              <div className="bg-white p-5 rounded-3xl border border-pink-100 shadow-xs space-y-3">
+                <h3 className="font-bold text-slate-800 uppercase tracking-wider text-[11px]">🏷️ Manage Subject Categories</h3>
+                <form onSubmit={addCategory} className="flex gap-2">
+                  <input type="text" value={newSubject.icon} onChange={e => setNewSubject({...newSubject, icon: e.target.value})} className="w-16 border border-pink-100 p-2 rounded-2xl text-xs text-center" placeholder="Icon"/>
+                  <input type="text" required value={newSubject.name} onChange={e => setNewSubject({...newSubject, name: e.target.value})} className="flex-1 border border-pink-100 p-2 rounded-2xl text-xs" placeholder="New Category Name..."/>
+                  <button type="submit" className="bg-[#FF8BA7] text-white px-4 py-2 rounded-full font-bold transition min-h-[48px]">Add Category</button>
+                </form>
+
+                <div className="flex flex-wrap gap-2 pt-2">
+                  {subjectList.map(sub => (
+                    <div key={sub.name} className="flex items-center space-x-1 bg-pink-50 border border-pink-100 px-3 py-1.5 rounded-xl">
+                      <span>{sub.icon}</span>
+                      <span className="font-bold text-slate-700">{sub.name}</span>
+                      {sub.name !== 'All' && (
+                        <button onClick={() => deleteCategory(sub.name)} className="ml-1 text-red-500 hover:text-red-700 font-bold p-1">✕</button>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* ADD / EDIT PRODUCT WITH FILE UPLOAD */}
+              <div className="bg-white p-5 rounded-3xl border border-pink-100 space-y-3 shadow-xs">
+                <div className="flex justify-between items-center">
+                  <h3 className="font-bold text-slate-800 uppercase tracking-wider text-[11px]">
+                    {editingProductId ? '✏️ Edit Existing Resource' : '➕ Add New Resource'}
+                  </h3>
+                  {editingProductId && (
+                    <button 
+                      onClick={() => {
+                        setEditingProductId(null);
+                        setNewProduct({ title: '', subjectCategory: 'Alphabet & Phonics', category: 'Printed Worksheets', price: '', originalPrice: '', badge: '', img: '' });
+                      }}
+                      className="text-[10px] text-pink-500 font-bold underline"
+                    >
+                      Cancel Edit
+                    </button>
+                  )}
+                </div>
+                
+                <form onSubmit={addOrUpdateProduct} className="space-y-2.5">
                   <input type="text" required value={newProduct.title} onChange={e => setNewProduct({...newProduct, title: e.target.value})} className="w-full border border-pink-100 p-2.5 rounded-2xl text-xs outline-none focus:border-[#FF8BA7]" placeholder="Title..."/>
                   
-                  {/* DUAL IMAGE UPLOAD: FILE OR URL */}
+                  {/* DUAL IMAGE UPLOAD */}
                   <div className="space-y-1.5 p-3 bg-pink-50/40 rounded-2xl border border-pink-100">
                     <label className="block text-slate-600 font-bold text-[10px]">🖼️ Product Photo (Upload or URL)</label>
                     
-                    {/* Direct File Picker */}
                     <input 
                       type="file" 
                       accept="image/*" 
@@ -689,7 +818,6 @@ export default function App() {
                     
                     <p className="text-[9px] text-slate-400 text-center font-bold">OR</p>
 
-                    {/* Image URL Input */}
                     <input 
                       type="text" 
                       value={newProduct.img} 
@@ -698,7 +826,6 @@ export default function App() {
                       placeholder="Paste Image URL..."
                     />
 
-                    {/* Image Preview */}
                     {newProduct.img && (
                       <div className="mt-2 text-center">
                         <img src={newProduct.img} alt="Preview" className="w-16 h-16 object-cover rounded-xl mx-auto border border-pink-200" />
@@ -725,65 +852,13 @@ export default function App() {
                     <input type="number" value={newProduct.originalPrice} onChange={e => setNewProduct({...newProduct, originalPrice: e.target.value})} className="w-full border border-pink-100 p-2 rounded-2xl text-xs" placeholder="Original Price"/>
                   </div>
                   <input type="text" value={newProduct.badge} onChange={e => setNewProduct({...newProduct, badge: e.target.value})} className="w-full border border-pink-100 p-2 rounded-2xl text-xs" placeholder="Badge (e.g. Best Seller)"/>
-                  <button type="submit" className="w-full bg-[#5B7B4B] hover:bg-[#4d6a3f] text-white font-bold py-3 rounded-full transition min-h-[48px]">Publish Resource</button>
+                  <button type="submit" className="w-full bg-[#5B7B4B] hover:bg-[#4d6a3f] text-white font-bold py-3 rounded-full transition min-h-[48px]">
+                    {editingProductId ? 'Update Resource' : 'Publish Resource'}
+                  </button>
                 </form>
               </div>
 
-            </div>
-
-            {/* RIGHT COLUMN */}
-            <div className="lg:col-span-2 space-y-6">
-              
-              {/* EDIT EXPERT ENDORSEMENT */}
-              <div className="bg-white p-5 rounded-3xl border border-pink-100 space-y-3 shadow-xs">
-                <h3 className="font-bold text-slate-800 uppercase tracking-wider text-[11px]">🎓 Edit Expert Endorsement Badge</h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                  <input 
-                    type="text" 
-                    value={expertEndorsement.quote} 
-                    onChange={e => setExpertEndorsement({...expertEndorsement, quote: e.target.value})} 
-                    className="border border-pink-100 p-2.5 rounded-2xl text-xs outline-none focus:border-[#FF8BA7]"
-                    placeholder="Quote text..."
-                  />
-                  <input 
-                    type="text" 
-                    value={expertEndorsement.author} 
-                    onChange={e => setExpertEndorsement({...expertEndorsement, author: e.target.value})} 
-                    className="border border-pink-100 p-2.5 rounded-2xl text-xs outline-none focus:border-[#FF8BA7]"
-                    placeholder="Author & Title..."
-                  />
-                </div>
-              </div>
-
-              {/* EDIT PARENT TESTIMONIALS */}
-              <div className="bg-white p-5 rounded-3xl border border-pink-100 shadow-xs space-y-4">
-                <h3 className="font-bold text-slate-800 uppercase tracking-wider text-[11px]">💬 Manage Verified Parent Reviews ({testimonials.length})</h3>
-                
-                <form onSubmit={handleAddReview} className="space-y-2.5 p-3 bg-pink-50/40 rounded-2xl border border-pink-100">
-                  <p className="font-bold text-slate-700 text-[11px]">Add New Parent Review</p>
-                  <div className="grid grid-cols-2 gap-2">
-                    <input type="text" required placeholder="Parent Name (e.g. Priya S.)" value={newReview.name} onChange={e => setNewReview({...newReview, name: e.target.value})} className="border border-pink-100 p-2 rounded-xl bg-white"/>
-                    <input type="text" placeholder="Location (e.g. Bangalore)" value={newReview.location} onChange={e => setNewReview({...newReview, location: e.target.value})} className="border border-pink-100 p-2 rounded-xl bg-white"/>
-                  </div>
-                  <input type="text" placeholder="Role (e.g. Homeschooling Mom)" value={newReview.role} onChange={e => setNewReview({...newReview, role: e.target.value})} className="w-full border border-pink-100 p-2 rounded-xl bg-white"/>
-                  <textarea required rows="2" placeholder="Review details..." value={newReview.text} onChange={e => setNewReview({...newReview, text: e.target.value})} className="w-full border border-pink-100 p-2 rounded-xl bg-white"/>
-                  <button type="submit" className="bg-[#FF8BA7] text-white font-bold px-4 py-2 rounded-full text-xs">Add Review</button>
-                </form>
-
-                <div className="space-y-2">
-                  {testimonials.map(t => (
-                    <div key={t.id} className="flex justify-between items-center p-3 bg-white border border-slate-100 rounded-2xl shadow-2xs">
-                      <div>
-                        <p className="font-bold text-slate-800">"{t.text}"</p>
-                        <p className="text-[10px] text-slate-400 font-medium">— {t.name} ({t.location || 'India'}) • {t.role}</p>
-                      </div>
-                      <button onClick={() => handleDeleteReview(t.id)} className="text-red-500 font-bold hover:text-red-700 p-2">✕</button>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Manage Existing Products List */}
+              {/* MANAGE STORE CATALOG */}
               <div className="bg-white p-5 rounded-3xl border border-pink-100 shadow-xs">
                 <h3 className="font-bold text-slate-800 uppercase tracking-wider text-[11px] mb-3">📦 Manage Store Catalog ({products.length} Products)</h3>
                 <div className="space-y-2">
@@ -796,12 +871,67 @@ export default function App() {
                           <p className="text-[10px] text-slate-400">{p.subjectCategory || 'General'} • Rs. {p.price}.00</p>
                         </div>
                       </div>
-                      <button onClick={() => deleteProduct(p.id)} className="bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 text-[10px] font-bold px-3 py-1.5 rounded-xl transition min-h-[36px]">
-                        🗑️ Delete Product
-                      </button>
+                      <div className="flex space-x-2">
+                        <button onClick={() => startEditProduct(p)} className="bg-pink-100 hover:bg-pink-200 text-[#FF8BA7] text-[10px] font-bold px-3 py-1.5 rounded-xl transition min-h-[36px]">
+                          ✏️ Edit
+                        </button>
+                        <button onClick={() => deleteProduct(p.id)} className="bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 text-[10px] font-bold px-3 py-1.5 rounded-xl transition min-h-[36px]">
+                          🗑️ Delete
+                        </button>
+                      </div>
                     </div>
                   ))}
                 </div>
+              </div>
+
+              {/* EDIT STORE CONTACT DETAILS */}
+              <div className="bg-white p-5 rounded-3xl border border-pink-100 space-y-3 shadow-xs">
+                <h3 className="font-bold text-slate-800 uppercase tracking-wider text-[11px]">📞 Edit Store Contact Information</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-slate-400 font-bold text-[10px] mb-0.5">WhatsApp Number (Display Text)</label>
+                    <input type="text" value={contactInfo.whatsapp} onChange={e => setContactInfo({...contactInfo, whatsapp: e.target.value})} className="w-full border border-pink-100 p-2 rounded-2xl text-xs"/>
+                  </div>
+                  <div>
+                    <label className="block text-slate-400 font-bold text-[10px] mb-0.5">WhatsApp Digits (for chat link e.g. 919999999999)</label>
+                    <input type="text" value={contactInfo.whatsappRaw} onChange={e => setContactInfo({...contactInfo, whatsappRaw: e.target.value})} className="w-full border border-pink-100 p-2 rounded-2xl text-xs"/>
+                  </div>
+                  <div>
+                    <label className="block text-slate-400 font-bold text-[10px] mb-0.5">Support Email Address</label>
+                    <input type="email" value={contactInfo.email} onChange={e => setContactInfo({...contactInfo, email: e.target.value})} className="w-full border border-pink-100 p-2 rounded-2xl text-xs"/>
+                  </div>
+                  <div>
+                    <label className="block text-slate-400 font-bold text-[10px] mb-0.5">Instagram Handle</label>
+                    <input type="text" value={contactInfo.instagram} onChange={e => setContactInfo({...contactInfo, instagram: e.target.value})} className="w-full border border-pink-100 p-2 rounded-2xl text-xs"/>
+                  </div>
+                </div>
+              </div>
+
+              {/* ORDER PIPELINE TABLE */}
+              <div className="bg-white p-5 rounded-3xl border border-pink-100 overflow-x-auto shadow-xs">
+                <h3 className="font-bold text-slate-800 uppercase tracking-wider text-[11px] mb-3">📥 Received Customer Orders</h3>
+                <table className="w-full text-left border-collapse">
+                  <thead>
+                    <tr className="bg-pink-50/50 text-slate-400 font-bold uppercase border-b border-pink-100 text-[10px]"><th className="p-2.5">Order ID</th><th className="p-2.5">Customer</th><th className="p-2.5">Products</th><th className="p-2.5">Total</th><th className="p-2.5 text-right">Status</th></tr>
+                  </thead>
+                  <tbody className="divide-y divide-pink-50 text-slate-700">
+                    {orders.map(o => (
+                      <tr key={o.id} className="text-xs">
+                        <td className="p-2.5 font-bold text-[#5B7B4B]">{o.id}</td>
+                        <td className="p-2.5"><strong>{o.customer}</strong><br/><span className="text-[10px] text-slate-400">{o.date}</span></td>
+                        <td className="p-2.5 max-w-[150px] truncate">{o.items}</td>
+                        <td className="p-2.5 font-black">Rs. {o.total}.00</td>
+                        <td className="p-2.5 text-right">
+                          <select value={o.status} onChange={e => setOrders(orders.map(ord => ord.id === o.id ? {...ord, status: e.target.value} : ord))} className="p-1 border border-pink-100 rounded-xl bg-white text-[10px] font-bold">
+                            <option value="Paid & Processing">Processing</option>
+                            <option value="Dispatched">Dispatched</option>
+                            <option value="Delivered ✓">Delivered ✓</option>
+                          </select>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
 
             </div>
