@@ -29,6 +29,9 @@ export default function App() {
     document.head.appendChild(styleSheet);
   }, []);
 
+  // --- STORE LOGO STATE ---
+  const [storeLogo, setStoreLogo] = useState('🌱');
+
   // --- ANNOUNCEMENT BANNER STATE ---
   const [bannerConfig, setBannerConfig] = useState({
     enabled: true,
@@ -196,6 +199,15 @@ export default function App() {
   };
 
   // --- ADMIN LOGIC ---
+  const handleLogoUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => setStoreLogo(reader.result);
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleImageFileUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -320,12 +332,18 @@ export default function App() {
       {/* BUYER MODE */}
       {viewMode === 'buyer' && (
         <>
-          {/* HEADER WITH EXPANDED BRANDING */}
+          {/* HEADER WITH DYNAMIC STORE LOGO & EXPANDED BRANDING */}
           <header className="bg-white sticky top-0 z-40 border-b border-green-100 shadow-xs py-3.5">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 flex justify-between items-center">
               <div onClick={() => setCheckoutStep('browse')} className="cursor-pointer flex items-center space-x-3 sm:space-x-5">
-                <div className="w-14 h-14 sm:w-20 sm:h-20 flex-shrink-0 bg-pink-100 rounded-3xl flex items-center justify-center text-3xl sm:text-4xl shadow-inner border border-pink-200">
-                  🌱
+                
+                {/* DYNAMIC LOGO CONTAINER */}
+                <div className="w-14 h-14 sm:w-20 sm:h-20 flex-shrink-0 bg-pink-100 rounded-3xl flex items-center justify-center text-3xl sm:text-4xl shadow-inner border border-pink-200 overflow-hidden">
+                  {storeLogo.startsWith('data:image') || storeLogo.startsWith('http') ? (
+                    <img src={storeLogo} alt="Edu Sprout Logo" className="w-full h-full object-cover" />
+                  ) : (
+                    <span>{storeLogo}</span>
+                  )}
                 </div>
 
                 <div>
@@ -665,7 +683,7 @@ export default function App() {
           <div className="flex items-center justify-between pb-4 border-b border-green-200">
             <div>
               <h2 className="text-lg font-bold text-slate-800 flex items-center gap-1.5" style={{ fontFamily: "'Fredoka', sans-serif" }}>⚙️ Store Control Center <span className="text-[10px] font-bold uppercase bg-[#5B7B4B] text-white px-2.5 py-0.5 rounded-full">Admin Panel</span></h2>
-              <p className="text-slate-500 font-medium">Manage banner sales, contact info, product catalog, categories, and customer orders.</p>
+              <p className="text-slate-500 font-medium">Manage store logo, banner sales, contact info, product catalog, categories, and customer orders.</p>
             </div>
             <button onClick={() => setViewMode('buyer')} className="bg-white hover:bg-slate-50 text-slate-700 px-4 py-2 rounded-full font-bold transition shadow-xs border border-green-100 min-h-[48px]">Exit Admin</button>
           </div>
@@ -698,6 +716,41 @@ export default function App() {
                     className="w-full border border-pink-100 p-2.5 rounded-2xl text-xs outline-none focus:border-[#FF8BA7]" 
                     placeholder="e.g. 20% OFF SUMMER SALE..."
                   />
+                </div>
+              </div>
+
+              {/* 🖼️ EDIT STORE LOGO */}
+              <div className="bg-white p-5 rounded-3xl border border-pink-100 space-y-3 shadow-xs">
+                <h3 className="font-bold text-slate-800 uppercase tracking-wider text-[11px]">🖼️ Edit Store Logo</h3>
+                <div className="space-y-2.5 p-3 bg-pink-50/40 rounded-2xl border border-pink-100">
+                  <label className="block text-slate-600 font-bold text-[10px]">Upload Image or Paste Emoji</label>
+                  
+                  <input 
+                    type="file" 
+                    accept="image/*" 
+                    onChange={handleLogoUpload} 
+                    className="w-full text-[10px] text-slate-500 file:mr-2 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-[10px] file:font-bold file:bg-[#FF8BA7] file:text-white hover:file:bg-[#ff7295]"
+                  />
+                  
+                  <p className="text-[9px] text-slate-400 text-center font-bold">OR</p>
+
+                  <input 
+                    type="text" 
+                    value={storeLogo} 
+                    onChange={e => setStoreLogo(e.target.value)} 
+                    className="w-full border border-pink-100 p-2 rounded-xl text-xs bg-white outline-none focus:border-[#FF8BA7]" 
+                    placeholder="Paste Emoji (e.g. 📚) or Image URL"
+                  />
+
+                  <div className="mt-2 flex justify-center">
+                    <div className="w-12 h-12 bg-pink-100 rounded-xl flex items-center justify-center text-2xl overflow-hidden border border-pink-200">
+                      {storeLogo.startsWith('data:image') || storeLogo.startsWith('http') ? (
+                        <img src={storeLogo} alt="Logo Preview" className="w-full h-full object-cover" />
+                      ) : (
+                        <span>{storeLogo}</span>
+                      )}
+                    </div>
+                  </div>
                 </div>
               </div>
 
