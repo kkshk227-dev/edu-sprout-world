@@ -1,11 +1,19 @@
 import React, { useState, useEffect } from 'react';
 
 export default function App() {
-  // --- INJECT RUNNING BANNER KEYFRAME ANIMATION & GOOGLE FONTS ---
+  // --- SITE TYPOGRAPHY & COLOR THEME STATE (EDITABLE IN ADMIN) ---
+  const [fontFamily, setFontFamily] = useState("'Quicksand', sans-serif");
+  const [themeColors, setThemeColors] = useState({
+    primary: '#8385A9',   // Main slate blue-purple
+    accent: '#D37B9F',    // Soft mauve pink
+    bgSoft: '#FAF9F6',    // Off-white paper background
+  });
+
+  // --- INJECT FONTS & RUNNING BANNER KEYFRAME ANIMATION ---
   useEffect(() => {
-    // Load Fonts
+    // Load Fonts dynamically
     const fontLink = document.createElement('link');
-    fontLink.href = 'https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700;800&family=Quicksand:wght@400;500;600;700&display=swap';
+    fontLink.href = 'https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,500;0,600;1,500&family=Nunito:wght@500;600;700;800&family=Poppins:wght@500;600;700&family=Quicksand:wght@500;600;700&display=swap';
     fontLink.rel = 'stylesheet';
     document.head.appendChild(fontLink);
 
@@ -302,13 +310,13 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAF9F6] text-[#3A3B52] pb-12 antialiased" style={{ fontFamily: "'Quicksand', sans-serif" }}>
+    <div className="min-h-screen bg-[#FAF9F6] text-[#3A3B52] pb-12 antialiased" style={{ fontFamily }}>
       
       {/* 📣 DYNAMIC SCROLLING RUNNING ANNOUNCEMENT BANNER */}
       {bannerConfig.enabled && (
         <div 
-          className="overflow-hidden py-2.5 text-xs sm:text-sm font-bold border-b border-[#E5A1C0]/30 shadow-2xs"
-          style={{ backgroundColor: bannerConfig.bgColor, color: bannerConfig.textColor, fontFamily: "'Fredoka', sans-serif" }}
+          className="overflow-hidden py-2.5 text-xs sm:text-sm font-semibold border-b border-black/10 shadow-2xs"
+          style={{ backgroundColor: bannerConfig.bgColor, color: bannerConfig.textColor, fontFamily }}
         >
           <div className="animate-marquee-scroll">
             <span className="mx-8">{bannerConfig.text}</span>
@@ -320,12 +328,12 @@ export default function App() {
       )}
 
       {/* Top Bar Switcher */}
-      <div className="bg-[#8385A9] text-white px-4 sm:px-6 py-2.5 text-xs font-bold flex justify-between items-center">
+      <div className="text-white px-4 sm:px-6 py-2.5 text-xs font-semibold flex justify-between items-center transition-colors" style={{ backgroundColor: themeColors.primary, fontFamily }}>
         <span className="truncate pr-2 font-medium tracking-wide">✨ Bridging Imagination & Learning, One Page at a Time ✨</span>
         <button 
           onClick={() => setViewMode(viewMode === 'buyer' ? 'admin' : 'buyer')}
-          className="bg-[#E5A1C0] hover:bg-[#d88eb0] text-white px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition shadow-2xs min-h-[48px] flex items-center justify-center shrink-0"
-          style={{ fontFamily: "'Fredoka', sans-serif" }}
+          className="text-white px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition shadow-2xs min-h-[48px] flex items-center justify-center shrink-0"
+          style={{ backgroundColor: themeColors.accent, fontFamily }}
         >
           {viewMode === 'buyer' ? '🔒 Open Admin Panel' : '👋 Return to Storefront'}
         </button>
@@ -334,32 +342,32 @@ export default function App() {
       {/* BUYER MODE */}
       {viewMode === 'buyer' && (
         <>
-          {/* HEADER WITH BROAD BRAND NAME */}
+          {/* HEADER WITH PROMINENT LARGE LOGO */}
           <header className="bg-white/90 backdrop-blur-md sticky top-0 z-40 border-b border-[#EBE8E1] shadow-2xs py-4">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 flex justify-between items-center">
-              <div onClick={() => setCheckoutStep('browse')} className="cursor-pointer flex items-center space-x-3 sm:space-x-5">
+              <div onClick={() => setCheckoutStep('browse')} className="cursor-pointer flex items-center space-x-4 sm:space-x-6">
                 
-                {/* LOGO CONTAINER */}
-                <div className="h-16 sm:h-22 flex-shrink-0 flex items-center justify-center text-3xl sm:text-4xl">
+                {/* EXTRA LARGE LOGO CONTAINER */}
+                <div className="h-32 sm:h-44 md:h-52 flex-shrink-0 flex items-center justify-center py-1">
                   {logoUrl ? (
-                    <img src={logoUrl} alt="Paper Bridge Logo" className="h-full w-auto object-contain transition-transform duration-200 hover:scale-105" />
+                    <img src={logoUrl} alt="Paper Bridge Logo" className="h-full max-h-full w-auto object-contain transition-transform duration-200 hover:scale-105" />
                   ) : (
-                    <span className="text-4xl">🌉</span>
+                    <span className="text-6xl sm:text-7xl">🌉</span>
                   )}
                 </div>
 
-                {/* BROAD BRAND NAME TYPOGRAPHY */}
+                {/* UNIFIED PAPER BRIDGE TYPOGRAPHY */}
                 <div className="flex flex-col justify-center">
-                  <h1 className="text-3xl sm:text-5xl md:text-6xl font-extrabold text-[#555776] tracking-wide leading-none" style={{ fontFamily: "'Fredoka', sans-serif" }}>
-                    Paper <span className="text-[#D37B9F]">Bridge</span>
+                  <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold text-[#555776] tracking-wide leading-none" style={{ fontFamily }}>
+                    Paper <span style={{ color: themeColors.accent }}>Bridge</span>
                   </h1>
-                  <p className="text-xs sm:text-sm font-bold text-[#A0A2B8] uppercase tracking-widest mt-1.5">Bridging Play & Learning</p>
+                  <p className="text-xs sm:text-sm font-semibold text-[#A0A2B8] uppercase tracking-widest mt-2">Bridging Play & Learning</p>
                 </div>
               </div>
               
-              <button onClick={() => setIsCartOpen(true)} className="hidden sm:flex bg-[#8385A9] hover:bg-[#727498] text-white font-bold px-6 py-3.5 rounded-full text-sm items-center space-x-2 transition shadow-xs min-h-[48px]">
+              <button onClick={() => setIsCartOpen(true)} className="hidden sm:flex text-white font-bold px-6 py-3.5 rounded-full text-sm items-center space-x-2 transition shadow-xs min-h-[48px]" style={{ backgroundColor: themeColors.primary, fontFamily }}>
                 <span>🛒 Shopping Basket</span>
-                <span className="bg-[#E5A1C0] text-white rounded-full px-2.5 py-0.5 text-xs font-bold">{cart.reduce((s, i) => s + i.quantity, 0)}</span>
+                <span className="text-white rounded-full px-2.5 py-0.5 text-xs font-bold" style={{ backgroundColor: themeColors.accent }}>{cart.reduce((s, i) => s + i.quantity, 0)}</span>
               </button>
             </div>
           </header>
@@ -367,11 +375,12 @@ export default function App() {
           {/* FLOATING MOBILE STICKY CART BUTTON */}
           <button 
             onClick={() => setIsCartOpen(true)} 
-            className="sm:hidden fixed bottom-5 right-5 z-50 bg-[#8385A9] text-white p-4 rounded-full shadow-xl flex items-center justify-center border-2 border-white min-w-[56px] min-h-[56px]"
+            className="sm:hidden fixed bottom-5 right-5 z-50 text-white p-4 rounded-full shadow-xl flex items-center justify-center border-2 border-white min-w-[56px] min-h-[56px]"
+            style={{ backgroundColor: themeColors.primary }}
             aria-label="Shopping Cart"
           >
             <span className="text-xl">🛒</span>
-            <span className="absolute -top-1 -right-1 bg-[#E5A1C0] text-white rounded-full w-6 h-6 text-xs font-bold flex items-center justify-center border-2 border-white">
+            <span className="absolute -top-1 -right-1 text-white rounded-full w-6 h-6 text-xs font-bold flex items-center justify-center border-2 border-white" style={{ backgroundColor: themeColors.accent }}>
               {cart.reduce((s, i) => s + i.quantity, 0)}
             </span>
           </button>
@@ -379,31 +388,31 @@ export default function App() {
           {checkoutStep === 'confirmation' && (
             <div className="max-w-md mx-auto my-16 bg-white p-8 rounded-3xl shadow-xs text-center border border-[#F5C5D8]/40 mx-4">
               <span className="text-5xl block mb-2">🎉</span>
-              <h2 className="text-2xl font-bold text-[#3A3B52] mb-1" style={{ fontFamily: "'Fredoka', sans-serif" }}>Order Placed Successfully!</h2>
+              <h2 className="text-2xl font-bold text-[#3A3B52] mb-1" style={{ fontFamily }}>Order Placed Successfully!</h2>
               <p className="text-xs text-slate-500 mb-6 font-medium">Your materials are getting routed. Confirmation sent.</p>
-              <div className="bg-[#F5C5D8]/20 p-4 rounded-2xl mb-6 text-left text-xs border border-[#F5C5D8]/30">
+              <div className="bg-slate-50 p-4 rounded-2xl mb-6 text-left text-xs border border-slate-200">
                 <p className="font-bold text-slate-400">YOUR ORDER ID</p>
-                <p className="text-lg font-bold text-[#8385A9] mb-1">{lastPlacedOrder?.id}</p>
+                <p className="text-lg font-bold mb-1" style={{ color: themeColors.primary }}>{lastPlacedOrder?.id}</p>
                 <p><strong>Total Paid:</strong> Rs. {lastPlacedOrder?.total}.00</p>
               </div>
-              <button onClick={() => setCheckoutStep('browse')} className="bg-[#8385A9] text-white text-sm font-bold px-4 py-3 rounded-full w-full hover:bg-[#727498] transition min-h-[48px]">Continue Browsing</button>
+              <button onClick={() => setCheckoutStep('browse')} className="text-white text-sm font-bold px-4 py-3 rounded-full w-full transition min-h-[48px]" style={{ backgroundColor: themeColors.primary, fontFamily }}>Continue Browsing</button>
             </div>
           )}
 
           {checkoutStep === 'browse' && (
             <>
-              {/* HERO SECTION WITH THINNER "NURTURE YOUNG MINDS" TEXT */}
+              {/* HERO SECTION */}
               <div className="bg-gradient-to-r from-[#F7E1EB]/60 via-[#E4E5F0]/60 to-[#E1EEDD]/60 py-12 sm:py-16 px-4 sm:px-6 border-b border-[#EBE8E1]">
                 <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
                   <div className="space-y-4 text-center md:text-left">
-                    <span className="bg-white/90 backdrop-blur-xs text-[#C5769D] text-xs font-bold uppercase px-4 py-1.5 rounded-full shadow-2xs border border-[#F5C5D8]/60 inline-block tracking-wider">
+                    <span className="bg-white/90 backdrop-blur-xs text-xs font-bold uppercase px-4 py-1.5 rounded-full shadow-2xs border border-[#F5C5D8]/60 inline-block tracking-wider" style={{ color: themeColors.accent }}>
                       🌸 Loved by 10,000+ Parents
                     </span>
 
-                    {/* SLIGHTLY THINNER & ELEGANT HERO HEADLINE */}
-                    <h2 className="text-3xl sm:text-4xl lg:text-5xl font-medium text-[#3D3E54] leading-tight" style={{ fontFamily: "'Fredoka', sans-serif" }}>
+                    {/* HERO HEADLINE MATCHED */}
+                    <h2 className="text-3xl sm:text-4xl lg:text-5xl font-medium text-[#3D3E54] leading-tight" style={{ fontFamily }}>
                       Nurture Young Minds <br />
-                      <span className="text-[#D37B9F] font-semibold">With Thoughtful Resources</span>
+                      <span className="font-semibold" style={{ color: themeColors.accent }}>With Thoughtful Resources</span>
                     </h2>
 
                     <p className="text-sm sm:text-base text-[#52546A] max-w-lg leading-relaxed font-medium">
@@ -413,8 +422,8 @@ export default function App() {
                     <div className="pt-3">
                       <button 
                         onClick={scrollToCatalog} 
-                        className="bg-[#D37B9F] hover:bg-[#c26a8e] text-white font-bold text-sm px-8 py-4 rounded-full shadow-sm transition transform hover:-translate-y-0.5 min-h-[48px] w-full sm:w-auto tracking-wide uppercase"
-                        style={{ fontFamily: "'Fredoka', sans-serif" }}
+                        className="text-white font-bold text-sm px-8 py-4 rounded-full shadow-sm transition transform hover:-translate-y-0.5 min-h-[48px] w-full sm:w-auto tracking-wide uppercase"
+                        style={{ backgroundColor: themeColors.accent, fontFamily }}
                       >
                         📚 Shop All Workbooks 👇
                       </button>
@@ -433,11 +442,11 @@ export default function App() {
 
                     <div className="flex gap-2 justify-center">
                       <div className="bg-white/85 backdrop-blur-xs p-4 rounded-3xl border border-[#EBE8E1] shadow-2xs flex-1">
-                        <p className="text-xl font-bold text-[#6B9E60]" style={{ fontFamily: "'Fredoka', sans-serif" }}>100%</p>
+                        <p className="text-xl font-bold text-[#6B9E60]" style={{ fontFamily }}>100%</p>
                         <p className="text-xs font-bold text-slate-500">Kid-Approved</p>
                       </div>
                       <div className="bg-white/85 backdrop-blur-xs p-4 rounded-3xl border border-[#EBE8E1] shadow-2xs flex-1">
-                        <p className="text-xl font-bold text-[#D37B9F]" style={{ fontFamily: "'Fredoka', sans-serif" }}>4.9 ★</p>
+                        <p className="text-xl font-bold" style={{ color: themeColors.accent, fontFamily }}>4.9 ★</p>
                         <p className="text-xs font-bold text-slate-500">Parent Rating</p>
                       </div>
                     </div>
@@ -448,7 +457,7 @@ export default function App() {
               {/* UNIFIED ORDER TRACKER BAR */}
               <div className="bg-[#EAEAF2] border-b border-[#DDDDE8] py-4 px-4 sm:px-6">
                 <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3 text-xs bg-white/70 backdrop-blur-xs p-3.5 sm:p-4 rounded-3xl border border-[#DDDDE8]/60 shadow-2xs">
-                  <span className="font-bold text-sm text-[#4D4F6E] flex items-center gap-2" style={{ fontFamily: "'Fredoka', sans-serif" }}>
+                  <span className="font-bold text-sm text-[#4D4F6E] flex items-center gap-2" style={{ fontFamily }}>
                     <span>📦</span> Track Your Order Shipment:
                   </span>
                   <div className="flex w-full md:w-auto border border-[#CBD0DD] rounded-full overflow-hidden bg-white shadow-2xs">
@@ -461,8 +470,8 @@ export default function App() {
                     />
                     <button 
                       onClick={trackOrder} 
-                      className="bg-[#8385A9] hover:bg-[#727498] active:bg-[#626488] text-white font-bold px-6 py-2.5 transition min-h-[48px] shrink-0 text-xs uppercase tracking-wider"
-                      style={{ fontFamily: "'Fredoka', sans-serif" }}
+                      className="text-white font-bold px-6 py-2.5 transition min-h-[48px] shrink-0 text-xs uppercase tracking-wider"
+                      style={{ backgroundColor: themeColors.primary, fontFamily }}
                     >
                       Find Order
                     </button>
@@ -487,7 +496,8 @@ export default function App() {
                         <button 
                           key={sub.name} 
                           onClick={() => setSelectedSubject(sub.name)} 
-                          className={`flex items-center space-x-3 text-left px-4 py-3 rounded-2xl text-xs font-bold transition min-h-[48px] ${selectedSubject === sub.name ? 'bg-[#E5A1C0] text-white shadow-2xs' : 'hover:bg-[#F8F7F4] text-[#4A4B5E] bg-[#FAF9F6]'}`}
+                          className={`flex items-center space-x-3 text-left px-4 py-3 rounded-2xl text-xs font-bold transition min-h-[48px] ${selectedSubject === sub.name ? 'text-white shadow-2xs' : 'hover:bg-[#F8F7F4] text-[#4A4B5E] bg-[#FAF9F6]'}`}
+                          style={{ backgroundColor: selectedSubject === sub.name ? themeColors.accent : undefined }}
                         >
                           <span className="text-lg">{sub.icon}</span>
                           <span>{sub.label}</span>
@@ -503,7 +513,8 @@ export default function App() {
                         <button 
                           key={cat} 
                           onClick={() => setSelectedCategory(cat)} 
-                          className={`text-left px-4 py-3 rounded-2xl text-xs font-bold transition min-h-[48px] ${selectedCategory === cat ? 'bg-[#8385A9] text-white shadow-2xs' : 'hover:bg-[#F8F7F4] text-[#4A4B5E] bg-[#FAF9F6]'}`}
+                          className={`text-left px-4 py-3 rounded-2xl text-xs font-bold transition min-h-[48px] ${selectedCategory === cat ? 'text-white shadow-2xs' : 'hover:bg-[#F8F7F4] text-[#4A4B5E] bg-[#FAF9F6]'}`}
+                          style={{ backgroundColor: selectedCategory === cat ? themeColors.primary : undefined }}
                         >
                           {cat === 'All' ? '📚 All Formats' : cat}
                         </button>
@@ -519,21 +530,21 @@ export default function App() {
                       <div key={p.id} className="bg-white rounded-3xl border border-[#EBE8E1] overflow-hidden flex flex-col justify-between hover:shadow-md transition duration-200">
                         <div className="relative h-48 overflow-hidden bg-slate-50">
                           <img src={p.img} alt={p.title} className="w-full h-full object-cover"/>
-                          {p.badge && <span className="absolute top-3 left-3 text-[10px] font-bold uppercase bg-[#E5A1C0] text-white px-3 py-1 rounded-full shadow-xs">{p.badge}</span>}
+                          {p.badge && <span className="absolute top-3 left-3 text-[10px] font-bold uppercase text-white px-3 py-1 rounded-full shadow-xs" style={{ backgroundColor: themeColors.accent }}>{p.badge}</span>}
                           <span className="absolute bottom-3 right-3 text-xs font-bold bg-white/90 backdrop-blur-xs text-slate-700 px-3 py-1 rounded-full shadow-2xs border border-[#EBE8E1]">{p.subjectCategory || 'General'}</span>
                         </div>
 
                         <div className="p-5 flex-1 flex flex-col justify-between space-y-3">
                           <div>
                             <span className="text-xs font-bold text-[#4B6B42] bg-[#EFF6ED] px-3 py-1 rounded-full">{p.category}</span>
-                            <h4 className="font-bold text-base text-[#3A3B52] mt-2 line-clamp-2 leading-snug" style={{ fontFamily: "'Fredoka', sans-serif" }}>{p.title}</h4>
+                            <h4 className="font-bold text-base text-[#3A3B52] mt-2 line-clamp-2 leading-snug" style={{ fontFamily }}>{p.title}</h4>
                             <div className="text-amber-400 text-xs mt-1">⭐⭐⭐⭐⭐ <span className="text-slate-400 font-bold">({p.reviewsCount})</span></div>
                             
                             {p.features && (
                               <ul className="mt-3 space-y-1 text-xs text-slate-600 border-t border-[#F5F3ED] pt-2 font-medium">
                                 {p.features.map((feat, idx) => (
                                   <li key={idx} className="flex items-center gap-1.5">
-                                    <span className="text-[#E5A1C0] font-bold">✨</span> {feat}
+                                    <span className="font-bold" style={{ color: themeColors.accent }}>✨</span> {feat}
                                   </li>
                                 ))}
                               </ul>
@@ -542,12 +553,12 @@ export default function App() {
 
                           <div className="flex justify-between items-center pt-3 border-t border-[#F5F3ED]">
                             <div>
-                              <span className="text-lg font-bold text-[#3A3B52]" style={{ fontFamily: "'Fredoka', sans-serif" }}>Rs. {p.price}.00</span>
+                              <span className="text-lg font-bold text-[#3A3B52]" style={{ fontFamily }}>Rs. {p.price}.00</span>
                               {p.originalPrice > p.price && (
                                 <span className="text-xs text-slate-400 line-through ml-2">Rs. {p.originalPrice}.00</span>
                               )}
                             </div>
-                            <button onClick={() => addToCart(p)} className="bg-[#8385A9] hover:bg-[#727498] text-white text-xs font-bold px-5 py-3 rounded-full shadow-2xs transition min-h-[48px]">Add to Cart</button>
+                            <button onClick={() => addToCart(p)} className="text-white text-xs font-bold px-5 py-3 rounded-full shadow-2xs transition min-h-[48px]" style={{ backgroundColor: themeColors.primary, fontFamily }}>Add to Cart</button>
                           </div>
                         </div>
                       </div>
@@ -560,13 +571,13 @@ export default function App() {
               {testimonials.length > 0 && (
                 <section className="max-w-7xl mx-auto px-4 py-8">
                   <div className="bg-white rounded-3xl p-6 sm:p-8 border border-[#EBE8E1] shadow-2xs text-center space-y-4">
-                    <span className="text-xs font-bold uppercase text-[#D37B9F] tracking-widest">💬 Verified Parent Reviews</span>
+                    <span className="text-xs font-bold uppercase tracking-widest" style={{ color: themeColors.accent }}>💬 Verified Parent Reviews</span>
                     <div className="max-w-2xl mx-auto space-y-2">
-                      <p className="text-lg sm:text-xl font-bold text-[#3A3B52] italic" style={{ fontFamily: "'Fredoka', sans-serif" }}>
+                      <p className="text-lg sm:text-xl font-bold text-[#3A3B52] italic" style={{ fontFamily }}>
                         "{testimonials[activeTestimonial]?.text}"
                       </p>
                       <div className="text-amber-400 text-sm">⭐⭐⭐⭐⭐</div>
-                      <p className="text-xs font-bold text-[#8385A9]">
+                      <p className="text-xs font-bold text-slate-600">
                         {testimonials[activeTestimonial]?.name} <span className="text-slate-400 font-normal">({testimonials[activeTestimonial]?.location}) • {testimonials[activeTestimonial]?.role}</span>
                       </p>
                     </div>
@@ -575,10 +586,10 @@ export default function App() {
               )}
 
               {/* FOOTER */}
-              <footer className="bg-[#5B5D7A] text-slate-200 py-12 px-6 mt-12 text-xs">
+              <footer className="text-slate-200 py-12 px-6 mt-12 text-xs" style={{ backgroundColor: themeColors.primary }}>
                 <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
                   <div className="space-y-2">
-                    <h3 className="text-white font-bold text-lg flex items-center gap-2" style={{ fontFamily: "'Fredoka', sans-serif" }}>🌉 Paper Bridge</h3>
+                    <h3 className="text-white font-bold text-lg flex items-center gap-2" style={{ fontFamily }}>🌉 Paper Bridge</h3>
                     <p className="text-slate-200 leading-relaxed font-medium">Providing high-quality physical and digital learning materials to build strong academic foundations with love and care.</p>
                   </div>
                   <div>
@@ -621,21 +632,21 @@ export default function App() {
 
           {checkoutStep === 'details' && (
             <div className="max-w-md mx-auto my-12 bg-white p-6 rounded-3xl border border-[#EBE8E1] shadow-xs mx-4">
-              <h3 className="text-base font-bold text-[#3A3B52] mb-4 flex items-center gap-1.5" style={{ fontFamily: "'Fredoka', sans-serif" }}>💳 Shipping & Order Details</h3>
+              <h3 className="text-base font-bold text-[#3A3B52] mb-4 flex items-center gap-1.5" style={{ fontFamily }}>💳 Shipping & Order Details</h3>
               <form onSubmit={handleCheckoutSubmit} className="space-y-3 text-xs">
                 <div>
                   <label className="block text-slate-500 font-bold mb-1">Parent's Full Name</label>
-                  <input type="text" required value={customerDetails.name} onChange={e => setCustomerDetails({...customerDetails, name: e.target.value})} className="w-full border border-[#EBE8E1] p-3 rounded-2xl outline-none focus:border-[#E5A1C0] min-h-[48px]" placeholder="e.g. Priya Sharma"/>
+                  <input type="text" required value={customerDetails.name} onChange={e => setCustomerDetails({...customerDetails, name: e.target.value})} className="w-full border border-[#EBE8E1] p-3 rounded-2xl outline-none min-h-[48px]" placeholder="e.g. Priya Sharma"/>
                 </div>
                 <div>
                   <label className="block text-slate-500 font-bold mb-1">Contact Phone Number</label>
-                  <input type="tel" required value={customerDetails.phone} onChange={e => setCustomerDetails({...customerDetails, phone: e.target.value})} className="w-full border border-[#EBE8E1] p-3 rounded-2xl outline-none focus:border-[#E5A1C0] min-h-[48px]"/>
+                  <input type="tel" required value={customerDetails.phone} onChange={e => setCustomerDetails({...customerDetails, phone: e.target.value})} className="w-full border border-[#EBE8E1] p-3 rounded-2xl outline-none min-h-[48px]"/>
                 </div>
                 <div>
                   <label className="block text-slate-500 font-bold mb-1">Delivery Address</label>
-                  <textarea required rows="2" value={customerDetails.address} onChange={e => setCustomerDetails({...customerDetails, address: e.target.value})} className="w-full border border-[#EBE8E1] p-3 rounded-2xl outline-none focus:border-[#E5A1C0]"></textarea>
+                  <textarea required rows="2" value={customerDetails.address} onChange={e => setCustomerDetails({...customerDetails, address: e.target.value})} className="w-full border border-[#EBE8E1] p-3 rounded-2xl outline-none"></textarea>
                 </div>
-                <button type="submit" className="w-full bg-[#E5A1C0] hover:bg-[#d88eb0] transition text-white font-bold py-3.5 rounded-full mt-2 shadow-2xs min-h-[48px]">Confirm Order & Payment</button>
+                <button type="submit" className="w-full text-white font-bold py-3.5 rounded-full mt-2 shadow-2xs min-h-[48px]" style={{ backgroundColor: themeColors.accent }}>Confirm Order & Payment</button>
               </form>
             </div>
           )}
@@ -647,14 +658,14 @@ export default function App() {
               <div className="absolute inset-y-0 right-0 max-w-xs w-full bg-white p-5 shadow-2xl flex flex-col justify-between border-l border-[#EBE8E1]">
                 <div>
                   <div className="flex justify-between items-center pb-3 border-b border-[#F5F3ED] mb-4">
-                    <h3 className="font-bold text-sm text-[#3A3B52]" style={{ fontFamily: "'Fredoka', sans-serif" }}>Your Basket</h3>
+                    <h3 className="font-bold text-sm text-[#3A3B52]" style={{ fontFamily }}>Your Basket</h3>
                     <button onClick={() => setIsCartOpen(false)} className="text-xl font-bold text-slate-400 p-2 min-h-[48px] min-w-[48px]">&times;</button>
                   </div>
                   {cart.length === 0 ? <p className="text-xs text-slate-400 text-center py-6">Your basket is empty.</p> : (
                     <div className="space-y-2">
                       {cart.map(i => (
                         <div key={i.id} className="flex justify-between items-center p-2.5 bg-[#FAF9F6] border border-[#EBE8E1] rounded-2xl text-xs">
-                          <div className="flex-1 min-w-0 pr-2"><h5 className="font-bold text-[#3A3B52] truncate">{i.title}</h5><p className="text-[10px] text-[#8385A9] font-bold">Rs. {i.price} x {i.quantity}</p></div>
+                          <div className="flex-1 min-w-0 pr-2"><h5 className="font-bold text-[#3A3B52] truncate">{i.title}</h5><p className="text-[10px] font-bold" style={{ color: themeColors.primary }}>Rs. {i.price} x {i.quantity}</p></div>
                           <div className="flex items-center space-x-1.5 bg-white px-2 py-0.5 rounded-xl border border-[#EBE8E1]"><button onClick={() => updateQuantity(i.id, -1)} className="text-slate-400 font-bold p-1 min-h-[36px]">-</button><span className="text-xs font-bold">{i.quantity}</span><button onClick={() => updateQuantity(i.id, 1)} className="text-slate-400 font-bold p-1 min-h-[36px]">+</button></div>
                         </div>
                       ))}
@@ -676,7 +687,7 @@ export default function App() {
                       </div>
                     </div>
 
-                    <button onClick={() => { setIsCartOpen(false); setCheckoutStep('details'); }} className="w-full bg-[#E5A1C0] hover:bg-[#d88eb0] transition text-white font-bold py-3 rounded-full text-xs text-center shadow-2xs min-h-[48px]">Proceed to Checkout</button>
+                    <button onClick={() => { setIsCartOpen(false); setCheckoutStep('details'); }} className="w-full text-white font-bold py-3 rounded-full text-xs text-center shadow-2xs min-h-[48px]" style={{ backgroundColor: themeColors.accent }}>Proceed to Checkout</button>
                   </div>
                 )}
               </div>
@@ -690,8 +701,8 @@ export default function App() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 text-xs space-y-6">
           <div className="flex items-center justify-between pb-4 border-b border-[#DDDDE8]">
             <div>
-              <h2 className="text-lg font-bold text-[#3A3B52] flex items-center gap-1.5" style={{ fontFamily: "'Fredoka', sans-serif" }}>⚙️ Store Control Center <span className="text-[10px] font-bold uppercase bg-[#8385A9] text-white px-2.5 py-0.5 rounded-full">Paper Bridge Admin</span></h2>
-              <p className="text-slate-500 font-medium">Manage brand logo, banner sales, contact info, product catalog, categories, and customer orders.</p>
+              <h2 className="text-lg font-bold text-[#3A3B52] flex items-center gap-1.5" style={{ fontFamily }}>⚙️ Store Control Center <span className="text-[10px] font-bold uppercase text-white px-2.5 py-0.5 rounded-full" style={{ backgroundColor: themeColors.primary }}>Paper Bridge Admin</span></h2>
+              <p className="text-slate-500 font-medium">Manage typography, global theme colors, brand logo, banner sales, contact info, product catalog, and customer orders.</p>
             </div>
             <button onClick={() => setViewMode('buyer')} className="bg-white hover:bg-slate-50 text-slate-700 px-4 py-2 rounded-full font-bold transition shadow-2xs border border-[#EBE8E1] min-h-[48px]">Exit Admin</button>
           </div>
@@ -701,6 +712,50 @@ export default function App() {
             {/* LEFT COLUMN */}
             <div className="space-y-6">
               
+              {/* EDIT FONT STYLE & WEBSITE COLORS */}
+              <div className="bg-white p-5 rounded-3xl border border-[#EBE8E1] space-y-4 shadow-2xs">
+                <h3 className="font-bold text-[#3A3B52] uppercase tracking-wider text-[11px]">🎨 Global Website Font & Colors</h3>
+                
+                <div className="space-y-3 p-3 bg-[#FAF9F6] rounded-2xl border border-[#EBE8E1]">
+                  <div>
+                    <label className="block text-slate-600 font-bold text-[10px] mb-1">Select Font Family (Site-wide)</label>
+                    <select 
+                      value={fontFamily} 
+                      onChange={e => setFontFamily(e.target.value)} 
+                      className="w-full border border-[#EBE8E1] p-2.5 rounded-xl bg-white text-xs font-semibold outline-none"
+                    >
+                      <option value="'Quicksand', sans-serif">Quicksand (Soft & Aesthetic)</option>
+                      <option value="'Nunito', sans-serif">Nunito (Rounded & Friendly)</option>
+                      <option value="'Poppins', sans-serif">Poppins (Modern & Clean)</option>
+                      <option value="'Inter', sans-serif">Inter (Sleek & Professional)</option>
+                      <option value="'Lora', serif">Lora (Classic & Serif)</option>
+                      <option value="'Fredoka', sans-serif">Fredoka (Bold & Playful)</option>
+                    </select>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-2 pt-1 border-t border-[#EBE8E1]">
+                    <div>
+                      <label className="block text-slate-600 font-bold text-[10px] mb-1">Primary Color</label>
+                      <input 
+                        type="color" 
+                        value={themeColors.primary} 
+                        onChange={e => setThemeColors({ ...themeColors, primary: e.target.value })}
+                        className="w-full h-9 p-0.5 rounded-xl border border-[#EBE8E1] cursor-pointer"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-slate-600 font-bold text-[10px] mb-1">Accent Highlight Color</label>
+                      <input 
+                        type="color" 
+                        value={themeColors.accent} 
+                        onChange={e => setThemeColors({ ...themeColors, accent: e.target.value })}
+                        className="w-full h-9 p-0.5 rounded-xl border border-[#EBE8E1] cursor-pointer"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               {/* EDIT BRAND LOGO ICON */}
               <div className="bg-white p-5 rounded-3xl border border-[#EBE8E1] space-y-3 shadow-2xs">
                 <h3 className="font-bold text-[#3A3B52] uppercase tracking-wider text-[11px]">🖼️ Edit Brand Logo Icon</h3>
@@ -719,13 +774,13 @@ export default function App() {
                     type="text" 
                     value={logoUrl} 
                     onChange={e => setLogoUrl(e.target.value)} 
-                    className="w-full border border-[#EBE8E1] p-2 rounded-xl text-xs bg-white outline-none focus:border-[#E5A1C0]" 
+                    className="w-full border border-[#EBE8E1] p-2 rounded-xl text-xs bg-white outline-none" 
                     placeholder="Paste Logo Image URL..."
                   />
 
                   {logoUrl ? (
                     <div className="mt-2 text-center flex flex-col items-center">
-                      <div className="h-12 w-auto overflow-hidden border border-[#EBE8E1] mb-1 p-1 rounded-xl">
+                      <div className="h-20 w-auto overflow-hidden border border-[#EBE8E1] mb-1 p-1 rounded-xl">
                         <img src={logoUrl} alt="Logo Preview" className="h-full w-auto object-contain" />
                       </div>
                       <span className="text-[9px] text-green-600 font-bold">Custom Logo Active ✓</span>
@@ -751,15 +806,39 @@ export default function App() {
                     <span>Show Banner</span>
                   </label>
                 </div>
-                <div>
-                  <label className="block text-slate-400 font-bold text-[10px] mb-0.5">Banner Announcement Text</label>
-                  <textarea 
-                    rows="2" 
-                    value={bannerConfig.text} 
-                    onChange={e => setBannerConfig({...bannerConfig, text: e.target.value})} 
-                    className="w-full border border-[#EBE8E1] p-2.5 rounded-2xl text-xs outline-none focus:border-[#E5A1C0]" 
-                    placeholder="e.g. 20% OFF SUMMER SALE..."
-                  />
+
+                <div className="space-y-2">
+                  <div>
+                    <label className="block text-slate-400 font-bold text-[10px] mb-0.5">Banner Text</label>
+                    <textarea 
+                      rows="2" 
+                      value={bannerConfig.text} 
+                      onChange={e => setBannerConfig({...bannerConfig, text: e.target.value})} 
+                      className="w-full border border-[#EBE8E1] p-2.5 rounded-2xl text-xs outline-none" 
+                      placeholder="e.g. 20% OFF SUMMER SALE..."
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-2 pt-1">
+                    <div>
+                      <label className="block text-slate-400 font-bold text-[10px] mb-1">Banner Bg Color</label>
+                      <input 
+                        type="color" 
+                        value={bannerConfig.bgColor} 
+                        onChange={e => setBannerConfig({...bannerConfig, bgColor: e.target.value})}
+                        className="w-full h-9 p-0.5 rounded-xl border border-[#EBE8E1] cursor-pointer"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-slate-400 font-bold text-[10px] mb-1">Banner Text Color</label>
+                      <input 
+                        type="color" 
+                        value={bannerConfig.textColor} 
+                        onChange={e => setBannerConfig({...bannerConfig, textColor: e.target.value})}
+                        className="w-full h-9 p-0.5 rounded-xl border border-[#EBE8E1] cursor-pointer"
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
 
@@ -773,7 +852,7 @@ export default function App() {
                       type="text" 
                       value={expertEndorsement.quote} 
                       onChange={e => setExpertEndorsement({...expertEndorsement, quote: e.target.value})} 
-                      className="w-full border border-[#EBE8E1] p-2.5 rounded-2xl text-xs outline-none focus:border-[#E5A1C0]"
+                      className="w-full border border-[#EBE8E1] p-2.5 rounded-2xl text-xs outline-none"
                       placeholder="e.g. Pedagogically Aligned Materials"
                     />
                   </div>
@@ -783,7 +862,7 @@ export default function App() {
                       type="text" 
                       value={expertEndorsement.author} 
                       onChange={e => setExpertEndorsement({...expertEndorsement, author: e.target.value})} 
-                      className="w-full border border-[#EBE8E1] p-2.5 rounded-2xl text-xs outline-none focus:border-[#E5A1C0]"
+                      className="w-full border border-[#EBE8E1] p-2.5 rounded-2xl text-xs outline-none"
                       placeholder="e.g. Dr. Meera K., Child Psychologist"
                     />
                   </div>
@@ -802,7 +881,7 @@ export default function App() {
                   </div>
                   <input type="text" placeholder="Role (e.g. Verified Parent)" value={newReview.role} onChange={e => setNewReview({...newReview, role: e.target.value})} className="w-full border border-[#EBE8E1] p-2 rounded-xl bg-white text-xs"/>
                   <textarea required rows="2" placeholder="Review details..." value={newReview.text} onChange={e => setNewReview({...newReview, text: e.target.value})} className="w-full border border-[#EBE8E1] p-2 rounded-xl bg-white text-xs"/>
-                  <button type="submit" className="bg-[#E5A1C0] text-white font-bold px-4 py-2 rounded-full text-xs">Add Review</button>
+                  <button type="submit" className="text-white font-bold px-4 py-2 rounded-full text-xs" style={{ backgroundColor: themeColors.accent }}>Add Review</button>
                 </form>
 
                 <div className="space-y-2">
@@ -829,7 +908,7 @@ export default function App() {
                 <form onSubmit={addCategory} className="flex gap-2">
                   <input type="text" value={newSubject.icon} onChange={e => setNewSubject({...newSubject, icon: e.target.value})} className="w-16 border border-[#EBE8E1] p-2 rounded-2xl text-xs text-center" placeholder="Icon"/>
                   <input type="text" required value={newSubject.name} onChange={e => setNewSubject({...newSubject, name: e.target.value})} className="flex-1 border border-[#EBE8E1] p-2 rounded-2xl text-xs" placeholder="New Category Name..."/>
-                  <button type="submit" className="bg-[#E5A1C0] text-white px-4 py-2 rounded-full font-bold transition min-h-[48px]">Add Category</button>
+                  <button type="submit" className="text-white px-4 py-2 rounded-full font-bold transition min-h-[48px]" style={{ backgroundColor: themeColors.accent }}>Add Category</button>
                 </form>
 
                 <div className="flex flex-wrap gap-2 pt-2">
@@ -857,7 +936,8 @@ export default function App() {
                         setEditingProductId(null);
                         setNewProduct({ title: '', subjectCategory: 'Alphabet & Phonics', category: 'Printed Worksheets', price: '', originalPrice: '', badge: '', img: '' });
                       }}
-                      className="text-[10px] text-[#E5A1C0] font-bold underline"
+                      className="text-[10px] font-bold underline"
+                      style={{ color: themeColors.accent }}
                     >
                       Cancel Edit
                     </button>
@@ -865,7 +945,7 @@ export default function App() {
                 </div>
                 
                 <form onSubmit={addOrUpdateProduct} className="space-y-2.5">
-                  <input type="text" required value={newProduct.title} onChange={e => setNewProduct({...newProduct, title: e.target.value})} className="w-full border border-[#EBE8E1] p-2.5 rounded-2xl text-xs outline-none focus:border-[#E5A1C0]" placeholder="Title..."/>
+                  <input type="text" required value={newProduct.title} onChange={e => setNewProduct({...newProduct, title: e.target.value})} className="w-full border border-[#EBE8E1] p-2.5 rounded-2xl text-xs outline-none" placeholder="Title..."/>
                   
                   {/* DUAL IMAGE UPLOAD */}
                   <div className="space-y-1.5 p-3 bg-[#FAF9F6] rounded-2xl border border-[#EBE8E1]">
@@ -884,7 +964,7 @@ export default function App() {
                       type="text" 
                       value={newProduct.img} 
                       onChange={e => setNewProduct({...newProduct, img: e.target.value})} 
-                      className="w-full border border-[#EBE8E1] p-2 rounded-xl text-xs bg-white outline-none focus:border-[#E5A1C0]" 
+                      className="w-full border border-[#EBE8E1] p-2 rounded-xl text-xs bg-white outline-none" 
                       placeholder="Paste Image URL..."
                     />
 
@@ -914,7 +994,7 @@ export default function App() {
                     <input type="number" value={newProduct.originalPrice} onChange={e => setNewProduct({...newProduct, originalPrice: e.target.value})} className="w-full border border-[#EBE8E1] p-2 rounded-2xl text-xs" placeholder="Original Price"/>
                   </div>
                   <input type="text" value={newProduct.badge} onChange={e => setNewProduct({...newProduct, badge: e.target.value})} className="w-full border border-[#EBE8E1] p-2 rounded-2xl text-xs" placeholder="Badge (e.g. Best Seller)"/>
-                  <button type="submit" className="w-full bg-[#8385A9] hover:bg-[#727498] text-white font-bold py-3 rounded-full transition min-h-[48px]">
+                  <button type="submit" className="w-full text-white font-bold py-3 rounded-full transition min-h-[48px]" style={{ backgroundColor: themeColors.primary }}>
                     {editingProductId ? 'Update Resource' : 'Publish Resource'}
                   </button>
                 </form>
@@ -934,7 +1014,7 @@ export default function App() {
                         </div>
                       </div>
                       <div className="flex space-x-2">
-                        <button onClick={() => startEditProduct(p)} className="bg-[#F5C5D8]/40 hover:bg-[#F5C5D8]/60 text-[#D37B9F] text-[10px] font-bold px-3 py-1.5 rounded-xl transition min-h-[36px]">
+                        <button onClick={() => startEditProduct(p)} className="bg-slate-100 hover:bg-slate-200 text-slate-700 text-[10px] font-bold px-3 py-1.5 rounded-xl transition min-h-[36px]">
                           ✏️ Edit
                         </button>
                         <button onClick={() => deleteProduct(p.id)} className="bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 text-[10px] font-bold px-3 py-1.5 rounded-xl transition min-h-[36px]">
@@ -979,7 +1059,7 @@ export default function App() {
                   <tbody className="divide-y divide-[#F5F3ED] text-[#3A3B52]">
                     {orders.map(o => (
                       <tr key={o.id} className="text-xs">
-                        <td className="p-2.5 font-bold text-[#8385A9]">{o.id}</td>
+                        <td className="p-2.5 font-bold" style={{ color: themeColors.primary }}>{o.id}</td>
                         <td className="p-2.5"><strong>{o.customer}</strong><br/><span className="text-[10px] text-slate-400">{o.date}</span></td>
                         <td className="p-2.5 max-w-[150px] truncate">{o.items}</td>
                         <td className="p-2.5 font-black">Rs. {o.total}.00</td>
