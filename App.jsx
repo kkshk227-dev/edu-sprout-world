@@ -1,4 +1,4 @@
- import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 export default function App() {
   // --- INJECT RUNNING BANNER KEYFRAME ANIMATION & GOOGLE FONTS ---
@@ -996,4 +996,4 @@ export default function App() {
       )}
     </div>
   );
-}
+} 
