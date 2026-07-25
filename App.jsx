@@ -29,13 +29,13 @@ export default function App() {
     document.head.appendChild(styleSheet);
   }, []);
 
-  // --- STORE LOGO STATE ---
-  const [storeLogo, setStoreLogo] = useState('🌱');
+  // --- BRAND LOGO STATE (EDITABLE IN ADMIN) ---
+  const [logoUrl, setLogoUrl] = useState('');
 
   // --- ANNOUNCEMENT BANNER STATE ---
   const [bannerConfig, setBannerConfig] = useState({
     enabled: true,
-    text: '🎉 SPECIAL SALE: Get 20% off all Printable Packs this week! Use code: SPROUT20 🎉',
+    text: '🎉 SPECIAL SALE: Get 20% off all Printable Packs this week! Use code: BRIDGE20 🎉',
     bgColor: '#FF8BA7',
     textColor: '#FFFFFF'
   });
@@ -68,9 +68,9 @@ export default function App() {
   const [contactInfo, setContactInfo] = useState({
     whatsapp: '+91 99999-99999',
     whatsappRaw: '919999999999',
-    email: 'support@edusproutworld.com',
-    instagram: '@edusproutworld',
-    instagramLink: 'https://instagram.com/edusproutworld',
+    email: 'support@paperbridge.com',
+    instagram: '@paperbridge',
+    instagramLink: 'https://instagram.com/paperbridge',
     supportHours: 'Mon–Sat (9 AM – 6 PM)'
   });
 
@@ -203,7 +203,9 @@ export default function App() {
     const file = e.target.files[0];
     if (file) {
       const reader = new FileReader();
-      reader.onloadend = () => setStoreLogo(reader.result);
+      reader.onloadend = () => {
+        setLogoUrl(reader.result);
+      };
       reader.readAsDataURL(file);
     }
   };
@@ -319,7 +321,7 @@ export default function App() {
 
       {/* Top Bar Switcher */}
       <div className="bg-[#5B7B4B] text-white px-4 sm:px-6 py-2 text-xs font-bold flex justify-between items-center">
-        <span className="truncate pr-2 font-medium tracking-wide">✨ Growing Curiosity, One Page at a Time ✨</span>
+        <span className="truncate pr-2 font-medium tracking-wide">✨ Bridging Imagination & Learning, One Page at a Time ✨</span>
         <button 
           onClick={() => setViewMode(viewMode === 'buyer' ? 'admin' : 'buyer')}
           className="bg-[#FF8BA7] hover:bg-[#ff7295] text-white px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition shadow-sm min-h-[48px] flex items-center justify-center shrink-0"
@@ -332,25 +334,25 @@ export default function App() {
       {/* BUYER MODE */}
       {viewMode === 'buyer' && (
         <>
-          {/* HEADER WITH DYNAMIC STORE LOGO & EXPANDED BRANDING */}
+          {/* HEADER WITH PAPER BRIDGE BRANDING */}
           <header className="bg-white sticky top-0 z-40 border-b border-green-100 shadow-xs py-3.5">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 flex justify-between items-center">
               <div onClick={() => setCheckoutStep('browse')} className="cursor-pointer flex items-center space-x-3 sm:space-x-5">
                 
-                {/* DYNAMIC LOGO CONTAINER */}
+                {/* DYNAMIC EDITABLE LOGO CONTAINER */}
                 <div className="w-14 h-14 sm:w-20 sm:h-20 flex-shrink-0 bg-pink-100 rounded-3xl flex items-center justify-center text-3xl sm:text-4xl shadow-inner border border-pink-200 overflow-hidden">
-                  {storeLogo.startsWith('data:image') || storeLogo.startsWith('http') ? (
-                    <img src={storeLogo} alt="Edu Sprout Logo" className="w-full h-full object-cover" />
+                  {logoUrl ? (
+                    <img src={logoUrl} alt="Paper Bridge Logo" className="w-full h-full object-cover" />
                   ) : (
-                    <span>{storeLogo}</span>
+                    <span>🌉</span>
                   )}
                 </div>
 
                 <div>
                   <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold text-[#3d592b] tracking-tight leading-none" style={{ fontFamily: "'Fredoka', sans-serif" }}>
-                    Edu Sprout <span className="text-[#FF8BA7]">World</span>
+                    Paper <span className="text-[#FF8BA7]">Bridge</span>
                   </h1>
-                  <p className="text-xs sm:text-sm font-bold text-pink-400 uppercase tracking-widest mt-1">Little Sprouts, Big Minds</p>
+                  <p className="text-xs sm:text-sm font-bold text-pink-400 uppercase tracking-widest mt-1">Bridging Play & Learning</p>
                 </div>
               </div>
               
@@ -525,7 +527,7 @@ export default function App() {
                               <ul className="mt-3 space-y-1 text-xs text-slate-600 border-t border-pink-50 pt-2 font-medium">
                                 {p.features.map((feat, idx) => (
                                   <li key={idx} className="flex items-center gap-1.5">
-                                    <span className="text-[#FF8BA7] font-bold">🌱</span> {feat}
+                                    <span className="text-[#FF8BA7] font-bold">✨</span> {feat}
                                   </li>
                                 ))}
                               </ul>
@@ -570,7 +572,7 @@ export default function App() {
               <footer className="bg-[#3D5233] text-slate-200 py-12 px-6 mt-12 text-xs">
                 <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
                   <div className="space-y-2">
-                    <h3 className="text-white font-bold text-lg flex items-center gap-2" style={{ fontFamily: "'Fredoka', sans-serif" }}>🌱 Edu Sprout World</h3>
+                    <h3 className="text-white font-bold text-lg flex items-center gap-2" style={{ fontFamily: "'Fredoka', sans-serif" }}>🌉 Paper Bridge</h3>
                     <p className="text-slate-300 leading-relaxed font-medium">Providing high-quality physical and digital learning materials to build strong academic foundations with love and care.</p>
                   </div>
                   <div>
@@ -682,8 +684,8 @@ export default function App() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 text-xs space-y-6">
           <div className="flex items-center justify-between pb-4 border-b border-green-200">
             <div>
-              <h2 className="text-lg font-bold text-slate-800 flex items-center gap-1.5" style={{ fontFamily: "'Fredoka', sans-serif" }}>⚙️ Store Control Center <span className="text-[10px] font-bold uppercase bg-[#5B7B4B] text-white px-2.5 py-0.5 rounded-full">Admin Panel</span></h2>
-              <p className="text-slate-500 font-medium">Manage store logo, banner sales, contact info, product catalog, categories, and customer orders.</p>
+              <h2 className="text-lg font-bold text-slate-800 flex items-center gap-1.5" style={{ fontFamily: "'Fredoka', sans-serif" }}>⚙️ Store Control Center <span className="text-[10px] font-bold uppercase bg-[#5B7B4B] text-white px-2.5 py-0.5 rounded-full">Paper Bridge Admin</span></h2>
+              <p className="text-slate-500 font-medium">Manage brand logo, banner sales, contact info, product catalog, categories, and customer orders.</p>
             </div>
             <button onClick={() => setViewMode('buyer')} className="bg-white hover:bg-slate-50 text-slate-700 px-4 py-2 rounded-full font-bold transition shadow-xs border border-green-100 min-h-[48px]">Exit Admin</button>
           </div>
@@ -693,6 +695,42 @@ export default function App() {
             {/* LEFT COLUMN */}
             <div className="space-y-6">
               
+              {/* EDIT BRAND LOGO ICON */}
+              <div className="bg-white p-5 rounded-3xl border border-pink-100 space-y-3 shadow-xs">
+                <h3 className="font-bold text-slate-800 uppercase tracking-wider text-[11px]">🖼️ Edit Brand Logo Icon</h3>
+                <div className="space-y-2 p-3 bg-pink-50/40 rounded-2xl border border-pink-100">
+                  <label className="block text-slate-600 font-bold text-[10px]">Upload New Logo File</label>
+                  <input 
+                    type="file" 
+                    accept="image/*" 
+                    onChange={handleLogoUpload} 
+                    className="w-full text-[10px] text-slate-500 file:mr-2 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-[10px] file:font-bold file:bg-[#FF8BA7] file:text-white hover:file:bg-[#ff7295]"
+                  />
+                  
+                  <p className="text-[9px] text-slate-400 text-center font-bold">OR</p>
+
+                  <input 
+                    type="text" 
+                    value={logoUrl} 
+                    onChange={e => setLogoUrl(e.target.value)} 
+                    className="w-full border border-pink-100 p-2 rounded-xl text-xs bg-white outline-none focus:border-[#FF8BA7]" 
+                    placeholder="Paste Logo Image URL..."
+                  />
+
+                  {logoUrl ? (
+                    <div className="mt-2 text-center flex flex-col items-center">
+                      <div className="w-12 h-12 rounded-2xl overflow-hidden border border-pink-200 mb-1">
+                        <img src={logoUrl} alt="Logo Preview" className="w-full h-full object-cover" />
+                      </div>
+                      <span className="text-[9px] text-green-600 font-bold">Custom Logo Active ✓</span>
+                      <button onClick={() => setLogoUrl('')} className="text-[9px] text-red-500 underline mt-1">Reset to Default Bridge Icon</button>
+                    </div>
+                  ) : (
+                    <p className="text-[9px] text-slate-400 text-center font-medium">Currently using default 🌉 bridge icon.</p>
+                  )}
+                </div>
+              </div>
+
               {/* EDIT ANNOUNCEMENT BANNER */}
               <div className="bg-white p-5 rounded-3xl border border-pink-100 space-y-3 shadow-xs">
                 <div className="flex justify-between items-center">
@@ -716,41 +754,6 @@ export default function App() {
                     className="w-full border border-pink-100 p-2.5 rounded-2xl text-xs outline-none focus:border-[#FF8BA7]" 
                     placeholder="e.g. 20% OFF SUMMER SALE..."
                   />
-                </div>
-              </div>
-
-              {/* 🖼️ EDIT STORE LOGO */}
-              <div className="bg-white p-5 rounded-3xl border border-pink-100 space-y-3 shadow-xs">
-                <h3 className="font-bold text-slate-800 uppercase tracking-wider text-[11px]">🖼️ Edit Store Logo</h3>
-                <div className="space-y-2.5 p-3 bg-pink-50/40 rounded-2xl border border-pink-100">
-                  <label className="block text-slate-600 font-bold text-[10px]">Upload Image or Paste Emoji</label>
-                  
-                  <input 
-                    type="file" 
-                    accept="image/*" 
-                    onChange={handleLogoUpload} 
-                    className="w-full text-[10px] text-slate-500 file:mr-2 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-[10px] file:font-bold file:bg-[#FF8BA7] file:text-white hover:file:bg-[#ff7295]"
-                  />
-                  
-                  <p className="text-[9px] text-slate-400 text-center font-bold">OR</p>
-
-                  <input 
-                    type="text" 
-                    value={storeLogo} 
-                    onChange={e => setStoreLogo(e.target.value)} 
-                    className="w-full border border-pink-100 p-2 rounded-xl text-xs bg-white outline-none focus:border-[#FF8BA7]" 
-                    placeholder="Paste Emoji (e.g. 📚) or Image URL"
-                  />
-
-                  <div className="mt-2 flex justify-center">
-                    <div className="w-12 h-12 bg-pink-100 rounded-xl flex items-center justify-center text-2xl overflow-hidden border border-pink-200">
-                      {storeLogo.startsWith('data:image') || storeLogo.startsWith('http') ? (
-                        <img src={storeLogo} alt="Logo Preview" className="w-full h-full object-cover" />
-                      ) : (
-                        <span>{storeLogo}</span>
-                      )}
-                    </div>
-                  </div>
                 </div>
               </div>
 
