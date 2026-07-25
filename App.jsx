@@ -5,7 +5,7 @@ export default function App() {
   useEffect(() => {
     // Load Fonts
     const fontLink = document.createElement('link');
-    fontLink.href = 'https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Quicksand:wght@500;600;700&display=swap';
+    fontLink.href = 'https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700;800&family=Quicksand:wght@400;500;600;700&display=swap';
     fontLink.rel = 'stylesheet';
     document.head.appendChild(fontLink);
 
@@ -20,7 +20,7 @@ export default function App() {
       .animate-marquee-scroll {
         display: inline-block;
         white-space: nowrap;
-        animation: marquee 18s linear infinite;
+        animation: marquee 20s linear infinite;
       }
       .animate-marquee-scroll:hover {
         animation-play-state: paused;
@@ -302,12 +302,12 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAF9F6] text-[#4A4B5E] pb-12 antialiased" style={{ fontFamily: "'Quicksand', sans-serif" }}>
+    <div className="min-h-screen bg-[#FAF9F6] text-[#3A3B52] pb-12 antialiased" style={{ fontFamily: "'Quicksand', sans-serif" }}>
       
       {/* 📣 DYNAMIC SCROLLING RUNNING ANNOUNCEMENT BANNER */}
       {bannerConfig.enabled && (
         <div 
-          className="overflow-hidden py-2 text-xs sm:text-sm font-bold border-b border-[#E5A1C0]/30"
+          className="overflow-hidden py-2.5 text-xs sm:text-sm font-bold border-b border-[#E5A1C0]/30 shadow-2xs"
           style={{ backgroundColor: bannerConfig.bgColor, color: bannerConfig.textColor, fontFamily: "'Fredoka', sans-serif" }}
         >
           <div className="animate-marquee-scroll">
@@ -320,11 +320,11 @@ export default function App() {
       )}
 
       {/* Top Bar Switcher */}
-      <div className="bg-[#8385A9] text-white px-4 sm:px-6 py-2 text-xs font-bold flex justify-between items-center">
+      <div className="bg-[#8385A9] text-white px-4 sm:px-6 py-2.5 text-xs font-bold flex justify-between items-center">
         <span className="truncate pr-2 font-medium tracking-wide">✨ Bridging Imagination & Learning, One Page at a Time ✨</span>
         <button 
           onClick={() => setViewMode(viewMode === 'buyer' ? 'admin' : 'buyer')}
-          className="bg-[#E5A1C0] hover:bg-[#d88eb0] text-white px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition shadow-sm min-h-[48px] flex items-center justify-center shrink-0"
+          className="bg-[#E5A1C0] hover:bg-[#d88eb0] text-white px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition shadow-2xs min-h-[48px] flex items-center justify-center shrink-0"
           style={{ fontFamily: "'Fredoka', sans-serif" }}
         >
           {viewMode === 'buyer' ? '🔒 Open Admin Panel' : '👋 Return to Storefront'}
@@ -334,25 +334,26 @@ export default function App() {
       {/* BUYER MODE */}
       {viewMode === 'buyer' && (
         <>
-          {/* HEADER WITH BORDERLESS LOGO */}
-          <header className="bg-white/80 backdrop-blur-md sticky top-0 z-40 border-b border-[#EBE8E1] shadow-xs py-3.5">
+          {/* HEADER WITH BROAD BRAND NAME */}
+          <header className="bg-white/90 backdrop-blur-md sticky top-0 z-40 border-b border-[#EBE8E1] shadow-2xs py-4">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 flex justify-between items-center">
               <div onClick={() => setCheckoutStep('browse')} className="cursor-pointer flex items-center space-x-3 sm:space-x-5">
                 
-                {/* CLEAN BORDERLESS LOGO CONTAINER */}
-                <div className="h-14 sm:h-20 flex-shrink-0 flex items-center justify-center text-3xl sm:text-4xl">
+                {/* LOGO CONTAINER */}
+                <div className="h-16 sm:h-22 flex-shrink-0 flex items-center justify-center text-3xl sm:text-4xl">
                   {logoUrl ? (
-                    <img src={logoUrl} alt="Paper Bridge Logo" className="h-full w-auto object-contain" />
+                    <img src={logoUrl} alt="Paper Bridge Logo" className="h-full w-auto object-contain transition-transform duration-200 hover:scale-105" />
                   ) : (
-                    <span>🌉</span>
+                    <span className="text-4xl">🌉</span>
                   )}
                 </div>
 
-                <div>
-                  <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold text-[#636585] tracking-tight leading-none" style={{ fontFamily: "'Fredoka', sans-serif" }}>
-                    Paper <span className="text-[#E5A1C0]">Bridge</span>
+                {/* BROAD BRAND NAME TYPOGRAPHY */}
+                <div className="flex flex-col justify-center">
+                  <h1 className="text-3xl sm:text-5xl md:text-6xl font-extrabold text-[#555776] tracking-wide leading-none" style={{ fontFamily: "'Fredoka', sans-serif" }}>
+                    Paper <span className="text-[#D37B9F]">Bridge</span>
                   </h1>
-                  <p className="text-xs sm:text-sm font-bold text-[#A8AABC] uppercase tracking-widest mt-1">Bridging Play & Learning</p>
+                  <p className="text-xs sm:text-sm font-bold text-[#A0A2B8] uppercase tracking-widest mt-1.5">Bridging Play & Learning</p>
                 </div>
               </div>
               
@@ -378,7 +379,7 @@ export default function App() {
           {checkoutStep === 'confirmation' && (
             <div className="max-w-md mx-auto my-16 bg-white p-8 rounded-3xl shadow-xs text-center border border-[#F5C5D8]/40 mx-4">
               <span className="text-5xl block mb-2">🎉</span>
-              <h2 className="text-2xl font-bold text-[#4A4B5E] mb-1" style={{ fontFamily: "'Fredoka', sans-serif" }}>Order Placed Successfully!</h2>
+              <h2 className="text-2xl font-bold text-[#3A3B52] mb-1" style={{ fontFamily: "'Fredoka', sans-serif" }}>Order Placed Successfully!</h2>
               <p className="text-xs text-slate-500 mb-6 font-medium">Your materials are getting routed. Confirmation sent.</p>
               <div className="bg-[#F5C5D8]/20 p-4 rounded-2xl mb-6 text-left text-xs border border-[#F5C5D8]/30">
                 <p className="font-bold text-slate-400">YOUR ORDER ID</p>
@@ -391,25 +392,28 @@ export default function App() {
 
           {checkoutStep === 'browse' && (
             <>
-              {/* HERO SECTION - PASTEL LOGO GRADIENT */}
-              <div className="bg-gradient-to-r from-[#F7E1EB]/60 via-[#E4E5F0]/60 to-[#E1EEDD]/60 py-10 sm:py-14 px-4 sm:px-6 border-b border-[#EBE8E1]">
+              {/* HERO SECTION WITH THINNER "NURTURE YOUNG MINDS" TEXT */}
+              <div className="bg-gradient-to-r from-[#F7E1EB]/60 via-[#E4E5F0]/60 to-[#E1EEDD]/60 py-12 sm:py-16 px-4 sm:px-6 border-b border-[#EBE8E1]">
                 <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
                   <div className="space-y-4 text-center md:text-left">
-                    <span className="bg-white/80 backdrop-blur-xs text-[#C5769D] text-xs font-bold uppercase px-4 py-1.5 rounded-full shadow-2xs border border-[#F5C5D8]/50 inline-block tracking-wide">
+                    <span className="bg-white/90 backdrop-blur-xs text-[#C5769D] text-xs font-bold uppercase px-4 py-1.5 rounded-full shadow-2xs border border-[#F5C5D8]/60 inline-block tracking-wider">
                       🌸 Loved by 10,000+ Parents
                     </span>
-                    <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#4D4E6B] leading-tight" style={{ fontFamily: "'Fredoka', sans-serif" }}>
+
+                    {/* SLIGHTLY THINNER & ELEGANT HERO HEADLINE */}
+                    <h2 className="text-3xl sm:text-4xl lg:text-5xl font-medium text-[#3D3E54] leading-tight" style={{ fontFamily: "'Fredoka', sans-serif" }}>
                       Nurture Young Minds <br />
-                      <span className="text-[#D37B9F]">With Thoughtful Resources</span>
+                      <span className="text-[#D37B9F] font-semibold">With Thoughtful Resources</span>
                     </h2>
-                    <p className="text-sm sm:text-base text-[#616378] max-w-lg leading-relaxed font-medium">
+
+                    <p className="text-sm sm:text-base text-[#52546A] max-w-lg leading-relaxed font-medium">
                       Discover beautifully crafted printed workbooks and instant digital packs designed to make reading, writing, math, and logic fun for young learners.
                     </p>
 
-                    <div className="pt-2">
+                    <div className="pt-3">
                       <button 
                         onClick={scrollToCatalog} 
-                        className="bg-[#8385A9] hover:bg-[#727498] text-white font-bold text-sm px-6 py-3.5 rounded-full shadow-sm transition transform hover:-translate-y-0.5 min-h-[48px] w-full sm:w-auto"
+                        className="bg-[#D37B9F] hover:bg-[#c26a8e] text-white font-bold text-sm px-8 py-4 rounded-full shadow-sm transition transform hover:-translate-y-0.5 min-h-[48px] w-full sm:w-auto tracking-wide uppercase"
                         style={{ fontFamily: "'Fredoka', sans-serif" }}
                       >
                         📚 Shop All Workbooks 👇
@@ -422,18 +426,18 @@ export default function App() {
                     <div className="bg-white/90 backdrop-blur-xs p-4 rounded-3xl border border-[#EBE8E1] shadow-2xs flex items-center space-x-3 text-left">
                       <span className="text-3xl">🎓</span>
                       <div>
-                        <p className="text-xs font-bold text-[#4A4B5E]">{expertEndorsement.quote}</p>
+                        <p className="text-xs font-bold text-[#3A3B52]">{expertEndorsement.quote}</p>
                         <p className="text-[11px] text-slate-500 font-medium">— {expertEndorsement.author}</p>
                       </div>
                     </div>
 
                     <div className="flex gap-2 justify-center">
-                      <div className="bg-white/80 backdrop-blur-xs p-4 rounded-3xl border border-[#EBE8E1] shadow-2xs flex-1">
-                        <p className="text-xl font-bold text-[#7BA370]" style={{ fontFamily: "'Fredoka', sans-serif" }}>100%</p>
+                      <div className="bg-white/85 backdrop-blur-xs p-4 rounded-3xl border border-[#EBE8E1] shadow-2xs flex-1">
+                        <p className="text-xl font-bold text-[#6B9E60]" style={{ fontFamily: "'Fredoka', sans-serif" }}>100%</p>
                         <p className="text-xs font-bold text-slate-500">Kid-Approved</p>
                       </div>
-                      <div className="bg-white/80 backdrop-blur-xs p-4 rounded-3xl border border-[#EBE8E1] shadow-2xs flex-1">
-                        <p className="text-xl font-bold text-[#E5A1C0]" style={{ fontFamily: "'Fredoka', sans-serif" }}>4.9 ★</p>
+                      <div className="bg-white/85 backdrop-blur-xs p-4 rounded-3xl border border-[#EBE8E1] shadow-2xs flex-1">
+                        <p className="text-xl font-bold text-[#D37B9F]" style={{ fontFamily: "'Fredoka', sans-serif" }}>4.9 ★</p>
                         <p className="text-xs font-bold text-slate-500">Parent Rating</p>
                       </div>
                     </div>
@@ -441,24 +445,26 @@ export default function App() {
                 </div>
               </div>
 
-              {/* PASTEL TRACKER BAR */}
+              {/* UNIFIED ORDER TRACKER BAR */}
               <div className="bg-[#EAEAF2] border-b border-[#DDDDE8] py-4 px-4 sm:px-6">
-                <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
-                  <span className="font-bold text-sm text-[#5B5D7A]" style={{ fontFamily: "'Fredoka', sans-serif" }}>📦 Track Your Order Shipment:</span>
-                  <div className="flex w-full sm:w-auto border border-[#D1D1DE] rounded-full overflow-hidden bg-white shadow-2xs">
+                <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3 text-xs bg-white/70 backdrop-blur-xs p-3.5 sm:p-4 rounded-3xl border border-[#DDDDE8]/60 shadow-2xs">
+                  <span className="font-bold text-sm text-[#4D4F6E] flex items-center gap-2" style={{ fontFamily: "'Fredoka', sans-serif" }}>
+                    <span>📦</span> Track Your Order Shipment:
+                  </span>
+                  <div className="flex w-full md:w-auto border border-[#CBD0DD] rounded-full overflow-hidden bg-white shadow-2xs">
                     <input 
                       type="text" 
                       placeholder="Enter Order ID (e.g. ORD-9832)" 
                       value={searchOrderId} 
                       onChange={e => setSearchOrderId(e.target.value)} 
-                      className="px-4 py-2.5 outline-none text-xs font-medium flex-1 sm:w-56 min-h-[48px]"
+                      className="px-4 py-2.5 outline-none text-xs font-medium flex-1 md:w-64 min-h-[48px]"
                     />
                     <button 
                       onClick={trackOrder} 
-                      className="bg-[#D388AC] hover:bg-[#c4779c] active:bg-[#b86c91] text-white font-bold px-6 py-2.5 transition min-h-[48px] shrink-0 text-xs"
+                      className="bg-[#8385A9] hover:bg-[#727498] active:bg-[#626488] text-white font-bold px-6 py-2.5 transition min-h-[48px] shrink-0 text-xs uppercase tracking-wider"
                       style={{ fontFamily: "'Fredoka', sans-serif" }}
                     >
-                      Find My Order
+                      Find Order
                     </button>
                   </div>
                 </div>
@@ -481,7 +487,7 @@ export default function App() {
                         <button 
                           key={sub.name} 
                           onClick={() => setSelectedSubject(sub.name)} 
-                          className={`flex items-center space-x-3 text-left px-4 py-3 rounded-2xl text-xs font-bold transition min-h-[48px] ${selectedSubject === sub.name ? 'bg-[#E5A1C0] text-white shadow-2xs' : 'hover:bg-[#F8F7F4] text-[#5B5D7A] bg-[#FAF9F6]'}`}
+                          className={`flex items-center space-x-3 text-left px-4 py-3 rounded-2xl text-xs font-bold transition min-h-[48px] ${selectedSubject === sub.name ? 'bg-[#E5A1C0] text-white shadow-2xs' : 'hover:bg-[#F8F7F4] text-[#4A4B5E] bg-[#FAF9F6]'}`}
                         >
                           <span className="text-lg">{sub.icon}</span>
                           <span>{sub.label}</span>
@@ -497,7 +503,7 @@ export default function App() {
                         <button 
                           key={cat} 
                           onClick={() => setSelectedCategory(cat)} 
-                          className={`text-left px-4 py-3 rounded-2xl text-xs font-bold transition min-h-[48px] ${selectedCategory === cat ? 'bg-[#8385A9] text-white shadow-2xs' : 'hover:bg-[#F8F7F4] text-[#5B5D7A] bg-[#FAF9F6]'}`}
+                          className={`text-left px-4 py-3 rounded-2xl text-xs font-bold transition min-h-[48px] ${selectedCategory === cat ? 'bg-[#8385A9] text-white shadow-2xs' : 'hover:bg-[#F8F7F4] text-[#4A4B5E] bg-[#FAF9F6]'}`}
                         >
                           {cat === 'All' ? '📚 All Formats' : cat}
                         </button>
@@ -519,8 +525,8 @@ export default function App() {
 
                         <div className="p-5 flex-1 flex flex-col justify-between space-y-3">
                           <div>
-                            <span className="text-xs font-bold text-[#57794D] bg-[#EFF6ED] px-3 py-1 rounded-full">{p.category}</span>
-                            <h4 className="font-bold text-base text-[#4A4B5E] mt-2 line-clamp-2 leading-snug" style={{ fontFamily: "'Fredoka', sans-serif" }}>{p.title}</h4>
+                            <span className="text-xs font-bold text-[#4B6B42] bg-[#EFF6ED] px-3 py-1 rounded-full">{p.category}</span>
+                            <h4 className="font-bold text-base text-[#3A3B52] mt-2 line-clamp-2 leading-snug" style={{ fontFamily: "'Fredoka', sans-serif" }}>{p.title}</h4>
                             <div className="text-amber-400 text-xs mt-1">⭐⭐⭐⭐⭐ <span className="text-slate-400 font-bold">({p.reviewsCount})</span></div>
                             
                             {p.features && (
@@ -536,7 +542,7 @@ export default function App() {
 
                           <div className="flex justify-between items-center pt-3 border-t border-[#F5F3ED]">
                             <div>
-                              <span className="text-lg font-bold text-[#4A4B5E]" style={{ fontFamily: "'Fredoka', sans-serif" }}>Rs. {p.price}.00</span>
+                              <span className="text-lg font-bold text-[#3A3B52]" style={{ fontFamily: "'Fredoka', sans-serif" }}>Rs. {p.price}.00</span>
                               {p.originalPrice > p.price && (
                                 <span className="text-xs text-slate-400 line-through ml-2">Rs. {p.originalPrice}.00</span>
                               )}
@@ -556,7 +562,7 @@ export default function App() {
                   <div className="bg-white rounded-3xl p-6 sm:p-8 border border-[#EBE8E1] shadow-2xs text-center space-y-4">
                     <span className="text-xs font-bold uppercase text-[#D37B9F] tracking-widest">💬 Verified Parent Reviews</span>
                     <div className="max-w-2xl mx-auto space-y-2">
-                      <p className="text-lg sm:text-xl font-bold text-[#4A4B5E] italic" style={{ fontFamily: "'Fredoka', sans-serif" }}>
+                      <p className="text-lg sm:text-xl font-bold text-[#3A3B52] italic" style={{ fontFamily: "'Fredoka', sans-serif" }}>
                         "{testimonials[activeTestimonial]?.text}"
                       </p>
                       <div className="text-amber-400 text-sm">⭐⭐⭐⭐⭐</div>
@@ -569,7 +575,7 @@ export default function App() {
               )}
 
               {/* FOOTER */}
-              <footer className="bg-[#606282] text-slate-200 py-12 px-6 mt-12 text-xs">
+              <footer className="bg-[#5B5D7A] text-slate-200 py-12 px-6 mt-12 text-xs">
                 <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
                   <div className="space-y-2">
                     <h3 className="text-white font-bold text-lg flex items-center gap-2" style={{ fontFamily: "'Fredoka', sans-serif" }}>🌉 Paper Bridge</h3>
@@ -615,7 +621,7 @@ export default function App() {
 
           {checkoutStep === 'details' && (
             <div className="max-w-md mx-auto my-12 bg-white p-6 rounded-3xl border border-[#EBE8E1] shadow-xs mx-4">
-              <h3 className="text-base font-bold text-[#4A4B5E] mb-4 flex items-center gap-1.5" style={{ fontFamily: "'Fredoka', sans-serif" }}>💳 Shipping & Order Details</h3>
+              <h3 className="text-base font-bold text-[#3A3B52] mb-4 flex items-center gap-1.5" style={{ fontFamily: "'Fredoka', sans-serif" }}>💳 Shipping & Order Details</h3>
               <form onSubmit={handleCheckoutSubmit} className="space-y-3 text-xs">
                 <div>
                   <label className="block text-slate-500 font-bold mb-1">Parent's Full Name</label>
@@ -641,14 +647,14 @@ export default function App() {
               <div className="absolute inset-y-0 right-0 max-w-xs w-full bg-white p-5 shadow-2xl flex flex-col justify-between border-l border-[#EBE8E1]">
                 <div>
                   <div className="flex justify-between items-center pb-3 border-b border-[#F5F3ED] mb-4">
-                    <h3 className="font-bold text-sm text-[#4A4B5E]" style={{ fontFamily: "'Fredoka', sans-serif" }}>Your Basket</h3>
+                    <h3 className="font-bold text-sm text-[#3A3B52]" style={{ fontFamily: "'Fredoka', sans-serif" }}>Your Basket</h3>
                     <button onClick={() => setIsCartOpen(false)} className="text-xl font-bold text-slate-400 p-2 min-h-[48px] min-w-[48px]">&times;</button>
                   </div>
                   {cart.length === 0 ? <p className="text-xs text-slate-400 text-center py-6">Your basket is empty.</p> : (
                     <div className="space-y-2">
                       {cart.map(i => (
                         <div key={i.id} className="flex justify-between items-center p-2.5 bg-[#FAF9F6] border border-[#EBE8E1] rounded-2xl text-xs">
-                          <div className="flex-1 min-w-0 pr-2"><h5 className="font-bold text-[#4A4B5E] truncate">{i.title}</h5><p className="text-[10px] text-[#8385A9] font-bold">Rs. {i.price} x {i.quantity}</p></div>
+                          <div className="flex-1 min-w-0 pr-2"><h5 className="font-bold text-[#3A3B52] truncate">{i.title}</h5><p className="text-[10px] text-[#8385A9] font-bold">Rs. {i.price} x {i.quantity}</p></div>
                           <div className="flex items-center space-x-1.5 bg-white px-2 py-0.5 rounded-xl border border-[#EBE8E1]"><button onClick={() => updateQuantity(i.id, -1)} className="text-slate-400 font-bold p-1 min-h-[36px]">-</button><span className="text-xs font-bold">{i.quantity}</span><button onClick={() => updateQuantity(i.id, 1)} className="text-slate-400 font-bold p-1 min-h-[36px]">+</button></div>
                         </div>
                       ))}
@@ -684,7 +690,7 @@ export default function App() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 text-xs space-y-6">
           <div className="flex items-center justify-between pb-4 border-b border-[#DDDDE8]">
             <div>
-              <h2 className="text-lg font-bold text-[#4A4B5E] flex items-center gap-1.5" style={{ fontFamily: "'Fredoka', sans-serif" }}>⚙️ Store Control Center <span className="text-[10px] font-bold uppercase bg-[#8385A9] text-white px-2.5 py-0.5 rounded-full">Paper Bridge Admin</span></h2>
+              <h2 className="text-lg font-bold text-[#3A3B52] flex items-center gap-1.5" style={{ fontFamily: "'Fredoka', sans-serif" }}>⚙️ Store Control Center <span className="text-[10px] font-bold uppercase bg-[#8385A9] text-white px-2.5 py-0.5 rounded-full">Paper Bridge Admin</span></h2>
               <p className="text-slate-500 font-medium">Manage brand logo, banner sales, contact info, product catalog, categories, and customer orders.</p>
             </div>
             <button onClick={() => setViewMode('buyer')} className="bg-white hover:bg-slate-50 text-slate-700 px-4 py-2 rounded-full font-bold transition shadow-2xs border border-[#EBE8E1] min-h-[48px]">Exit Admin</button>
@@ -697,7 +703,7 @@ export default function App() {
               
               {/* EDIT BRAND LOGO ICON */}
               <div className="bg-white p-5 rounded-3xl border border-[#EBE8E1] space-y-3 shadow-2xs">
-                <h3 className="font-bold text-[#4A4B5E] uppercase tracking-wider text-[11px]">🖼️ Edit Brand Logo Icon</h3>
+                <h3 className="font-bold text-[#3A3B52] uppercase tracking-wider text-[11px]">🖼️ Edit Brand Logo Icon</h3>
                 <div className="space-y-2 p-3 bg-[#FAF9F6] rounded-2xl border border-[#EBE8E1]">
                   <label className="block text-slate-600 font-bold text-[10px]">Upload New Logo File</label>
                   <input 
@@ -734,7 +740,7 @@ export default function App() {
               {/* EDIT ANNOUNCEMENT BANNER */}
               <div className="bg-white p-5 rounded-3xl border border-[#EBE8E1] space-y-3 shadow-2xs">
                 <div className="flex justify-between items-center">
-                  <h3 className="font-bold text-[#4A4B5E] uppercase tracking-wider text-[11px]">📢 Running Announcement Banner</h3>
+                  <h3 className="font-bold text-[#3A3B52] uppercase tracking-wider text-[11px]">📢 Running Announcement Banner</h3>
                   <label className="flex items-center cursor-pointer space-x-1 text-[10px] font-bold text-slate-500">
                     <input 
                       type="checkbox" 
@@ -759,7 +765,7 @@ export default function App() {
 
               {/* EDIT EXPERT ENDORSEMENT BADGE */}
               <div className="bg-white p-5 rounded-3xl border border-[#EBE8E1] space-y-3 shadow-2xs">
-                <h3 className="font-bold text-[#4A4B5E] uppercase tracking-wider text-[11px]">🎓 Edit Expert Endorsement Badge</h3>
+                <h3 className="font-bold text-[#3A3B52] uppercase tracking-wider text-[11px]">🎓 Edit Expert Endorsement Badge</h3>
                 <div className="space-y-2">
                   <div>
                     <label className="block text-slate-400 font-bold text-[10px] mb-0.5">Quote Text</label>
@@ -786,10 +792,10 @@ export default function App() {
 
               {/* MANAGE VERIFIED PARENT REVIEWS */}
               <div className="bg-white p-5 rounded-3xl border border-[#EBE8E1] shadow-2xs space-y-4">
-                <h3 className="font-bold text-[#4A4B5E] uppercase tracking-wider text-[11px]">💬 Manage Verified Parent Reviews ({testimonials.length})</h3>
+                <h3 className="font-bold text-[#3A3B52] uppercase tracking-wider text-[11px]">💬 Manage Verified Parent Reviews ({testimonials.length})</h3>
                 
                 <form onSubmit={handleAddReview} className="space-y-2.5 p-3 bg-[#FAF9F6] rounded-2xl border border-[#EBE8E1]">
-                  <p className="font-bold text-[#4A4B5E] text-[11px]">Add New Parent Review</p>
+                  <p className="font-bold text-[#3A3B52] text-[11px]">Add New Parent Review</p>
                   <div className="grid grid-cols-2 gap-2">
                     <input type="text" required placeholder="Parent Name (e.g. Priya S.)" value={newReview.name} onChange={e => setNewReview({...newReview, name: e.target.value})} className="border border-[#EBE8E1] p-2 rounded-xl bg-white text-xs"/>
                     <input type="text" placeholder="Location (e.g. Bangalore)" value={newReview.location} onChange={e => setNewReview({...newReview, location: e.target.value})} className="border border-[#EBE8E1] p-2 rounded-xl bg-white text-xs"/>
@@ -803,7 +809,7 @@ export default function App() {
                   {testimonials.map(t => (
                     <div key={t.id} className="flex justify-between items-center p-3 bg-white border border-[#EBE8E1] rounded-2xl shadow-2xs">
                       <div>
-                        <p className="font-bold text-[#4A4B5E]">"{t.text}"</p>
+                        <p className="font-bold text-[#3A3B52]">"{t.text}"</p>
                         <p className="text-[10px] text-slate-400 font-medium">— {t.name} ({t.location || 'India'}) • {t.role}</p>
                       </div>
                       <button onClick={() => handleDeleteReview(t.id)} className="text-red-500 font-bold hover:text-red-700 p-2 text-xs">✕</button>
@@ -819,7 +825,7 @@ export default function App() {
               
               {/* MANAGE SUBJECT CATEGORIES */}
               <div className="bg-white p-5 rounded-3xl border border-[#EBE8E1] shadow-2xs space-y-3">
-                <h3 className="font-bold text-[#4A4B5E] uppercase tracking-wider text-[11px]">🏷️ Manage Subject Categories</h3>
+                <h3 className="font-bold text-[#3A3B52] uppercase tracking-wider text-[11px]">🏷️ Manage Subject Categories</h3>
                 <form onSubmit={addCategory} className="flex gap-2">
                   <input type="text" value={newSubject.icon} onChange={e => setNewSubject({...newSubject, icon: e.target.value})} className="w-16 border border-[#EBE8E1] p-2 rounded-2xl text-xs text-center" placeholder="Icon"/>
                   <input type="text" required value={newSubject.name} onChange={e => setNewSubject({...newSubject, name: e.target.value})} className="flex-1 border border-[#EBE8E1] p-2 rounded-2xl text-xs" placeholder="New Category Name..."/>
@@ -830,7 +836,7 @@ export default function App() {
                   {subjectList.map(sub => (
                     <div key={sub.name} className="flex items-center space-x-1 bg-[#FAF9F6] border border-[#EBE8E1] px-3 py-1.5 rounded-xl">
                       <span>{sub.icon}</span>
-                      <span className="font-bold text-[#4A4B5E]">{sub.name}</span>
+                      <span className="font-bold text-[#3A3B52]">{sub.name}</span>
                       {sub.name !== 'All' && (
                         <button onClick={() => deleteCategory(sub.name)} className="ml-1 text-red-500 hover:text-red-700 font-bold p-1">✕</button>
                       )}
@@ -842,7 +848,7 @@ export default function App() {
               {/* ADD / EDIT PRODUCT WITH FILE UPLOAD */}
               <div className="bg-white p-5 rounded-3xl border border-[#EBE8E1] space-y-3 shadow-2xs">
                 <div className="flex justify-between items-center">
-                  <h3 className="font-bold text-[#4A4B5E] uppercase tracking-wider text-[11px]">
+                  <h3 className="font-bold text-[#3A3B52] uppercase tracking-wider text-[11px]">
                     {editingProductId ? '✏️ Edit Existing Resource' : '➕ Add New Resource'}
                   </h3>
                   {editingProductId && (
@@ -916,14 +922,14 @@ export default function App() {
 
               {/* MANAGE STORE CATALOG */}
               <div className="bg-white p-5 rounded-3xl border border-[#EBE8E1] shadow-2xs">
-                <h3 className="font-bold text-[#4A4B5E] uppercase tracking-wider text-[11px] mb-3">📦 Manage Store Catalog ({products.length} Products)</h3>
+                <h3 className="font-bold text-[#3A3B52] uppercase tracking-wider text-[11px] mb-3">📦 Manage Store Catalog ({products.length} Products)</h3>
                 <div className="space-y-2">
                   {products.map(p => (
                     <div key={p.id} className="flex items-center justify-between p-3 bg-[#FAF9F6] border border-[#EBE8E1] rounded-2xl">
                       <div className="flex items-center space-x-3">
                         <img src={p.img} alt={p.title} className="w-10 h-10 object-cover rounded-xl border border-[#EBE8E1]"/>
                         <div>
-                          <h5 className="font-bold text-[#4A4B5E] line-clamp-1">{p.title}</h5>
+                          <h5 className="font-bold text-[#3A3B52] line-clamp-1">{p.title}</h5>
                           <p className="text-[10px] text-slate-400">{p.subjectCategory || 'General'} • Rs. {p.price}.00</p>
                         </div>
                       </div>
@@ -942,7 +948,7 @@ export default function App() {
 
               {/* EDIT STORE CONTACT DETAILS */}
               <div className="bg-white p-5 rounded-3xl border border-[#EBE8E1] space-y-3 shadow-2xs">
-                <h3 className="font-bold text-[#4A4B5E] uppercase tracking-wider text-[11px]">📞 Edit Store Contact Information</h3>
+                <h3 className="font-bold text-[#3A3B52] uppercase tracking-wider text-[11px]">📞 Edit Store Contact Information</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
                     <label className="block text-slate-400 font-bold text-[10px] mb-0.5">WhatsApp Number (Display Text)</label>
@@ -965,12 +971,12 @@ export default function App() {
 
               {/* ORDER PIPELINE TABLE */}
               <div className="bg-white p-5 rounded-3xl border border-[#EBE8E1] overflow-x-auto shadow-2xs">
-                <h3 className="font-bold text-[#4A4B5E] uppercase tracking-wider text-[11px] mb-3">📥 Received Customer Orders</h3>
+                <h3 className="font-bold text-[#3A3B52] uppercase tracking-wider text-[11px] mb-3">📥 Received Customer Orders</h3>
                 <table className="w-full text-left border-collapse">
                   <thead>
                     <tr className="bg-[#FAF9F6] text-slate-400 font-bold uppercase border-b border-[#EBE8E1] text-[10px]"><th className="p-2.5">Order ID</th><th className="p-2.5">Customer</th><th className="p-2.5">Products</th><th className="p-2.5">Total</th><th className="p-2.5 text-right">Status</th></tr>
                   </thead>
-                  <tbody className="divide-y divide-[#F5F3ED] text-[#4A4B5E]">
+                  <tbody className="divide-y divide-[#F5F3ED] text-[#3A3B52]">
                     {orders.map(o => (
                       <tr key={o.id} className="text-xs">
                         <td className="p-2.5 font-bold text-[#8385A9]">{o.id}</td>
@@ -996,4 +1002,4 @@ export default function App() {
       )}
     </div>
   );
-} 
+}
