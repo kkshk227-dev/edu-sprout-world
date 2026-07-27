@@ -10,7 +10,8 @@ export default function App() {
   });
 
   // --- BRAND LOGO POSITIONING & SIZE CONFIG (EDITABLE IN ADMIN) ---
-  const [logoUrl, setLogoUrl] = useState('');
+  // Change '/logo.png' below to your uploaded logo path or direct web image URL
+  const [logoUrl, setLogoUrl] = useState('/logo.png');
   const [logoHeight, setLogoHeight] = useState(85); // Height in pixels
   const [logoOffsetX, setLogoOffsetX] = useState(0); // Left/Right shift (-50px to +50px)
   const [logoOffsetY, setLogoOffsetY] = useState(0); // Up/Down shift (-50px to +50px)
@@ -609,19 +610,24 @@ export default function App() {
                 </section>
               )}
 
-              {/* FOOTER WITH ENLARGED LOGO & BOLD TYPOGRAPHY */}
+              {/* FOOTER WITH CLEAN NO-BOX LOGO & FULL ADMIN TRANSFORM CONTROLS */}
               <footer className="text-slate-200 py-12 px-6 mt-12 text-xs" style={{ backgroundColor: themeColors.primary }}>
                 <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
                   <div className="space-y-4">
                     
-                    {/* ENLARGED FOOTER BRANDING (CONTAINER & FONT SCALED UP) */}
+                    {/* FOOTER BRANDING WITH INHERITED POSITION & SCALE CONTROLS */}
                     <div className="flex items-center space-x-3 sm:space-x-4">
                       {logoUrl ? (
-                        <div className="bg-white/95 p-2 rounded-2xl shadow-sm flex items-center justify-center shrink-0">
+                        <div className="flex items-center justify-center shrink-0 overflow-visible">
                           <img 
                             src={logoUrl} 
                             alt="Paper Bridge Logo" 
-                            style={{ height: `${Math.max(logoHeight * 0.8, 55)}px`, width: 'auto' }}
+                            style={{ 
+                              height: `${logoHeight}px`, 
+                              width: 'auto',
+                              transform: `translate(${logoOffsetX}px, ${logoOffsetY}px) scale(${logoScale})`,
+                              transition: 'transform 0.1s ease-out'
+                            }}
                             className="object-contain" 
                           />
                         </div>
@@ -821,7 +827,7 @@ export default function App() {
                   {/* UP / DOWN SHIFT */}
                   <div>
                     <div className="flex justify-between text-[10px] font-bold text-slate-600 mb-1">
-                      <span>Up / Down Shift (Y)</span>
+                      <span>Up / Down Shift ($Y$)</span>
                       <span>{logoOffsetY}px</span>
                     </div>
                     <input 
@@ -837,7 +843,7 @@ export default function App() {
                   {/* LEFT / RIGHT SHIFT */}
                   <div>
                     <div className="flex justify-between text-[10px] font-bold text-slate-600 mb-1">
-                      <span>Left / Right Shift (X)</span>
+                      <span>Left / Right Shift ($X$)</span>
                       <span>{logoOffsetX}px</span>
                     </div>
                     <input 
