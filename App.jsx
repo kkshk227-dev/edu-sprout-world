@@ -11,12 +11,12 @@ export default function App() {
 
   // --- BRAND LOGO CONFIG ---
   // Replace '/logo.png' below with your direct hosted image link if using Option 1
-  const [logoUrl, setLogoUrl] = useState('https://i.ibb.co/jvHcxPt9/no-bg2.png');
+  const [logoUrl, setLogoUrl] = useState('/logo.png');
   const [logoError, setLogoError] = useState(false);
   const [logoHeight, setLogoHeight] = useState(85); // Height in pixels
-  const [logoOffsetX, setLogoOffsetX] = useState(-7); // Left/Right shift (-50px to +50px)
-  const [logoOffsetY, setLogoOffsetY] = useState(18; // Up/Down shift (-50px to +50px)
-  const [logoScale, setLogoScale] = useState(2.0);   // Zoom multiplier (0.5x to 2.5x)
+  const [logoOffsetX, setLogoOffsetX] = useState(0); // Left/Right shift (-50px to +50px)
+  const [logoOffsetY, setLogoOffsetY] = useState(0); // Up/Down shift (-50px to +50px)
+  const [logoScale, setLogoScale] = useState(1.4);   // Zoom multiplier (0.5x to 2.5x)
 
   // Reset image error state whenever logoUrl changes
   useEffect(() => {
