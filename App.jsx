@@ -13,9 +13,9 @@ export default function App() {
   // Change '/logo.png' below to your uploaded logo path or direct web image URL
   const [logoUrl, setLogoUrl] = useState('https://i.ibb.co/jvHcxPt9/no-bg2.png');
   const [logoHeight, setLogoHeight] = useState(85); // Height in pixels
-  const [logoOffsetX, setLogoOffsetX] = useState(0); // Left/Right shift (-50px to +50px)
-  const [logoOffsetY, setLogoOffsetY] = useState(0); // Up/Down shift (-50px to +50px)
-  const [logoScale, setLogoScale] = useState(1.4);   // Zoom multiplier (0.5x to 2.5x)
+  const [logoOffsetX, setLogoOffsetX] = useState(-7); // Left/Right shift (-50px to +50px)
+  const [logoOffsetY, setLogoOffsetY] = useState(18); // Up/Down shift (-50px to +50px)
+  const [logoScale, setLogoScale] = useState(2.0);   // Zoom multiplier (0.5x to 2.5x)
 
   // Function to reset logo alignment back to standard center
   const resetLogoAlignment = () => {
