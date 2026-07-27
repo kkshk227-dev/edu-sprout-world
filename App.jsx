@@ -9,9 +9,20 @@ export default function App() {
     bgSoft: '#FAF9F6',    // Off-white paper background
   });
 
-  // --- BRAND LOGO CONFIG (EDITABLE IN ADMIN) ---
+  // --- BRAND LOGO POSITIONING & SIZE CONFIG (EDITABLE IN ADMIN) ---
   const [logoUrl, setLogoUrl] = useState('');
-  const [logoHeight, setLogoHeight] = useState(85); // Fits snugly within fixed header band
+  const [logoHeight, setLogoHeight] = useState(85); // Height in pixels
+  const [logoOffsetX, setLogoOffsetX] = useState(0); // Left/Right shift (-50px to +50px)
+  const [logoOffsetY, setLogoOffsetY] = useState(0); // Up/Down shift (-50px to +50px)
+  const [logoScale, setLogoScale] = useState(1.4);   // Zoom multiplier (0.5x to 2.5x)
+
+  // Function to reset logo alignment back to standard center
+  const resetLogoAlignment = () => {
+    setLogoOffsetX(0);
+    setLogoOffsetY(0);
+    setLogoScale(1.0);
+    setLogoHeight(80);
+  };
 
   // --- INJECT FONTS & RUNNING BANNER KEYFRAME ANIMATION ---
   useEffect(() => {
@@ -343,21 +354,26 @@ export default function App() {
       {/* BUYER MODE */}
       {viewMode === 'buyer' && (
         <>
-          {/* HEADER BAND - FIXED HEIGHT ASPECT RATIO */}
+          {/* HEADER BAND */}
           <header className="bg-white/90 backdrop-blur-md sticky top-0 z-40 border-b border-[#EBE8E1] shadow-2xs py-2 overflow-hidden">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 flex justify-between items-center h-16 sm:h-20">
               
-              {/* TIGHT LOGO & BRAND WRAPPER */}
+              {/* BRAND WRAPPER */}
               <div onClick={() => setCheckoutStep('browse')} className="cursor-pointer flex items-center space-x-1 sm:space-x-2 h-full">
                 
-                {/* LOGO IMAGE - SCALED TO FILL HEIGHT WITHOUT INCREASING BAND SIZE */}
+                {/* LOGO IMAGE CONTAINER WITH FULL FREE FORM TRANSFORM */}
                 <div className="flex-shrink-0 flex items-center justify-center h-full overflow-visible">
                   {logoUrl ? (
                     <img 
                       src={logoUrl} 
                       alt="Paper Bridge Logo" 
-                      style={{ height: `${logoHeight}px`, width: 'auto' }}
-                      className="object-contain scale-135 sm:scale-150 transform transition-all duration-200 hover:scale-160 -my-2" 
+                      style={{ 
+                        height: `${logoHeight}px`, 
+                        width: 'auto',
+                        transform: `translate(${logoOffsetX}px, ${logoOffsetY}px) scale(${logoScale})`,
+                        transition: 'transform 0.1s ease-out'
+                      }}
+                      className="object-contain" 
                     />
                   ) : (
                     <span className="text-4xl sm:text-5xl">🌉</span>
@@ -764,23 +780,70 @@ export default function App() {
                 </div>
               </div>
 
-              {/* EDIT BRAND LOGO ICON & ADJUST PIXEL HEIGHT */}
+              {/* EDIT BRAND LOGO & POSITION CONTROLS */}
               <div className="bg-white p-5 rounded-3xl border border-[#EBE8E1] space-y-3 shadow-2xs">
-                <h3 className="font-bold text-[#3A3B52] uppercase tracking-wider text-[11px]">🖼️ Edit Brand Logo & Display Size</h3>
+                <div className="flex justify-between items-center">
+                  <h3 className="font-bold text-[#3A3B52] uppercase tracking-wider text-[11px]">🖼️ Logo Position & Scale Controls</h3>
+                  <button 
+                    onClick={resetLogoAlignment}
+                    className="text-[10px] font-bold text-white px-3 py-1 rounded-full shadow-2xs hover:opacity-90"
+                    style={{ backgroundColor: themeColors.accent }}
+                  >
+                    🎯 Center Logo
+                  </button>
+                </div>
+
                 <div className="space-y-3 p-3 bg-[#FAF9F6] rounded-2xl border border-[#EBE8E1]">
+                  {/* UP / DOWN SHIFT */}
                   <div>
-                    <label className="block text-slate-600 font-bold text-[10px] mb-1">Logo Height ({logoHeight}px)</label>
+                    <div className="flex justify-between text-[10px] font-bold text-slate-600 mb-1">
+                      <span>Up / Down Shift ($Y$)</span>
+                      <span>{logoOffsetY}px</span>
+                    </div>
                     <input 
                       type="range" 
-                      min="40" 
-                      max="140" 
-                      value={logoHeight} 
-                      onChange={e => setLogoHeight(Number(e.target.value))}
+                      min="-50" 
+                      max="50" 
+                      value={logoOffsetY} 
+                      onChange={e => setLogoOffsetY(Number(e.target.value))}
                       className="w-full accent-[#E5A1C0] cursor-pointer"
                     />
                   </div>
 
+                  {/* LEFT / RIGHT SHIFT */}
                   <div>
+                    <div className="flex justify-between text-[10px] font-bold text-slate-600 mb-1">
+                      <span>Left / Right Shift ($X$)</span>
+                      <span>{logoOffsetX}px</span>
+                    </div>
+                    <input 
+                      type="range" 
+                      min="-50" 
+                      max="50" 
+                      value={logoOffsetX} 
+                      onChange={e => setLogoOffsetX(Number(e.target.value))}
+                      className="w-full accent-[#E5A1C0] cursor-pointer"
+                    />
+                  </div>
+
+                  {/* SCALE MULTIPLIER */}
+                  <div>
+                    <div className="flex justify-between text-[10px] font-bold text-slate-600 mb-1">
+                      <span>Zoom / Scale Factor</span>
+                      <span>{logoScale.toFixed(1)}x</span>
+                    </div>
+                    <input 
+                      type="range" 
+                      min="0.5" 
+                      max="2.5" 
+                      step="0.1"
+                      value={logoScale} 
+                      onChange={e => setLogoScale(Number(e.target.value))}
+                      className="w-full accent-[#E5A1C0] cursor-pointer"
+                    />
+                  </div>
+
+                  <div className="pt-2 border-t border-[#EBE8E1]">
                     <label className="block text-slate-600 font-bold text-[10px]">Upload New Logo File</label>
                     <input 
                       type="file" 
@@ -802,9 +865,6 @@ export default function App() {
 
                   {logoUrl ? (
                     <div className="mt-2 text-center flex flex-col items-center">
-                      <div className="border border-[#EBE8E1] mb-1 p-2 rounded-xl bg-white">
-                        <img src={logoUrl} alt="Logo Preview" style={{ height: `${Math.min(logoHeight, 80)}px`, width: 'auto' }} className="object-contain" />
-                      </div>
                       <span className="text-[9px] text-green-600 font-bold">Custom Logo Active ✓</span>
                       <button onClick={() => setLogoUrl('')} className="text-[9px] text-red-500 underline mt-1">Reset to Default Bridge Icon</button>
                     </div>
