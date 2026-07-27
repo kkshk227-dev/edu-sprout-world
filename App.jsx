@@ -609,31 +609,39 @@ export default function App() {
                 </section>
               )}
 
-              {/* FOOTER WITH HIGH-CONTRAST BRANDING & CLEAN LOGO DISPLAY */}
+              {/* FOOTER WITH ENLARGED LOGO & BOLD TYPOGRAPHY */}
               <footer className="text-slate-200 py-12 px-6 mt-12 text-xs" style={{ backgroundColor: themeColors.primary }}>
                 <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
-                  <div className="space-y-3">
+                  <div className="space-y-4">
                     
-                    {/* CLEANED UP FOOTER BRAND HEADER */}
-                    <div className="flex items-center space-x-3">
+                    {/* ENLARGED FOOTER BRANDING (CONTAINER & FONT SCALED UP) */}
+                    <div className="flex items-center space-x-3 sm:space-x-4">
                       {logoUrl ? (
-                        <div className="bg-white/95 p-1.5 rounded-2xl shadow-xs flex items-center justify-center">
-                          <img src={logoUrl} alt="Paper Bridge Logo" className="h-10 w-auto object-contain" />
+                        <div className="bg-white/95 p-2 rounded-2xl shadow-sm flex items-center justify-center shrink-0">
+                          <img 
+                            src={logoUrl} 
+                            alt="Paper Bridge Logo" 
+                            style={{ height: `${Math.max(logoHeight * 0.8, 55)}px`, width: 'auto' }}
+                            className="object-contain" 
+                          />
                         </div>
                       ) : (
-                        <span className="text-3xl">🌉</span>
+                        <span className="text-4xl sm:text-5xl">🌉</span>
                       )}
-                      <h3 className="text-white font-bold text-2xl tracking-normal" style={{ fontFamily }}>
+                      
+                      <h3 className="text-white font-bold text-3xl sm:text-4xl tracking-normal leading-none" style={{ fontFamily }}>
                         Paper <span className="text-[#FFD1E3]">Bridge</span>
                       </h3>
                     </div>
 
-                    <p className="text-slate-200 leading-relaxed font-medium">Providing high-quality physical and digital learning materials to build strong academic foundations with love and care.</p>
+                    <p className="text-slate-200 leading-relaxed font-medium text-xs sm:text-sm">
+                      Providing high-quality physical and digital learning materials to build strong academic foundations with love and care.
+                    </p>
                   </div>
 
                   <div>
-                    <h4 className="text-white font-bold mb-3 text-sm">Why Parents Trust Us</h4>
-                    <ul className="space-y-2 text-slate-200 font-medium">
+                    <h4 className="text-white font-bold mb-3 text-sm sm:text-base">Why Parents Trust Us</h4>
+                    <ul className="space-y-2 text-slate-200 font-medium text-xs sm:text-sm">
                       <li>• High-GSM Child-Safe Paper</li>
                       <li>• Instant Download Access</li>
                       <li>• Aligned with Foundational Curriculums</li>
@@ -641,8 +649,8 @@ export default function App() {
                   </div>
 
                   <div>
-                    <h4 className="text-white font-bold mb-3 text-sm">Get in Touch</h4>
-                    <div className="space-y-2.5 text-slate-200 font-medium">
+                    <h4 className="text-white font-bold mb-3 text-sm sm:text-base">Get in Touch</h4>
+                    <div className="space-y-2.5 text-slate-200 font-medium text-xs sm:text-sm">
                       <a 
                         href={`https://wa.me/${contactInfo.whatsappRaw}`} 
                         target="_blank" 
@@ -660,7 +668,7 @@ export default function App() {
                         📸 <a href={contactInfo.instagramLink} target="_blank" rel="noreferrer" className="hover:underline">{contactInfo.instagram}</a>
                       </p>
 
-                      <p className="text-[10px] text-slate-300 pt-1">
+                      <p className="text-[11px] text-slate-300 pt-1">
                         ⏰ {contactInfo.supportHours}
                       </p>
                     </div>
