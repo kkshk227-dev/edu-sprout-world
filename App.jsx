@@ -11,7 +11,7 @@ export default function App() {
 
   // --- BRAND LOGO POSITIONING & SIZE CONFIG (EDITABLE IN ADMIN) ---
   // Change '/logo.png' below to your uploaded logo path or direct web image URL
-  const [logoUrl, setLogoUrl] = useState(https://ibb.co/GvFK14mf);
+  const [logoUrl, setLogoUrl] = useState('https://i.ibb.co/jvHcxPt9/no-bg2.png');
   const [logoHeight, setLogoHeight] = useState(85); // Height in pixels
   const [logoOffsetX, setLogoOffsetX] = useState(0); // Left/Right shift (-50px to +50px)
   const [logoOffsetY, setLogoOffsetY] = useState(0); // Up/Down shift (-50px to +50px)
