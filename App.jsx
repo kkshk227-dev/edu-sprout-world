@@ -9,6 +9,10 @@ export default function App() {
     bgSoft: '#FAF9F6',    // Off-white paper background
   });
 
+  // --- BRAND LOGO CONFIG (EDITABLE IN ADMIN) ---
+  const [logoUrl, setLogoUrl] = useState('');
+  const [logoHeight, setLogoHeight] = useState(110); // Direct pixel height for logo
+
   // --- INJECT FONTS & RUNNING BANNER KEYFRAME ANIMATION ---
   useEffect(() => {
     // Load Fonts dynamically
@@ -36,9 +40,6 @@ export default function App() {
     `;
     document.head.appendChild(styleSheet);
   }, []);
-
-  // --- BRAND LOGO STATE ---
-  const [logoUrl, setLogoUrl] = useState('');
 
   // --- ANNOUNCEMENT BANNER STATE ---
   const [bannerConfig, setBannerConfig] = useState({
@@ -342,23 +343,28 @@ export default function App() {
       {/* BUYER MODE */}
       {viewMode === 'buyer' && (
         <>
-          {/* HEADER WITH TIGHTENED LOGO AND COMPACT BRAND NAME */}
+          {/* HEADER WITH FULLY UNCONSTRAINED LOGO SIZE */}
           <header className="bg-white/90 backdrop-blur-md sticky top-0 z-40 border-b border-[#EBE8E1] shadow-2xs py-2">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 flex justify-between items-center">
               
-              {/* TIGHT GAP BETWEEN LOGO & BRAND TEXT */}
-              <div onClick={() => setCheckoutStep('browse')} className="cursor-pointer flex items-center space-x-1.5 sm:space-x-3">
+              {/* TIGHT SPACE LOGO & NAME WRAPPER */}
+              <div onClick={() => setCheckoutStep('browse')} className="cursor-pointer flex items-center space-x-2 sm:space-x-4">
                 
-                {/* PROPORTIONAL LOGO IMAGE CONTAINER */}
-                <div className="h-16 sm:h-24 md:h-28 flex-shrink-0 flex items-center justify-center">
+                {/* DIRECT PIXEL CONTROLLED LOGO IMAGE */}
+                <div className="flex-shrink-0 flex items-center justify-center">
                   {logoUrl ? (
-                    <img src={logoUrl} alt="Paper Bridge Logo" className="h-full w-auto max-w-[140px] sm:max-w-[200px] object-contain transition-transform duration-200 hover:scale-105" />
+                    <img 
+                      src={logoUrl} 
+                      alt="Paper Bridge Logo" 
+                      style={{ height: `${logoHeight}px`, width: 'auto' }}
+                      className="object-contain transition-all duration-200 hover:scale-105" 
+                    />
                   ) : (
                     <span className="text-4xl sm:text-5xl md:text-6xl">🌉</span>
                   )}
                 </div>
 
-                {/* COMPACT & NARROW BRAND TYPOGRAPHY */}
+                {/* COMPACT BRAND TYPOGRAPHY */}
                 <div className="flex flex-col justify-center">
                   <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold text-[#555776] tracking-normal leading-tight" style={{ fontFamily }}>
                     Paper <span style={{ color: themeColors.accent }}>Bridge</span>
@@ -758,17 +764,31 @@ export default function App() {
                 </div>
               </div>
 
-              {/* EDIT BRAND LOGO ICON */}
+              {/* EDIT BRAND LOGO ICON & ADJUST PIXEL HEIGHT */}
               <div className="bg-white p-5 rounded-3xl border border-[#EBE8E1] space-y-3 shadow-2xs">
-                <h3 className="font-bold text-[#3A3B52] uppercase tracking-wider text-[11px]">🖼️ Edit Brand Logo Icon</h3>
-                <div className="space-y-2 p-3 bg-[#FAF9F6] rounded-2xl border border-[#EBE8E1]">
-                  <label className="block text-slate-600 font-bold text-[10px]">Upload New Logo File</label>
-                  <input 
-                    type="file" 
-                    accept="image/*" 
-                    onChange={handleLogoUpload} 
-                    className="w-full text-[10px] text-slate-500 file:mr-2 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-[10px] file:font-bold file:bg-[#E5A1C0] file:text-white hover:file:bg-[#d88eb0]"
-                  />
+                <h3 className="font-bold text-[#3A3B52] uppercase tracking-wider text-[11px]">🖼️ Edit Brand Logo & Display Size</h3>
+                <div className="space-y-3 p-3 bg-[#FAF9F6] rounded-2xl border border-[#EBE8E1]">
+                  <div>
+                    <label className="block text-slate-600 font-bold text-[10px] mb-1">Logo Height ({logoHeight}px)</label>
+                    <input 
+                      type="range" 
+                      min="40" 
+                      max="200" 
+                      value={logoHeight} 
+                      onChange={e => setLogoHeight(Number(e.target.value))}
+                      className="w-full accent-[#E5A1C0] cursor-pointer"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-slate-600 font-bold text-[10px]">Upload New Logo File</label>
+                    <input 
+                      type="file" 
+                      accept="image/*" 
+                      onChange={handleLogoUpload} 
+                      className="w-full text-[10px] text-slate-500 file:mr-2 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-[10px] file:font-bold file:bg-[#E5A1C0] file:text-white hover:file:bg-[#d88eb0] mt-1"
+                    />
+                  </div>
                   
                   <p className="text-[9px] text-slate-400 text-center font-bold">OR</p>
 
@@ -782,8 +802,8 @@ export default function App() {
 
                   {logoUrl ? (
                     <div className="mt-2 text-center flex flex-col items-center">
-                      <div className="h-20 w-auto overflow-hidden border border-[#EBE8E1] mb-1 p-1 rounded-xl">
-                        <img src={logoUrl} alt="Logo Preview" className="h-full w-auto object-contain" />
+                      <div className="border border-[#EBE8E1] mb-1 p-2 rounded-xl bg-white">
+                        <img src={logoUrl} alt="Logo Preview" style={{ height: `${Math.min(logoHeight, 80)}px`, width: 'auto' }} className="object-contain" />
                       </div>
                       <span className="text-[9px] text-green-600 font-bold">Custom Logo Active ✓</span>
                       <button onClick={() => setLogoUrl('')} className="text-[9px] text-red-500 underline mt-1">Reset to Default Bridge Icon</button>
