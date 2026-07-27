@@ -11,7 +11,7 @@ export default function App() {
 
   // --- BRAND LOGO CONFIG ---
   // Replace '/logo.png' below with your direct hosted image link if using Option 1
-  const [logoUrl, setLogoUrl] = useState('/logo.png');
+  const [logoUrl, setLogoUrl] = useState('https://i.ibb.co/jvHcxPt9/no-bg2.png');
   const [logoError, setLogoError] = useState(false);
   const [logoHeight, setLogoHeight] = useState(85); // Height in pixels
   const [logoOffsetX, setLogoOffsetX] = useState(0); // Left/Right shift (-50px to +50px)
