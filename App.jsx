@@ -339,12 +339,12 @@ export default function App() {
         </div>
       )}
 
-      {/* Top Bar Switcher */}
-      <div className="text-white px-4 sm:px-6 py-2.5 text-xs font-semibold flex justify-between items-center transition-colors" style={{ backgroundColor: themeColors.primary, fontFamily }}>
-        <span className="truncate pr-2 font-medium tracking-wide">✨ Bridging Imagination & Learning, One Page at a Time ✨</span>
+      {/* TOP BAR SWITCHER WITH PROPER RIGHT ALIGNMENT */}
+      <div className="text-white px-4 sm:px-8 py-2.5 text-xs font-semibold flex justify-between items-center transition-colors max-w-7xl mx-auto" style={{ backgroundColor: themeColors.primary, fontFamily }}>
+        <span className="truncate pr-4 font-medium tracking-wide">✨ Bridging Imagination & Learning, One Page at a Time ✨</span>
         <button 
           onClick={() => setViewMode(viewMode === 'buyer' ? 'admin' : 'buyer')}
-          className="text-white px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition shadow-2xs min-h-[48px] flex items-center justify-center shrink-0"
+          className="text-white px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition shadow-2xs shrink-0 flex items-center justify-center border border-white/20 hover:scale-105"
           style={{ backgroundColor: themeColors.accent, fontFamily }}
         >
           {viewMode === 'buyer' ? '🔒 Open Admin Panel' : '👋 Return to Storefront'}
@@ -356,10 +356,10 @@ export default function App() {
         <>
           {/* HEADER BAND */}
           <header className="bg-white/90 backdrop-blur-md sticky top-0 z-40 border-b border-[#EBE8E1] shadow-2xs py-2 overflow-hidden">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 flex justify-between items-center h-16 sm:h-20">
+            <div className="max-w-7xl mx-auto px-4 sm:px-8 flex justify-between items-center h-16 sm:h-20">
               
               {/* BRAND WRAPPER */}
-              <div onClick={() => setCheckoutStep('browse')} className="cursor-pointer flex items-center space-x-1 sm:space-x-2 h-full">
+              <div onClick={() => setCheckoutStep('browse')} className="cursor-pointer flex items-center space-x-2 sm:space-x-3 h-full">
                 
                 {/* LOGO IMAGE CONTAINER WITH FULL FREE FORM TRANSFORM */}
                 <div className="flex-shrink-0 flex items-center justify-center h-full overflow-visible">
@@ -389,9 +389,10 @@ export default function App() {
                 </div>
               </div>
               
-              <button onClick={() => setIsCartOpen(true)} className="hidden sm:flex text-white font-bold px-6 py-3.5 rounded-full text-sm items-center space-x-2 transition shadow-xs min-h-[48px]" style={{ backgroundColor: themeColors.primary, fontFamily }}>
+              {/* PROPERLY ALIGNED SHOPPING BASKET CTA */}
+              <button onClick={() => setIsCartOpen(true)} className="hidden sm:flex text-white font-bold px-6 py-3 rounded-full text-xs sm:text-sm items-center space-x-2.5 transition shadow-sm hover:scale-105 my-auto" style={{ backgroundColor: themeColors.primary, fontFamily }}>
                 <span>🛒 Shopping Basket</span>
-                <span className="text-white rounded-full px-2.5 py-0.5 text-xs font-bold" style={{ backgroundColor: themeColors.accent }}>{cart.reduce((s, i) => s + i.quantity, 0)}</span>
+                <span className="text-white rounded-full px-2.5 py-0.5 text-xs font-extrabold shadow-2xs" style={{ backgroundColor: themeColors.accent }}>{cart.reduce((s, i) => s + i.quantity, 0)}</span>
               </button>
             </div>
           </header>
@@ -609,13 +610,36 @@ export default function App() {
                 </section>
               )}
 
-              {/* FOOTER */}
+              {/* FOOTER WITH DYNAMIC LOGO IMAGE */}
               <footer className="text-slate-200 py-12 px-6 mt-12 text-xs" style={{ backgroundColor: themeColors.primary }}>
-                <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
-                  <div className="space-y-2">
-                    <h3 className="text-white font-bold text-lg flex items-center gap-2" style={{ fontFamily }}>🌉 Paper Bridge</h3>
+                <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
+                  <div className="space-y-3">
+                    {/* DYNAMIC LOGO IN FOOTER */}
+                    <div className="flex items-center space-x-3">
+                      {logoUrl ? (
+                        <div className="bg-white/10 p-1.5 rounded-2xl backdrop-blur-xs flex items-center justify-center">
+                          <img 
+                            src={logoUrl} 
+                            alt="Paper Bridge Logo" 
+                            style={{ 
+                              height: `${Math.min(logoHeight, 50)}px`, 
+                              width: 'auto',
+                              transform: `scale(${Math.min(logoScale, 1.2)})`
+                            }} 
+                            className="object-contain" 
+                          />
+                        </div>
+                      ) : (
+                        <span className="text-2xl">🌉</span>
+                      )}
+                      <h3 className="text-white font-bold text-2xl tracking-wide" style={{ fontFamily }}>
+                        Paper <span style={{ color: themeColors.accent }}>Bridge</span>
+                      </h3>
+                    </div>
+                    
                     <p className="text-slate-200 leading-relaxed font-medium">Providing high-quality physical and digital learning materials to build strong academic foundations with love and care.</p>
                   </div>
+
                   <div>
                     <h4 className="text-white font-bold mb-3 text-sm">Why Parents Trust Us</h4>
                     <ul className="space-y-2 text-slate-200 font-medium">
@@ -624,6 +648,7 @@ export default function App() {
                       <li>• Aligned with Foundational Curriculums</li>
                     </ul>
                   </div>
+
                   <div>
                     <h4 className="text-white font-bold mb-3 text-sm">Get in Touch</h4>
                     <div className="space-y-2.5 text-slate-200 font-medium">
