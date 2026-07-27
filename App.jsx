@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 export default function App() {
   // --- SITE TYPOGRAPHY & COLOR THEME STATE (EDITABLE IN ADMIN) ---
@@ -19,28 +19,13 @@ export default function App() {
   const [logoOffsetY, setLogoOffsetY] = useState(18);     // Up/Down shift
   const [logoScale, setLogoScale] = useState(2.0);        // Zoom multiplier
 
-  // Function to reset logo alignment back to your custom baseline
+  // Function to reset logo alignment back to standard baseline
   const resetLogoAlignment = () => {
     setLogoOffsetX(-7);
     setLogoOffsetY(18);
     setLogoScale(2.0);
     setLogoHeight(85);
   };
-
-  // Shared Logo Component to keep rendering logic identical in Header and Footer
-  const RenderLogo = () => (
-    <img
-      src={logoUrl}
-      alt="Paper Bridge Logo"
-      style={{
-        height: `${logoHeight}px`,
-        transform: `translate(${logoOffsetX}px, ${logoOffsetY}px) scale(${logoScale})`,
-        objectFit: 'contain',
-        transition: 'transform 0.1s ease-out',
-      }}
-      className="select-none pointer-events-none"
-    />
-  );
 
   return (
     <div style={{ fontFamily }} className="min-h-screen bg-slate-50 text-slate-800 flex flex-col">
@@ -56,17 +41,20 @@ export default function App() {
       {/* 2. HEADER */}
       <header className="bg-white border-b border-slate-100 py-4 px-6 shadow-sm">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          {/* Logo & Brand Name (Tight Gap) */}
-          <div className="flex items-center gap-2 overflow-hidden py-2">
-            <RenderLogo />
-            <div className="flex flex-col">
-              <span style={{ color: themeColors.primary }} className="text-3xl font-bold tracking-tight leading-none">
-                Paper <span style={{ color: themeColors.accent }}>Bridge</span>
-              </span>
-              <span className="text-[10px] tracking-widest uppercase font-semibold text-slate-400 mt-1">
-                Bridging Play & Learning
-              </span>
-            </div>
+          
+          {/* Main Logo Container */}
+          <div className="flex items-center overflow-hidden py-2">
+            <img
+              src={logoUrl}
+              alt="Paper Bridge Logo"
+              style={{
+                height: `${logoHeight}px`,
+                transform: `translate(${logoOffsetX}px, ${logoOffsetY}px) scale(${logoScale})`,
+                objectFit: 'contain',
+                transition: 'transform 0.1s ease-out',
+              }}
+              className="select-none pointer-events-none"
+            />
           </div>
 
           <nav className="hidden md:flex gap-6 text-sm font-medium text-slate-600">
@@ -77,9 +65,9 @@ export default function App() {
         </div>
       </header>
 
-      {/* 3. HERO BAND / MAIN CONTENT */}
+      {/* 3. HERO & MAIN CONTENT */}
       <main className="flex-1">
-        <section style={{ backgroundColor: themeColors.heroBg }} className="py-16 px-6 text-center border-b border-slate-100">
+        <section style={{ backgroundColor: themeColors.heroBg }} className="py-16 px-6 text-center border-b border-slate-100 transition-colors">
           <div className="max-w-3xl mx-auto space-y-4">
             <span className="inline-block bg-pink-100 text-pink-700 text-xs font-semibold px-3 py-1 rounded-full">
               🌸 LOVED BY 10,000+ PARENTS
@@ -116,7 +104,7 @@ export default function App() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* LOGO CONTROLS */}
+            {/* LOGO POSITIONING CONTROLS */}
             <div className="space-y-4">
               <h4 className="font-semibold text-sm text-slate-700 border-b pb-2">🖼️ Logo Position & Scale</h4>
               
@@ -223,17 +211,22 @@ export default function App() {
       <footer style={{ backgroundColor: themeColors.footerBg }} className="py-12 px-6 text-white transition-colors mt-auto">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
           
-          {/* Logo & Brand Name (Identical gap-2 to header) */}
-          <div className="flex items-center gap-2 overflow-hidden py-2">
-            <RenderLogo />
-            <div className="flex flex-col">
-              <span className="text-3xl font-bold tracking-tight leading-none text-white">
-                Paper Bridge
-              </span>
-              <p className="text-xs text-slate-200 mt-2 max-w-sm">
-                Providing high-quality physical and digital learning materials to build strong academic foundations with love and care.
-              </p>
+          <div className="flex flex-col space-y-3">
+            <div className="flex items-center overflow-hidden py-2">
+              <img
+                src={logoUrl}
+                alt="Paper Bridge Logo"
+                style={{
+                  height: `${logoHeight}px`,
+                  transform: `translate(${logoOffsetX}px, ${logoOffsetY}px) scale(${logoScale})`,
+                  objectFit: 'contain',
+                }}
+                className="select-none pointer-events-none"
+              />
             </div>
+            <p className="text-xs text-slate-200 max-w-sm">
+              Providing high-quality physical and digital learning materials to build strong academic foundations with love and care.
+            </p>
           </div>
 
           <div className="text-left md:text-right text-xs text-slate-200 space-y-1">
