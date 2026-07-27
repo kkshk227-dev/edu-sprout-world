@@ -11,7 +11,7 @@ export default function App() {
 
   // --- BRAND LOGO CONFIG (EDITABLE IN ADMIN) ---
   const [logoUrl, setLogoUrl] = useState('');
-  const [logoHeight, setLogoHeight] = useState(110); // Direct pixel height for logo
+  const [logoHeight, setLogoHeight] = useState(85); // Fits snugly within fixed header band
 
   // --- INJECT FONTS & RUNNING BANNER KEYFRAME ANIMATION ---
   useEffect(() => {
@@ -343,33 +343,33 @@ export default function App() {
       {/* BUYER MODE */}
       {viewMode === 'buyer' && (
         <>
-          {/* HEADER WITH FULLY UNCONSTRAINED LOGO SIZE */}
-          <header className="bg-white/90 backdrop-blur-md sticky top-0 z-40 border-b border-[#EBE8E1] shadow-2xs py-2">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 flex justify-between items-center">
+          {/* HEADER BAND - FIXED HEIGHT ASPECT RATIO */}
+          <header className="bg-white/90 backdrop-blur-md sticky top-0 z-40 border-b border-[#EBE8E1] shadow-2xs py-2 overflow-hidden">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 flex justify-between items-center h-16 sm:h-20">
               
-              {/* TIGHT SPACE LOGO & NAME WRAPPER */}
-              <div onClick={() => setCheckoutStep('browse')} className="cursor-pointer flex items-center space-x-2 sm:space-x-4">
+              {/* TIGHT LOGO & BRAND WRAPPER */}
+              <div onClick={() => setCheckoutStep('browse')} className="cursor-pointer flex items-center space-x-1 sm:space-x-2 h-full">
                 
-                {/* DIRECT PIXEL CONTROLLED LOGO IMAGE */}
-                <div className="flex-shrink-0 flex items-center justify-center">
+                {/* LOGO IMAGE - SCALED TO FILL HEIGHT WITHOUT INCREASING BAND SIZE */}
+                <div className="flex-shrink-0 flex items-center justify-center h-full overflow-visible">
                   {logoUrl ? (
                     <img 
                       src={logoUrl} 
                       alt="Paper Bridge Logo" 
                       style={{ height: `${logoHeight}px`, width: 'auto' }}
-                      className="object-contain transition-all duration-200 hover:scale-105" 
+                      className="object-contain scale-135 sm:scale-150 transform transition-all duration-200 hover:scale-160 -my-2" 
                     />
                   ) : (
-                    <span className="text-4xl sm:text-5xl md:text-6xl">🌉</span>
+                    <span className="text-4xl sm:text-5xl">🌉</span>
                   )}
                 </div>
 
-                {/* COMPACT BRAND TYPOGRAPHY */}
+                {/* BRAND TYPOGRAPHY */}
                 <div className="flex flex-col justify-center">
-                  <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold text-[#555776] tracking-normal leading-tight" style={{ fontFamily }}>
+                  <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold text-[#555776] tracking-normal leading-none" style={{ fontFamily }}>
                     Paper <span style={{ color: themeColors.accent }}>Bridge</span>
                   </h1>
-                  <p className="text-[9px] sm:text-xs font-semibold text-[#A0A2B8] uppercase tracking-wider mt-0.5">Bridging Play & Learning</p>
+                  <p className="text-[9px] sm:text-xs font-semibold text-[#A0A2B8] uppercase tracking-wider mt-1">Bridging Play & Learning</p>
                 </div>
               </div>
               
@@ -773,7 +773,7 @@ export default function App() {
                     <input 
                       type="range" 
                       min="40" 
-                      max="200" 
+                      max="140" 
                       value={logoHeight} 
                       onChange={e => setLogoHeight(Number(e.target.value))}
                       className="w-full accent-[#E5A1C0] cursor-pointer"
