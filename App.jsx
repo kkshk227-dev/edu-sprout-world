@@ -37,7 +37,7 @@ export default function App() {
     document.head.appendChild(styleSheet);
   }, []);
 
-  // --- BRAND LOGO STATE (EDITABLE IN ADMIN) ---
+  // --- BRAND LOGO STATE ---
   const [logoUrl, setLogoUrl] = useState('');
 
   // --- ANNOUNCEMENT BANNER STATE ---
@@ -342,26 +342,28 @@ export default function App() {
       {/* BUYER MODE */}
       {viewMode === 'buyer' && (
         <>
-          {/* HEADER WITH PROMINENT LARGE LOGO */}
-          <header className="bg-white/90 backdrop-blur-md sticky top-0 z-40 border-b border-[#EBE8E1] shadow-2xs py-4">
+          {/* HEADER WITH TIGHTENED LOGO AND COMPACT BRAND NAME */}
+          <header className="bg-white/90 backdrop-blur-md sticky top-0 z-40 border-b border-[#EBE8E1] shadow-2xs py-2">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 flex justify-between items-center">
-              <div onClick={() => setCheckoutStep('browse')} className="cursor-pointer flex items-center space-x-4 sm:space-x-6">
+              
+              {/* TIGHT GAP BETWEEN LOGO & BRAND TEXT */}
+              <div onClick={() => setCheckoutStep('browse')} className="cursor-pointer flex items-center space-x-1.5 sm:space-x-3">
                 
-                {/* EXTRA LARGE LOGO CONTAINER */}
-                <div className="h-32 sm:h-44 md:h-52 flex-shrink-0 flex items-center justify-center py-1">
+                {/* PROPORTIONAL LOGO IMAGE CONTAINER */}
+                <div className="h-16 sm:h-24 md:h-28 flex-shrink-0 flex items-center justify-center">
                   {logoUrl ? (
-                    <img src={logoUrl} alt="Paper Bridge Logo" className="h-full max-h-full w-auto object-contain transition-transform duration-200 hover:scale-105" />
+                    <img src={logoUrl} alt="Paper Bridge Logo" className="h-full w-auto max-w-[140px] sm:max-w-[200px] object-contain transition-transform duration-200 hover:scale-105" />
                   ) : (
-                    <span className="text-6xl sm:text-7xl">🌉</span>
+                    <span className="text-4xl sm:text-5xl md:text-6xl">🌉</span>
                   )}
                 </div>
 
-                {/* UNIFIED PAPER BRIDGE TYPOGRAPHY */}
+                {/* COMPACT & NARROW BRAND TYPOGRAPHY */}
                 <div className="flex flex-col justify-center">
-                  <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold text-[#555776] tracking-wide leading-none" style={{ fontFamily }}>
+                  <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold text-[#555776] tracking-normal leading-tight" style={{ fontFamily }}>
                     Paper <span style={{ color: themeColors.accent }}>Bridge</span>
                   </h1>
-                  <p className="text-xs sm:text-sm font-semibold text-[#A0A2B8] uppercase tracking-widest mt-2">Bridging Play & Learning</p>
+                  <p className="text-[9px] sm:text-xs font-semibold text-[#A0A2B8] uppercase tracking-wider mt-0.5">Bridging Play & Learning</p>
                 </div>
               </div>
               
@@ -409,7 +411,7 @@ export default function App() {
                       🌸 Loved by 10,000+ Parents
                     </span>
 
-                    {/* HERO HEADLINE MATCHED */}
+                    {/* HERO HEADLINE */}
                     <h2 className="text-3xl sm:text-4xl lg:text-5xl font-medium text-[#3D3E54] leading-tight" style={{ fontFamily }}>
                       Nurture Young Minds <br />
                       <span className="font-semibold" style={{ color: themeColors.accent }}>With Thoughtful Resources</span>
@@ -775,7 +777,7 @@ export default function App() {
                     value={logoUrl} 
                     onChange={e => setLogoUrl(e.target.value)} 
                     className="w-full border border-[#EBE8E1] p-2 rounded-xl text-xs bg-white outline-none" 
-                    placeholder="Paste Logo Image URL..."
+                    placeholder="Paste Direct Image URL (e.g. https://...)..."
                   />
 
                   {logoUrl ? (
