@@ -625,7 +625,7 @@ export default function App() {
                     {/* FOOTER BRANDING WITH SAFE FALLBACK */}
                     <div className="flex items-center space-x-3 sm:space-x-4">
                       {logoUrl && !logoError ? (
-                        <div className="flex items-center justify-center shrink-0 overflow-visible">
+                       <div className="flex items-center justify-center bg-white p-2 rounded-xl shadow-sm">
                           <img 
                             src={logoUrl} 
                             alt="Paper Bridge Logo" 
